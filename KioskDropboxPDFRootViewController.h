@@ -29,6 +29,8 @@ typedef enum {
 
 // display buisy indicator while loading new directory infos
 @property (strong, nonatomic) MBProgressHUD *hud;
+// download indicator in toolbar to indicate progress of pdf file download
+@property (strong, nonatomic) UIProgressView *downloadProgressView;
 /**
  * list content of home directory inside rootview controller
  */

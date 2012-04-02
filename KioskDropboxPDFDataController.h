@@ -48,8 +48,20 @@
  */
 - (void) updateTableData;
 /**
+ * started file download - show progressbar
+ */
+- (void) startDownloadFile;
+/**
  * ok, file was downloaded - tell delegate about it
  */
 - (void) downloadedFile;
+/**
+ * Ups, something went wrong - hide progressbar
+ */
+- (void) downloadedFileFailed;
+/**
+ * update progressbar to reflect current download progress
+ */
+- (void) updateDownloadProgressTo:(CGFloat) progress;
 @end
 

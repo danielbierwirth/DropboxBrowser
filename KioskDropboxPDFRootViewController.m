@@ -173,6 +173,14 @@
     self.navigationItem.leftBarButtonItem = leftButton;
     self.currentPath = @"/";
     
+    // add progressview
+    UIProgressView *newProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    newProgressView.frame = CGRectMake(80, 17, 150, 30);
+    newProgressView.hidden = TRUE;
+    [self.parentViewController.view addSubview:newProgressView];
+    
+    [self setDownloadProgressView:newProgressView];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -318,6 +326,7 @@
 }
 
 - (void) downloadedFile {
+    [self.downloadProgressView setHidden:TRUE];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Done"
                                                         message:@"Your PDF Document was added to your library section."
                                                        delegate:nil
@@ -330,10 +339,23 @@
     
 }
 
+- (void) startDownloadFile {
+    [self.downloadProgressView setHidden:FALSE];
+}
+
+- (void) downloadedFileFailed {
+    [self.downloadProgressView setHidden:TRUE];
+}
+
+- (void) updateDownloadProgressTo:(CGFloat) progress {
+    [self.downloadProgressView setProgress:progress];
+}
+
 #pragma mark - synthesize items
 @synthesize dataController;
 @synthesize currentPath;
 @synthesize rootViewDelegate;
 @synthesize hud;
+@synthesize downloadProgressView;
 
 @end

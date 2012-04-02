@@ -57,6 +57,10 @@
         NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString* localPath = [documentsPath stringByAppendingPathComponent:file.filename];
         if(![[NSFileManager defaultManager] fileExistsAtPath:localPath]) {
+            
+            if ([[self dataDelegate] respondsToSelector:@selector(startDownloadFile)])
+                [[self dataDelegate] startDownloadFile];
+            
             res = TRUE;
             [[self restClient] loadFile:file.path intoPath:localPath];
         }
@@ -121,7 +125,14 @@
 }
 
 - (void)restClient:(DBRestClient*)client loadFileFailedWithError:(NSError*)error {
+    if ([[self dataDelegate] respondsToSelector:@selector(downloadedFileFailed)])
+        [[self dataDelegate] downloadedFileFailed];
+}
+
+- (void)restClient:(DBRestClient*)client loadProgress:(CGFloat)progress forFile:(NSString*)destPath {
     
+    if ([[self dataDelegate] respondsToSelector:@selector(updateDownloadProgressTo:)])
+        [[self dataDelegate] updateDownloadProgressTo:progress];
 }
 
 
