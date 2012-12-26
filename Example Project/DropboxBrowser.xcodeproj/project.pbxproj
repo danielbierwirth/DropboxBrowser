@@ -35,10 +35,11 @@
 		99DDE3A7168B7C190071241C /* KioskDropboxPDFBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE397168B7C190071241C /* KioskDropboxPDFBrowserViewController.m */; };
 		99DDE3A8168B7C190071241C /* KioskDropboxPDFDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE399168B7C190071241C /* KioskDropboxPDFDataController.m */; };
 		99DDE3A9168B7C190071241C /* KioskDropboxPDFRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE39B168B7C190071241C /* KioskDropboxPDFRootViewController.m */; };
-		99DDE3AA168B7C190071241C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE39E168B7C190071241C /* MBProgressHUD.m */; };
 		99DDE3AC168B7CC60071241C /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3AB168B7CC60071241C /* DropboxSDK.framework */; };
 		99DDE3AE168B7DFE0071241C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3AD168B7DFE0071241C /* Security.framework */; };
 		99DDE3B0168B7E090071241C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3AF168B7E090071241C /* QuartzCore.framework */; };
+		99DDE3B2168B83D70071241C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3B1168B83D70071241C /* AssetsLibrary.framework */; };
+		99DDE3B5168B8E340071241C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE3B4168B8E340071241C /* MBProgressHUD.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,11 +90,12 @@
 		99DDE399168B7C190071241C /* KioskDropboxPDFDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KioskDropboxPDFDataController.m; path = ../KioskDropboxPDFDataController.m; sourceTree = "<group>"; };
 		99DDE39A168B7C190071241C /* KioskDropboxPDFRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KioskDropboxPDFRootViewController.h; path = ../KioskDropboxPDFRootViewController.h; sourceTree = "<group>"; };
 		99DDE39B168B7C190071241C /* KioskDropboxPDFRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = KioskDropboxPDFRootViewController.m; path = ../KioskDropboxPDFRootViewController.m; sourceTree = "<group>"; };
-		99DDE39D168B7C190071241C /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		99DDE39E168B7C190071241C /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		99DDE3AB168B7CC60071241C /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
 		99DDE3AD168B7DFE0071241C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		99DDE3AF168B7E090071241C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		99DDE3B1168B83D70071241C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		99DDE3B3168B8E340071241C /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		99DDE3B4168B8E340071241C /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				99DDE3B2168B83D70071241C /* AssetsLibrary.framework in Frameworks */,
 				99DDE3B0168B7E090071241C /* QuartzCore.framework in Frameworks */,
 				99DDE3AE168B7DFE0071241C /* Security.framework in Frameworks */,
 				99DDE34F168B7B780071241C /* UIKit.framework in Frameworks */,
@@ -148,6 +151,7 @@
 		99DDE34D168B7B780071241C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				99DDE3B1168B83D70071241C /* AssetsLibrary.framework */,
 				99DDE3AF168B7E090071241C /* QuartzCore.framework */,
 				99DDE3AD168B7DFE0071241C /* Security.framework */,
 				99DDE3AB168B7CC60071241C /* DropboxSDK.framework */,
@@ -238,8 +242,8 @@
 		99DDE39C168B7C190071241C /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				99DDE39D168B7C190071241C /* MBProgressHUD.h */,
-				99DDE39E168B7C190071241C /* MBProgressHUD.m */,
+				99DDE3B3168B8E340071241C /* MBProgressHUD.h */,
+				99DDE3B4168B8E340071241C /* MBProgressHUD.m */,
 			);
 			name = Utilities;
 			path = ../Utilities;
@@ -371,7 +375,7 @@
 				99DDE3A7168B7C190071241C /* KioskDropboxPDFBrowserViewController.m in Sources */,
 				99DDE3A8168B7C190071241C /* KioskDropboxPDFDataController.m in Sources */,
 				99DDE3A9168B7C190071241C /* KioskDropboxPDFRootViewController.m in Sources */,
-				99DDE3AA168B7C190071241C /* MBProgressHUD.m in Sources */,
+				99DDE3B5168B8E340071241C /* MBProgressHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,6 +574,7 @@
 				99DDE388168B7B780071241C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		99DDE389168B7B780071241C /* Build configuration list for PBXNativeTarget "DropboxBrowserTests" */ = {
 			isa = XCConfigurationList;
@@ -578,6 +583,7 @@
 				99DDE38B168B7B780071241C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

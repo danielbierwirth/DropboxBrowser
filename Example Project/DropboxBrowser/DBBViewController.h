@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KioskDropboxPDFBrowserViewController.h"
+#import <DropboxSDK/DropboxSDK.h>
+#import <AssetsLibrary/ALAsset.h>
 
-@interface DBBViewController : UIViewController
+@interface DBBViewController : UIViewController <KioskDropboxPDFBrowserViewControllerUIDelegate, DBRestClientDelegate,UINavigationControllerDelegate>
+
+- (IBAction)browseDropbox:(id)sender;
 
 @end

@@ -7,8 +7,6 @@
 //
 
 #import "KioskDropboxPDFRootViewController.h"
-#import "KioskDropboxPDFDataController.h"
-#import <DropboxSDK/DropboxSDK.h>
 
 @interface KioskDropboxPDFRootViewController ()
 @end

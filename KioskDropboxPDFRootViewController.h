@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "KioskDropboxPDFDataController.h"
-
 #import "MBProgressHUD.h"
+#import "KioskDropboxPDFDataController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 typedef enum {
     DisclosureFileType

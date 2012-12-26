@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DropboxSDK/DropboxSDK.h>
 
 @interface DBBAppDelegate : UIResponder <UIApplicationDelegate>
 

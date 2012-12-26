@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <DropboxSDK/DropboxSDK.h>
 
 @class DBRestClient;
 @class DBMetadata;
