@@ -73,10 +73,17 @@ To properly integrate DropboxBrowser into your project, please follow the instru
              //This is where you can handle the cancellation of selection, ect.
              [self dismissViewControllerAnimated:YES completion:nil];
          }
+9. The next step is to edit the required interface files. In your storyboard, add the following UI Objects from the Objects Library:
+    - Navigation Controller  
+10.  Click on the root of the navigation controller you just added. Change its class to `KioskDropboxPDFBrowserViewController` using the Identity Inspector. Change the Storyboard ID to `KioskDropboxPDFBrowserViewControllerID` and then check the "Use Storyboard ID" checkbox
+11. Select the Table View Controller just added along with the Navigation Controller and change the class to `KioskDropboxPDFRootViewController` using the Indentity Inspector.
+12. Click on the first cell of the Table View and change its identifier to `KioskDropboxBrowserCell`
+
+If you have completed everything properly, when the user clicks on the button connected to the `didPressLink` method, the navigation controller will present itself modally over the current view controller. Please refer to the sample project included.
 
 ## Further Information
 
-This project is a work in process, check back for updates, etc.
+This project is a work in progress, check back soon for updates, etc.
 
 ## Screenshots (Updated UI Coming Soon)
 
