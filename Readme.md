@@ -85,6 +85,7 @@ If you have completed everything properly, when the user clicks on the button co
 
 This project is a work in progress, check back soon for updates, etc.
 
-## Screenshots (Updated UI Coming Soon)
+## Screenshots
+DropboxBrowser now comes with a redesigned UI that can easily be customized simply by swapping PNG files of the same size with the same naming conventions. The default and only skin / theme is the Glyph Icon theme which has been Retina-display optimized. A quick preview of what the UI looks like can be seen below. You can use TableView prototype cells to customize the TableView appearance.
 
-<img width=600 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
+<img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
