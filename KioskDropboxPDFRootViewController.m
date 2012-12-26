@@ -2,14 +2,12 @@
 //  KioskDropboxPDFRootViewController.m
 //  epaper
 //
-//  Created by daniel bierwirth on 3/5/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 12/26/12
+//  Copyright (c) 2012 iRare Media. All rights reserved.
 //
 
 #import "KioskDropboxPDFRootViewController.h"
-
 #import "KioskDropboxPDFDataController.h"
-
 #import <DropboxSDK/DropboxSDK.h>
 
 @interface KioskDropboxPDFRootViewController ()
@@ -186,18 +184,6 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 #pragma mark - Table view data source

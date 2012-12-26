@@ -2,8 +2,8 @@
 //  KioskDropboxPDFBrowserViewController.m
 //  epaper
 //
-//  Created by daniel bierwirth on 3/5/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 12/26/12
+//  Copyright (c) 2012 iRare Media. All rights reserved.
 //
 
 #import "KioskDropboxPDFBrowserViewController.h"
@@ -88,17 +88,6 @@
     self.rootViewController.dataController = self.dataController;
     self.dataController.dataDelegate = self.rootViewController;
     
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 #pragma mark - KioskDropboxPDFRootViewControllerDelegate functions
