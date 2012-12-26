@@ -2,15 +2,11 @@
 //  KioskDropboxPDFRootViewController.m
 //  epaper
 //
-//  Created by daniel bierwirth on 3/5/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 12/26/12
+//  Copyright (c) 2012 iRare Media. All rights reserved.
 //
 
 #import "KioskDropboxPDFRootViewController.h"
-
-#import "KioskDropboxPDFDataController.h"
-
-#import <DropboxSDK/DropboxSDK.h>
 
 @interface KioskDropboxPDFRootViewController ()
 @end
@@ -103,7 +99,7 @@
         
         [[self dataController] listDirectoryAtPath:subpath];
     }
-    else if ([file.filename hasSuffix:@".pdf"]) {
+    else if (![file.filename hasSuffix:@".exe"]) {
         UITableViewCell *tcell = [self.tableView cellForRowAtIndexPath:indexPath];
         for (int i = 0; i < [tcell.subviews count]; i++) {
             UIButton* tView = (UIButton*)[tcell.subviews objectAtIndex:i];
@@ -165,7 +161,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Dropbox PDF Browser";
+    self.title = @"Dropbox Browser";
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                                    style:UIBarButtonSystemItemDone target:self action:@selector(moveToParentDirectory)];
@@ -186,18 +182,6 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-}
-
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 #pragma mark - Table view data source
@@ -243,9 +227,9 @@
         customDownloadbutton = [self makeDetailDisclosureButton:DisclosureDirType];
     }
     // if pdf doc
-    else if ([file.filename hasSuffix:@".pdf"]){
+    else if (![file.filename hasSuffix:@".exe"]){
         cell.imageView.image = [UIImage imageNamed:@"pdfFileIcon.png"];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"PDF, Size: %@", file.humanReadableSize];   
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"File Size: %@", file.humanReadableSize];   
         customDownloadbutton = [self makeDetailDisclosureButton:DisclosureFileType];
     }
     
@@ -328,7 +312,7 @@
 - (void) downloadedFile {
     [self.downloadProgressView setHidden:TRUE];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Done"
-                                                        message:@"Your PDF Document was added to your library section."
+                                                        message:@"Your File was added to your library section."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];

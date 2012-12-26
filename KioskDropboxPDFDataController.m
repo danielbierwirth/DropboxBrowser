@@ -3,12 +3,10 @@
 //  epaper
 //
 //  Created by daniel bierwirth on 3/6/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 iRare Media. All rights reserved.
 //
 
 #import "KioskDropboxPDFDataController.h"
-
-#import <DropboxSDK/DropboxSDK.h>
 
 @interface KioskDropboxPDFDataController () <DBRestClientDelegate>
 
@@ -52,7 +50,7 @@
 - (BOOL) downloadFile:(DBMetadata *)file {
     BOOL res = FALSE;
 
-    if ([file.filename hasSuffix:@".pdf"] && !file.isDirectory) {
+    if (!file.isDirectory) {
         
         NSString* documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString* localPath = [documentsPath stringByAppendingPathComponent:file.filename];
@@ -97,8 +95,7 @@
     if (metadata.isDirectory) {
         for (DBMetadata *file in metadata.contents) {
             // check if directory or pdf document
-            if ([file isDirectory]
-                || [file.filename hasSuffix:@".pdf"]) {
+            if ([file isDirectory] || ![file.filename hasSuffix:@".exe"]) {
                 // push new tableviewcontroller
                 [dirList addObject:file];
             }

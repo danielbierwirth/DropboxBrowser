@@ -2,15 +2,15 @@
 //  KioskDropboxPDFRootViewController.h
 //  epaper
 //
-//  Created by daniel bierwirth on 3/5/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 12/26/12
+//  Copyright (c) 2012 iRare Media. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-
 #import "KioskDropboxPDFDataController.h"
-
 #import "MBProgressHUD.h"
+#import "KioskDropboxPDFDataController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 typedef enum {
     DisclosureFileType
@@ -24,6 +24,7 @@ typedef enum {
 
 @property (nonatomic, weak) id <KioskDropboxPDFRootViewControllerDelegate>  rootViewDelegate;
 @property (nonatomic, strong) KioskDropboxPDFDataController *dataController;
+
 //  reflect current path
 @property (nonatomic, strong) NSString *currentPath;
 

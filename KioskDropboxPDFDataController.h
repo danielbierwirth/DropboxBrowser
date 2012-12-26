@@ -3,10 +3,11 @@
 //  epaper
 //
 //  Created by daniel bierwirth on 3/6/12.
-//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//  Copyright (c) 2012 iRare Media. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
+#import <DropboxSDK/DropboxSDK.h>
 
 @class DBRestClient;
 @class DBMetadata;
@@ -17,7 +18,7 @@
     DBRestClient *restClient;
 }
 
-@property (nonatomic, weak) id <KioskDropboxPDFDataControllerDelegate> dataDelegate;
+@property (nonatomic) id <KioskDropboxPDFDataControllerDelegate> dataDelegate;
 
 @property (nonatomic, copy, readwrite) NSMutableArray *list;
 
