@@ -24,6 +24,7 @@ typedef enum {
 
 @property (nonatomic, weak) id <KioskDropboxPDFRootViewControllerDelegate>  rootViewDelegate;
 @property (nonatomic, strong) KioskDropboxPDFDataController *dataController;
+
 //  reflect current path
 @property (nonatomic, strong) NSString *currentPath;
 

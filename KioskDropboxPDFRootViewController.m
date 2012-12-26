@@ -99,7 +99,7 @@
         
         [[self dataController] listDirectoryAtPath:subpath];
     }
-    else if ([file.filename hasSuffix:@".pdf"]) {
+    else if (![file.filename hasSuffix:@".exe"]) {
         UITableViewCell *tcell = [self.tableView cellForRowAtIndexPath:indexPath];
         for (int i = 0; i < [tcell.subviews count]; i++) {
             UIButton* tView = (UIButton*)[tcell.subviews objectAtIndex:i];
@@ -161,7 +161,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Dropbox PDF Browser";
+    self.title = @"Dropbox Browser";
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
                                                                    style:UIBarButtonSystemItemDone target:self action:@selector(moveToParentDirectory)];
@@ -227,9 +227,9 @@
         customDownloadbutton = [self makeDetailDisclosureButton:DisclosureDirType];
     }
     // if pdf doc
-    else if ([file.filename hasSuffix:@".pdf"]){
+    else if (![file.filename hasSuffix:@".exe"]){
         cell.imageView.image = [UIImage imageNamed:@"pdfFileIcon.png"];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"PDF, Size: %@", file.humanReadableSize];   
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"File Size: %@", file.humanReadableSize];   
         customDownloadbutton = [self makeDetailDisclosureButton:DisclosureFileType];
     }
     
@@ -312,7 +312,7 @@
 - (void) downloadedFile {
     [self.downloadProgressView setHidden:TRUE];
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Done"
-                                                        message:@"Your PDF Document was added to your library section."
+                                                        message:@"Your File was added to your library section."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
