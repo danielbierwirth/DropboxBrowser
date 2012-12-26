@@ -46,4 +46,4 @@ This project is a work in project, check back for updates, etc.
 
 ## Screenshots (Updated UI Coming Soon)
 
-<img width=600 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/sampleImage.png"/>
+<img width=600 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/sampleImage.png?raw=true"/>
