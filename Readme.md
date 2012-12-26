@@ -81,11 +81,10 @@ To properly integrate DropboxBrowser into your project, please follow the instru
 
 If you have completed everything properly, when the user clicks on the button connected to the `didPressLink` method, the navigation controller will present itself modally over the current view controller. Please refer to the sample project included.
 
-## Further Information
-
-This project is a work in progress, check back soon for updates, etc.
-
 ## Screenshots
 DropboxBrowser now comes with a redesigned UI that can easily be customized simply by swapping PNG files of the same size with the same naming conventions. The default and only skin / theme is the Glyph Icon theme which has been Retina-display optimized. A quick preview of what the UI looks like can be seen below. You can use TableView prototype cells to customize the TableView appearance.
 
 <img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
+
+## Further Information
+This project is a work in progress, check back soon for updates and more information. We plan on submitting a pull request to the original project soon.
