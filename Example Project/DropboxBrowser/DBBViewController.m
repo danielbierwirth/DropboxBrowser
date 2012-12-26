@@ -22,7 +22,6 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.view.backgroundColor = [UIColor underPageBackgroundColor];
-    [self didPressLink];
 }
 
 - (void)didReceiveMemoryWarning
@@ -100,6 +99,7 @@
 
 - (void)removeDropboxBrowser
 {
+    //This is where you can handle the cancellation of selection, ect.
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

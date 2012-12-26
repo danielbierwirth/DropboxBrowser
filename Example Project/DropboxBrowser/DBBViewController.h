@@ -11,7 +11,7 @@
 #import <DropboxSDK/DropboxSDK.h>
 #import <AssetsLibrary/ALAsset.h>
 
-@interface DBBViewController : UIViewController <KioskDropboxPDFBrowserViewControllerUIDelegate, DBRestClientDelegate,UINavigationControllerDelegate>
+@interface DBBViewController : UIViewController <KioskDropboxPDFBrowserViewControllerUIDelegate, DBRestClientDelegate, UINavigationControllerDelegate>
 
 - (IBAction)browseDropbox:(id)sender;
 

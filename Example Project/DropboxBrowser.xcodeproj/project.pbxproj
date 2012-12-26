@@ -103,13 +103,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				99DDE3B2168B83D70071241C /* AssetsLibrary.framework in Frameworks */,
-				99DDE3B0168B7E090071241C /* QuartzCore.framework in Frameworks */,
+				99DDE3AC168B7CC60071241C /* DropboxSDK.framework in Frameworks */,
 				99DDE3AE168B7DFE0071241C /* Security.framework in Frameworks */,
+				99DDE3B0168B7E090071241C /* QuartzCore.framework in Frameworks */,
+				99DDE3B2168B83D70071241C /* AssetsLibrary.framework in Frameworks */,
 				99DDE34F168B7B780071241C /* UIKit.framework in Frameworks */,
 				99DDE351168B7B780071241C /* Foundation.framework in Frameworks */,
 				99DDE353168B7B780071241C /* CoreGraphics.framework in Frameworks */,
-				99DDE3AC168B7CC60071241C /* DropboxSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
