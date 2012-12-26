@@ -87,4 +87,4 @@ This project is a work in progress, check back soon for updates, etc.
 
 ## Screenshots (Updated UI Coming Soon)
 
-<img width=600 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/sampleImage.png?raw=true"/>
+<img width=600 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
