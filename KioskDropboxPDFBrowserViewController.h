@@ -14,44 +14,33 @@
 @class KioskDropboxPDFRootViewController;
 @class KioskDropboxPDFDataController;
 
-@interface KioskDropboxPDFBrowserViewController : UINavigationController {
-   
-}
+@interface KioskDropboxPDFBrowserViewController : UINavigationController {}
+
 // contains dropbox data inside a tableview and manages file navigation as well
 // as item download
 @property (nonatomic, strong) KioskDropboxPDFRootViewController *rootViewController;
 // manages the dropbox access and data fetch
 @property (nonatomic, strong) KioskDropboxPDFDataController *dataController;
 
-/**
- * manage ui events
- */
+// Manage UI events
 @property (nonatomic) id <KioskDropboxPDFBrowserViewControllerUIDelegate> uiDelegate;
 
-
-/**
- * list content of home directory in a tableview
- * alert if application is not linked to dropbox
- */
+// List content of home directory in a tableview. Alert if application is not linked to dropbox
 - (void) listDropboxDirectory;
+
+//Get name of last downloaded file
+
 
 @end
 
-/**
- * notify dropbox browser delegate about close and pdf download events
- */
+// Notify dropbox browser delegate about close and download events
 @protocol KioskDropboxPDFBrowserViewControllerUIDelegate <NSObject>
 
-@optional
-/**
- * parent controller can remove dropbox browser
- * delegate is notified on close button press in dropbox browser
- */
-- (void) removeDropboxBrowser;
-/**
- * ok, document was downloaded - tell delegate about it
- */
-- (void) refreshLibrarySection;
+// Parent controller can remove dropbox browser. Delegate is notified on close button press in dropbox browser
+@required - (void) removeDropboxBrowser;
+
+// Document was downloaded - tell delegate about it. The fileName property in the KioskRootViewController also gives access to the name of the file just downloaded
+ - (void)refreshLibrarySection;
 
 @end
 

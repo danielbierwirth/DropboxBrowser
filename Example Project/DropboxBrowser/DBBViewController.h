@@ -14,5 +14,7 @@
 @interface DBBViewController : UIViewController <KioskDropboxPDFBrowserViewControllerUIDelegate, DBRestClientDelegate, UINavigationControllerDelegate>
 
 - (IBAction)browseDropbox:(id)sender;
+- (IBAction)clearDocs:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *clearDocsBtn;
 
 @end

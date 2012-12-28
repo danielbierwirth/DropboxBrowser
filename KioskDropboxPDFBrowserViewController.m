@@ -38,7 +38,7 @@
     if (![self.dataController isDropboxLinked]) {
         // raise alert
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning"
-                                                            message:@"Your application is not linked to your dropbox."
+                                                            message:@"This application is not linked to your Dropbox account."
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
                                                   otherButtonTitles:nil];
@@ -89,12 +89,10 @@
 
 #pragma mark - KioskDropboxPDFRootViewControllerDelegate functions
 
-- (void) loadedFileFromDropbox {
-
-    if ([[self uiDelegate] respondsToSelector:@selector(refreshLibrarySection)])
+- (void) loadedFileFromDropbox:(NSString *)fileName
+{
         [[self uiDelegate] refreshLibrarySection];
 }
-
 
 #pragma mark - synthesize items
 

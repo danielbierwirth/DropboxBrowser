@@ -16,12 +16,14 @@
 @end
 
 @implementation DBBViewController
+@synthesize clearDocsBtn;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.view.backgroundColor = [UIColor underPageBackgroundColor];
+    clearDocsBtn.hidden = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -33,6 +35,26 @@
 - (IBAction)browseDropbox:(id)sender
 {
     [self didPressLink];
+}
+
+- (IBAction)clearDocs:(id)sender
+{
+    dispatch_queue_t delete = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+        dispatch_async(delete, ^{
+            //Background Process;
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            NSFileManager *fileMgr = [NSFileManager defaultManager];
+            NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:nil];
+            for (NSString *filename in fileArray)  {
+                [fileMgr removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                //Main UI Process
+                clearDocsBtn.titleLabel.text = @"Cleared Docs";
+                clearDocsBtn.hidden = YES;
+            });
+        });
 }
 
 - (void)didPressLink
@@ -103,4 +125,13 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)refreshLibrarySection
+{
+    NSLog(@"Final Filename: %@", [KioskDropboxPDFRootViewController fileName]);
+}
+
+- (void)viewDidUnload {
+    [self setClearDocsBtn:nil];
+    [super viewDidUnload];
+}
 @end
