@@ -25,22 +25,21 @@ typedef enum {
 @property (nonatomic, weak) id <KioskDropboxPDFRootViewControllerDelegate>  rootViewDelegate;
 @property (nonatomic, strong) KioskDropboxPDFDataController *dataController;
 
-//  reflect current path
+// Reflect current path and name
 @property (nonatomic, strong) NSString *currentPath;
++ (NSString*)fileName;
 
-// display buisy indicator while loading new directory infos
+// Display buisy indicator while loading new directory infos
 @property (strong, nonatomic) MBProgressHUD *hud;
-// download indicator in toolbar to indicate progress of pdf file download
+// Download indicator in toolbar to indicate progress of pdf file download
 @property (strong, nonatomic) UIProgressView *downloadProgressView;
-/**
- * list content of home directory inside rootview controller
- */
+// List content of home directory inside rootview controller
 - (BOOL) listHomeDirectory;
 
 @end
 
 @protocol KioskDropboxPDFRootViewControllerDelegate <NSObject>
 
-- (void) loadedFileFromDropbox;
+- (void)loadedFileFromDropbox:(NSString *)fileName;
 
 @end

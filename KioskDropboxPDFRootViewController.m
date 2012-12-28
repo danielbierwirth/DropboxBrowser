@@ -9,19 +9,16 @@
 #import "KioskDropboxPDFRootViewController.h"
 
 @interface KioskDropboxPDFRootViewController ()
+
 @end
 
 @interface KioskDropboxPDFRootViewController (hudhelper)
-/**
- * in case of missing response - remove busiy indicator after certain time intervall
- */
+// In case of missing response - remove busiy indicator after certain time interval
 - (void)timeout:(id)arg;
 @end
 
 @implementation KioskDropboxPDFRootViewController (hudhelper)
-
 - (void)timeout:(id)arg {
-    
     self.hud.labelText = @"Timeout!";
     self.hud.detailsLabelText = @"Please try again later.";
     self.hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
@@ -33,91 +30,15 @@
 
 
 @interface KioskDropboxPDFRootViewController (customdetaildisclosurebuttonhandling)
-/**
- * go back to home directory level
- */
+//Go back to home directory level
 - (void) moveToParentDirectory;
-/**
- * returned button icon depends on file type
- * i.e. directory or pdf file
- */
+// Returned button icon depends on file type
+// EX. directory or file
 - (UIButton *) makeDetailDisclosureButton:(DisclosureType)disclosureType;
 @end
 
-@implementation KioskDropboxPDFRootViewController (customdetaildisclosurebuttonhandling)
-- (void) moveToParentDirectory {
-    self.currentPath = [NSString stringWithFormat:@"/"];
-    [[self dataController] listDirectoryAtPath:self.currentPath];
-}
-
-- (UIButton *) makeDetailDisclosureButton:(DisclosureType)disclosureType {
-    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, 37, 37);
-    
-    switch (disclosureType) {
-        case DisclosureDirType:
-             [button setBackgroundImage:[UIImage imageNamed:@"browseDirectoryIcon.png"] forState:UIControlStateNormal];
-            break;
-        case DisclosureFileType:
-             [button setBackgroundImage:[UIImage imageNamed:@"downloadIcon.png"] forState:UIControlStateNormal];
-            break;
-            
-        default:
-            break;
-    }
-    
-    [button addTarget: self
-               action: @selector(accessoryButtonTapped:withEvent:)
-     forControlEvents: UIControlEventTouchUpInside];
-    
-    return ( button );
-}
-
-- (void) accessoryButtonTapped: (UIControl *) button withEvent: (UIEvent *) event {
-    
-    NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint: [[[event touchesForView: button] anyObject] locationInView: self.tableView]];
-    if ( indexPath == nil )
-        return;
-    
-    
-    DBMetadata *file = (DBMetadata*)[self.dataController.list objectAtIndex:indexPath.row];
-    
-    if ([file isDirectory]) {
-        // push new tableviewcontroller
-        
-        NSString *subpath = [NSString stringWithFormat:@"%@%@/",self.currentPath, file.filename];
-
-        self.currentPath = subpath;
-        
-        // start progress indicator
-        [NSObject cancelPreviousPerformRequestsWithTarget:self];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
-        
-        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        self.hud.labelText = @"Retrieving Data..";
-        [self performSelector:@selector(timeout:) withObject:nil afterDelay:30.0];
-        
-        [[self dataController] listDirectoryAtPath:subpath];
-    }
-    else if (![file.filename hasSuffix:@".exe"]) {
-        UITableViewCell *tcell = [self.tableView cellForRowAtIndexPath:indexPath];
-        for (int i = 0; i < [tcell.subviews count]; i++) {
-            UIButton* tView = (UIButton*)[tcell.subviews objectAtIndex:i];
-            if (tView.tag == 123456) {
-                [tView setEnabled:FALSE];
-                break;
-            }
-        }
-
-        
-        // download file
-        [[self dataController] downloadFile:file];
-        
-
-    }
-}
-
-@end
+//@implementation KioskDropboxPDFRootViewController (customdetaildisclosurebuttonhandling)
+//@end
 
 @interface KioskDropboxPDFRootViewController (tabledatahandling)
 - (void) refreshTableView;
@@ -129,9 +50,17 @@
 }
 @end
 
-@implementation KioskDropboxPDFRootViewController
+#pragma mark - Main Implementation
 
-#pragma mark - public function
+@implementation KioskDropboxPDFRootViewController
+static NSString* currentFileName = nil;
+
+#pragma mark - Public Functions
+
++ (NSString*)fileName {
+    return currentFileName;
+}
+
 - (BOOL) listHomeDirectory {
     
     // start progress indicator
@@ -139,7 +68,7 @@
     [MBProgressHUD hideHUDForView:self.view animated:YES];
     
     self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    self.hud.labelText = @"Retrieving Data..";
+    self.hud.labelText = @"Retrieving Data...";
     [self performSelector:@selector(timeout:) withObject:nil afterDelay:30.0];
     
     [self.dataController listHomeDirectory];
@@ -147,7 +76,7 @@
     return TRUE;
 }
 
-# pragma mark  - view lifecycle
+#pragma mark  - View Lifecycle
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -184,7 +113,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
-#pragma mark - Table view data source
+#pragma mark - Table View Data Source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -197,7 +126,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#warning make sure you're using the correct UITableViewCell identifier including gui items
+    #warning make sure you're using the correct UITableViewCell identifier including gui items
     static NSString *CellIdentifier = @"KioskDropboxBrowserCell";
     UITableViewCell *cell = nil;
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -284,8 +213,81 @@
     return YES;
 }
 */
+#pragma mark - Table View Accessory Button
 
-#pragma mark - Table view delegate
+- (void) moveToParentDirectory {
+    self.currentPath = [NSString stringWithFormat:@"/"];
+    [[self dataController] listDirectoryAtPath:self.currentPath];
+}
+
+- (UIButton *) makeDetailDisclosureButton:(DisclosureType)disclosureType {
+    UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0, 0, 37, 37);
+    
+    switch (disclosureType) {
+        case DisclosureDirType:
+            [button setBackgroundImage:[UIImage imageNamed:@"browseDirectoryIcon.png"] forState:UIControlStateNormal];
+            break;
+        case DisclosureFileType:
+            [button setBackgroundImage:[UIImage imageNamed:@"downloadIcon.png"] forState:UIControlStateNormal];
+            break;
+            
+        default:
+            break;
+    }
+    
+    [button addTarget: self
+               action: @selector(accessoryButtonTapped:withEvent:)
+     forControlEvents: UIControlEventTouchUpInside];
+    
+    return ( button );
+}
+
+- (void) accessoryButtonTapped: (UIControl *) button withEvent: (UIEvent *) event {
+    
+    NSIndexPath * indexPath = [self.tableView indexPathForRowAtPoint: [[[event touchesForView: button] anyObject] locationInView: self.tableView]];
+    if ( indexPath == nil )
+        return;
+    
+    
+    DBMetadata *file = (DBMetadata*)[self.dataController.list objectAtIndex:indexPath.row];
+    
+    if ([file isDirectory]) {
+        // push new tableviewcontroller
+        
+        NSString *subpath = [NSString stringWithFormat:@"%@%@/",self.currentPath, file.filename];
+        
+        self.currentPath = subpath;
+        
+        // start progress indicator
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.hud.labelText = @"Retrieving Data..";
+        [self performSelector:@selector(timeout:) withObject:nil afterDelay:30.0];
+        
+        [[self dataController] listDirectoryAtPath:subpath];
+    }
+    else if (![file.filename hasSuffix:@".exe"]) {
+        UITableViewCell *tcell = [self.tableView cellForRowAtIndexPath:indexPath];
+        for (int i = 0; i < [tcell.subviews count]; i++) {
+            UIButton* tView = (UIButton*)[tcell.subviews objectAtIndex:i];
+            if (tView.tag == 123456) {
+                [tView setEnabled:FALSE];
+                break;
+            }
+        }
+        
+        
+        // download file
+        [[self dataController] downloadFile:file];
+        currentFileName = file.filename;
+        
+    }
+}
+
+#pragma mark - Table View Delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -296,9 +298,46 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+    
+    if ( indexPath == nil )
+        return;
+    
+    DBMetadata *file = (DBMetadata*)[self.dataController.list objectAtIndex:indexPath.row];
+    
+    if ([file isDirectory]) {
+        // push new tableviewcontroller
+        NSString *subpath = [NSString stringWithFormat:@"%@%@/",self.currentPath, file.filename];
+        self.currentPath = subpath;
+        
+        // start progress indicator
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        
+        self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.hud.labelText = @"Retrieving Data...";
+        [self performSelector:@selector(timeout:) withObject:nil afterDelay:30.0];
+        
+        [[self dataController] listDirectoryAtPath:subpath];
+    } else if (![file.filename hasSuffix:@".exe"]) {
+        UITableViewCell *tcell = [self.tableView cellForRowAtIndexPath:indexPath];
+        for (int i = 0; i < [tcell.subviews count]; i++) {
+            UIButton* tView = (UIButton*)[tcell.subviews objectAtIndex:i];
+            if (tView.tag == 123456) {
+                [tView setEnabled:FALSE];
+                break;
+            }
+        }
+        
+        // download file
+        [[self dataController] downloadFile:file];
+        currentFileName = file.filename;
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-#pragma mark - datacontroller delegate
+#pragma mark - DataController Delegate
+
 - (void) updateTableData;
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
@@ -309,17 +348,16 @@
     
 }
 
-- (void) downloadedFile {
+- (void)downloadedFile {
     [self.downloadProgressView setHidden:TRUE];
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Done"
-                                                        message:@"Your File was added to your library section."
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Downloaded"
+                                                        message:@"The Selected file has been downloaded and added to the documents folder."
                                                        delegate:nil
-                                              cancelButtonTitle:@"OK"
+                                              cancelButtonTitle:@"Okay"
                                               otherButtonTitles:nil];
     [alertView show];
-    
-    if ([[self rootViewDelegate] respondsToSelector:@selector(loadedFileFromDropbox)])
-        [[self rootViewDelegate] loadedFileFromDropbox];
+
+    [[self rootViewDelegate] loadedFileFromDropbox:currentFileName];
     
 }
 
@@ -335,7 +373,7 @@
     [self.downloadProgressView setProgress:progress];
 }
 
-#pragma mark - synthesize items
+#pragma mark - Synthesize Items
 @synthesize dataController;
 @synthesize currentPath;
 @synthesize rootViewDelegate;
