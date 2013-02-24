@@ -2,8 +2,8 @@
 //  KioskDropboxPDFBrowserViewController.m
 //  epaper
 //
-//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 12/26/12
-//  Copyright (c) 2012 iRare Media. All rights reserved.
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 2/24/13
+//  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 
 #import "KioskDropboxPDFBrowserViewController.h"
@@ -85,6 +85,55 @@
     self.rootViewController.dataController = self.dataController;
     self.dataController.dataDelegate = self.rootViewController;
     
+}
+
++ (void)displayDropboxBrowserInPhoneStoryboard:(UIStoryboard *)iPhoneStoryboard displayDropboxBrowserInPadStoryboard:(UIStoryboard *)iPadStoryboard onView:(UIViewController *)viewController withPresentationStyle:(UIModalPresentationStyle)presentationStyle withTransitionStyle:(UIModalTransitionStyle)transitionStyle withDelegate:(id<KioskDropboxPDFBrowserViewControllerUIDelegate>)delegate
+{
+    //The session has already been linked
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        //The user is on an iPhone - link the correct storyboard below
+        KioskDropboxPDFBrowserViewController *targetController = [iPhoneStoryboard instantiateViewControllerWithIdentifier:@"KioskDropboxPDFBrowserViewControllerID"];
+        
+        targetController.modalPresentationStyle = presentationStyle;
+        targetController.modalTransitionStyle = transitionStyle;
+        [viewController presentViewController:targetController animated:YES completion:nil];
+        
+        targetController.view.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        UIInterfaceOrientation interfaceOrientation = viewController.interfaceOrientation;
+        
+        if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
+            targetController.view.superview.center = viewController.view.center;
+        } else {
+            targetController.view.superview.center = CGPointMake(viewController.view.center.y, viewController.view.center.x);
+        }
+        
+        targetController.uiDelegate = delegate;
+        
+        // List the Dropbox Directory
+        [targetController listDropboxDirectory];
+        
+    } else {
+        //The user is on an iPhone - link the correct storyboard below
+        KioskDropboxPDFBrowserViewController *targetController = [iPadStoryboard instantiateViewControllerWithIdentifier:@"KioskDropboxPDFBrowserViewControllerID"];
+        
+        targetController.modalPresentationStyle = presentationStyle;
+        targetController.modalTransitionStyle = transitionStyle;
+        [viewController presentViewController:targetController animated:YES completion:nil];
+        
+        UIInterfaceOrientation interfaceOrientation = viewController.interfaceOrientation;
+        
+        if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
+            targetController.view.superview.center = viewController.view.center;
+        } else {
+            targetController.view.superview.center = CGPointMake(viewController.view.center.y, viewController.view.center.x);
+        }
+        
+        targetController.uiDelegate = delegate;
+        
+        // List the Dropbox Directory
+        [targetController listDropboxDirectory];
+    }
+
 }
 
 #pragma mark - KioskDropboxPDFRootViewControllerDelegate functions

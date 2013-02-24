@@ -21,55 +21,26 @@ To properly integrate DropboxBrowser into your project, please follow the instru
 	- `KioskDropboxPDFRootViewController`
 	- Make sure to also include the `Icons` folder and the `Utilities` folder along with the others
 7. In your ViewController's header file, add the following `#import` statement: `#import "KioskDropboxPDFBrowserViewController.h"`. Also add the following delegate: `KioskDropboxPDFBrowserViewControllerUIDelegate`.
-8. In your Implementation File (.m) find the `didPressLink` method and substitute all current code inside with the following code (we're working on a one line method to do this for you):
+8. In your Implementation File (.m) find the `didPressLink` method and substitute all current code inside with the following code:
 
-        -(void)didPressLink {
-         if (![[DBSession sharedSession] isLinked]) {
-            [[DBSession sharedSession] linkFromController:self];
-        } else {
-        //The session has already been linked
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-            //The user is on an iPhone - link the correct storyboard below
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
-            KioskDropboxPDFBrowserViewController *targetController = [storyboard instantiateViewControllerWithIdentifier:@"KioskDropboxPDFBrowserViewControllerID"];
-        
-            targetController.modalPresentationStyle = UIModalPresentationFormSheet;
-            targetController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            [self presentViewController:targetController animated:YES completion:nil];
-        
-            targetController.view.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-            UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
-        
-            if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
-                targetController.view.superview.center = self.view.center;
+        - (void)didPressLink {
+            //Check if Dropbox is Setup
+            if (![[DBSession sharedSession] isLinked]) {
+                    //Dropbox is not setup
+                    [[DBSession sharedSession] linkFromController:self];
+                    NSLog(@"Logging into Dropbox...");
             } else {
-                targetController.view.superview.center = CGPointMake(self.view.center.y, self.view.center.x);
-            }
+                    //Dropbox has already been setup
+                    //Setup KioskDropboxPDFBrowserViewController
+                    KioskDropboxPDFBrowserViewController *browser = [[KioskDropboxPDFBrowserViewController alloc] init];
+                    [browser setDelegate:self];
         
-            targetController.uiDelegate = self;
-            // List the Dropbox Directory
-            [targetController listDropboxDirectory];
-        } else {
-            //The user is on an iPhone - link the correct storyboard below
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
-            KioskDropboxPDFBrowserViewController *targetController = [storyboard instantiateViewControllerWithIdentifier:@"KioskDropboxPDFBrowserViewControllerID"];
-            
-            targetController.modalPresentationStyle = UIModalPresentationFormSheet;
-            targetController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            [self presentViewController:targetController animated:YES completion:nil];
-            
-            UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
-            
-            if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
-                targetController.view.superview.center = self.view.center;
-            } else {
-                targetController.view.superview.center = CGPointMake(self.view.center.y, self.view.center.x);
-            }
-            
-            targetController.uiDelegate = self;
-            // List the Dropbox Directory
-            [targetController listDropboxDirectory];
-        }}}
+                   //Setup Storyboard. If you aren't using iPad, set the iPad Storyboard the same as the iPhone Storyboard. If you have an iPad-only project, set the iPhone Storyboard as NIL.
+                   UIStoryboard *iPhoneStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
+                   UIStoryboard *iPadStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
+        
+                  //Present Dropbox Browser. The following method requires you to set a storyboard to use, a view controller to present the DropboxBrowser on, modal presentation and transition styles, and a delegate which you set above.
+                 [KioskDropboxPDFBrowserViewController displayDropboxBrowserInPhoneStoryboard:iPhoneStoryboard displayDropboxBrowserInPadStoryboard:iPadStoryboard onView:self  withPresentationStyle:UIModalPresentationFormSheet withTransitionStyle:UIModalTransitionStyleFlipHorizontal withDelegate:self];    } }
 
 9. Next, Implement the following delegate functions to handle the dismissal of the Dropbox Browser:
 
@@ -113,6 +84,10 @@ DropboxBrowser now comes with a redesigned UI that can easily be customized simp
 ## Change Log
 This project is now ready for primetime use in any iOS application. Just follow the steps above to integrate Dropbox Browser. Here are a few key changes in the project:
 
-Version 2.2: Dropbox Browser now fits all screen sizes using Autosizing instead of defined sizes - in other words, iPhone 5 compatibility.  
-Version 2.1: Updated Documentation, New Methods, Improved Selection  
-Version 2.0: Added Sample Project, iOS 6 Support, ARC Support, New Documentation, Improved ReadMe, Improved UI, and more
+**Version 2.3**: Condenses presentation of DropboxBrowser to four lines (compared to a previous 40+ lines of code) using one simple method  
+**Version 2.2**: Dropbox Browser now fits all screen sizes using Autosizing instead of defined sizes - in other words, iPhone 5 compatibility  
+**Version 2.1**: Updated Documentation, New Methods, Improved Selection  
+**Version 2.0**: Added Sample Project, iOS 6 Support, ARC Support, New Documentation, Improved ReadMe, Improved UI, and more
+**Version 1.2**: Added Download Indicator
+**Version 1.1**: Added Sync Functionality
+**Version 1.0**: Initial Commit

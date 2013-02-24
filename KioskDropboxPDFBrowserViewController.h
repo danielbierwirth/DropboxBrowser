@@ -2,8 +2,8 @@
 //  KioskDropboxPDFBrowserViewController.h
 //  epaper
 //
-//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 12/26/12
-//  Copyright (c) 2012 iRare Media. All rights reserved.
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 2/24/13
+//  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -16,8 +16,7 @@
 
 @interface KioskDropboxPDFBrowserViewController : UINavigationController {}
 
-// contains dropbox data inside a tableview and manages file navigation as well
-// as item download
+//Contains dropbox data inside a tableview and manages file navigation as well as item download
 @property (nonatomic, strong) KioskDropboxPDFRootViewController *rootViewController;
 // manages the dropbox access and data fetch
 @property (nonatomic, strong) KioskDropboxPDFDataController *dataController;
@@ -28,8 +27,8 @@
 // List content of home directory in a tableview. Alert if application is not linked to dropbox
 - (void) listDropboxDirectory;
 
-//Get name of last downloaded file
-
+//Display the Viewer
++ (void)displayDropboxBrowserInPhoneStoryboard:(UIStoryboard *)iPhoneStoryboard displayDropboxBrowserInPadStoryboard:(UIStoryboard *)iPadStoryboard onView:(UIViewController *)viewController withPresentationStyle:(UIModalPresentationStyle)presentationStyle withTransitionStyle:(UIModalTransitionStyle)transitionStyle withDelegate:(id<KioskDropboxPDFBrowserViewControllerUIDelegate>)delegate;
 
 @end
 

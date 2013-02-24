@@ -3,7 +3,7 @@
 //  epaper
 //
 //  Created by daniel bierwirth on 3/6/12.
-//  Copyright (c) 2012 iRare Media. All rights reserved.
+//  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
