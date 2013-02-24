@@ -73,7 +73,7 @@
             targetController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
             [self presentViewController:targetController animated:YES completion:nil];
         
-            targetController.view.superview.frame = CGRectMake(0, 0, 320, 480);
+            targetController.view.autoresizingMask =  UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
             UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
         
             if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
