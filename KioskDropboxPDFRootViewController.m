@@ -2,8 +2,8 @@
 //  KioskDropboxPDFRootViewController.m
 //  epaper
 //
-//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 12/26/12
-//  Copyright (c) 2012 iRare Media. All rights reserved.
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 2/24/13
+//  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 
 #import "KioskDropboxPDFRootViewController.h"

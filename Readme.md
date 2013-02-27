@@ -11,7 +11,7 @@ To properly integrate DropboxBrowser into your project, please follow the instru
     - UIKit  
     - Foundation  
     - CoreGraphics  
-2. Add the DropboxSDK Framework to your project. The latest version of the SDK can be downloaded here: https://www.dropbox.com/developers Please note that the sample project surrently uses version 1.3.2 of the Dropbox SDK  
+2. Add the DropboxSDK Framework to your project. The latest version of the SDK can be downloaded here: https://www.dropbox.com/developers | The sample project currently uses version 1.3.3 of the Dropbox SDK  
 3. Register as a developer on Dropbox and setup your App. If you've already done this, skip this step. If you haven't done this, please follow this link to get setup: https://www.dropbox.com/developers/start/setup#ios  
 4. Setup and add the required methods used by Dropbox for authenticating. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are available here: https://www.dropbox.com/developers/start/authentication#ios  
 5. Create an IBAction that will call the `didPressLink` method, then connect that IBAction to a button that will allow users to browse their Dropbox folder.  
@@ -21,56 +21,26 @@ To properly integrate DropboxBrowser into your project, please follow the instru
 	- `KioskDropboxPDFRootViewController`
 	- Make sure to also include the `Icons` folder and the `Utilities` folder along with the others
 7. In your ViewController's header file, add the following `#import` statement: `#import "KioskDropboxPDFBrowserViewController.h"`. Also add the following delegate: `KioskDropboxPDFBrowserViewControllerUIDelegate`.
-8. In your Implementation File (.m) find the `didPressLink` method and substitute all current code inside with the following code (we're working on a one line method to do this for you):
+8. In your Implementation File (.m) find the `didPressLink` method and substitute all current code inside with the following code:
 
-        -(void)didPressLink {
-         if (![[DBSession sharedSession] isLinked]) {
-            [[DBSession sharedSession] linkFromController:self];
-        } else {
-        //The session has already been linked
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-            //The user is on an iPhone - link the correct storyboard below
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
-            KioskDropboxPDFBrowserViewController *targetController = [storyboard instantiateViewControllerWithIdentifier:@"KioskDropboxPDFBrowserViewControllerID"];
-        
-            targetController.modalPresentationStyle = UIModalPresentationFormSheet;
-            targetController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            [self presentViewController:targetController animated:YES completion:nil];
-        
-            targetController.view.superview.frame = CGRectMake(0, 0, 320, 480);
-            UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
-        
-            if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
-                targetController.view.superview.center = self.view.center;
+        - (void)didPressLink {
+            //Check if Dropbox is Setup
+            if (![[DBSession sharedSession] isLinked]) {
+                    //Dropbox is not setup
+                    [[DBSession sharedSession] linkFromController:self];
+                    NSLog(@"Logging into Dropbox...");
             } else {
-                targetController.view.superview.center = CGPointMake(self.view.center.y, self.view.center.x);
-            }
+                    //Dropbox has already been setup
+                    //Setup KioskDropboxPDFBrowserViewController
+                    KioskDropboxPDFBrowserViewController *browser = [[KioskDropboxPDFBrowserViewController alloc] init];
+                    [browser setDelegate:self];
         
-            targetController.uiDelegate = self;
-            // List the Dropbox Directory
-            [targetController listDropboxDirectory];
-        } else {
-            //The user is on an iPhone - link the correct storyboard below
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
-            KioskDropboxPDFBrowserViewController *targetController = [storyboard instantiateViewControllerWithIdentifier:@"KioskDropboxPDFBrowserViewControllerID"];
-            
-            targetController.modalPresentationStyle = UIModalPresentationFormSheet;
-            targetController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            [self presentViewController:targetController animated:YES completion:nil];
-            
-            //targetController.view.superview.frame = CGRectMake(0, 0, 748, 720);
-            UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
-            
-            if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
-                targetController.view.superview.center = self.view.center;
-            } else {
-                targetController.view.superview.center = CGPointMake(self.view.center.y, self.view.center.x);
-            }
-            
-            targetController.uiDelegate = self;
-            // List the Dropbox Directory
-            [targetController listDropboxDirectory];
-        }}}
+                   //Setup Storyboard. If you aren't using iPad, set the iPad Storyboard the same as the iPhone Storyboard. If you have an iPad-only project, set the iPhone Storyboard as NIL.
+                   UIStoryboard *iPhoneStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
+                   UIStoryboard *iPadStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
+        
+                  //Present Dropbox Browser. The following method requires you to set a storyboard to use, a view controller to present the DropboxBrowser on, modal presentation and transition styles, and a delegate which you set above.
+                 [KioskDropboxPDFBrowserViewController displayDropboxBrowserInPhoneStoryboard:iPhoneStoryboard displayDropboxBrowserInPadStoryboard:iPadStoryboard onView:self  withPresentationStyle:UIModalPresentationFormSheet withTransitionStyle:UIModalTransitionStyleFlipHorizontal withDelegate:self];    } }
 
 9. Next, Implement the following delegate functions to handle the dismissal of the Dropbox Browser:
 
@@ -82,13 +52,13 @@ Please refer to the **Delegates & Results** section of this document to learn mo
 10. The next step is to edit the required interface files. In your storyboard, add the following UI Objects from the Objects Library:
     - Navigation Controller  
 11.  Click on the root of the navigation controller you just added. Change its class to `KioskDropboxPDFBrowserViewController` using the Identity Inspector. Change the Storyboard ID to `KioskDropboxPDFBrowserViewControllerID` and then check the "Use Storyboard ID" checkbox
-12. Select the Table View Controller just added along with the Navigation Controller and change the class to `KioskDropboxPDFRootViewController` using the Indentity Inspector.
+12. Select the Table View Controller just added along with the Navigation Controller and change the class to `KioskDropboxPDFRootViewController` using the Identity Inspector.
 13. Click on the first cell of the Table View and change its identifier to `KioskDropboxBrowserCell`
 
 If you have completed everything properly, when the user clicks on the button connected to the `didPressLink` method, the navigation controller will present itself modally over the current view controller. Please refer to the sample project included.
 
 ## Delegates & Results
-There are two delegate methods available with DropboxBrowser, both of which provide a way to know when the user performs one out of two possible actions. The first action that the user can perfrom is the cancellation of any file selection. This can be done simply by pressing the 'Cancel' button in the top right corner of the DropboxBrowser. The following *required* method is called when the user presses 'Cancel':
+There are two delegate methods available with DropboxBrowser, both of which provide a way to know when the user performs one out of two possible actions. The first action that the user can perform is the cancellation of any file selection. This can be done simply by pressing the 'Cancel' button in the top right corner of the DropboxBrowser. The following *required* method is called when the user presses 'Cancel':
 
     - (void)removeDropboxBrowser {
          //This is where you can handle the cancellation of selection, ect.
@@ -111,5 +81,13 @@ DropboxBrowser now comes with a redesigned UI that can easily be customized simp
 
 <img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
 
-## Further Information
-This project is a work in progress, check back soon for updates and more information. We plan on submitting a pull request to the original project soon.
+## Change Log
+This project is now ready for primetime use in any iOS application. Just follow the steps above to integrate Dropbox Browser. Here are a few key changes in the project:
+
+**Version 2.3**: Condenses presentation of DropboxBrowser to four lines (compared to a previous 40+ lines of code) using one simple method  
+**Version 2.2**: Dropbox Browser now fits all screen sizes using Autosizing instead of defined sizes - in other words, iPhone 5 compatibility  
+**Version 2.1**: Updated Documentation, New Methods, Improved Selection  
+**Version 2.0**: Added Sample Project, iOS 6 Support, ARC Support, New Documentation, Improved ReadMe, Improved UI, and more
+**Version 1.2**: Added Download Indicator
+**Version 1.1**: Added Sync Functionality
+**Version 1.0**: Initial Commit

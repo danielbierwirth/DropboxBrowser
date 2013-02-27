@@ -3,7 +3,7 @@
 //  DropboxBrowser
 //
 //  Created by iRare Media on 12/26/12.
-//  Copyright (c) 2012 iRare Media. All rights reserved.
+//  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 
 #import "DBBAppDelegate.h"
@@ -13,8 +13,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //Setup Dropbox Here with YOUR OWN APP info
-    //#error Dropbox App Key and Secret are required for basic functionality. Please add them below AND in the Info.plist file in the URL-Schemes section. Repleace the "APP_KEY" text with your app key (make sure to leave the "db-" there)
-    DBSession* dbSession = [[DBSession alloc] initWithAppKey:@"APP_KEY" appSecret:@"APP_SECRET" root:kDBRootAppFolder];
+    #error Dropbox App Key and Secret are required for basic functionality. Please add them below AND in the Info.plist file in the URL-Schemes section. Repleace the "APP_KEY" text with your app key (make sure to leave the "db-" there)
+    DBSession* dbSession = [[DBSession alloc] initWithAppKey:@"APP_KEY" appSecret:@"APP_SECRET" root:kDBRootDropbox];
     [DBSession setSharedSession:dbSession];
     
     // Override point for customization after application launch.

@@ -3,7 +3,7 @@
 //  DropboxBrowser
 //
 //  Created by iRare Media on 12/26/12.
-//  Copyright (c) 2012 iRare Media. All rights reserved.
+//  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 
 #import "DBBViewController.h"
@@ -18,6 +18,8 @@
 @implementation DBBViewController
 @synthesize clearDocsBtn;
 
+#pragma mark - Setup
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -26,87 +28,38 @@
     clearDocsBtn.hidden = NO;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+#pragma mark - Dropbox
 
 - (IBAction)browseDropbox:(id)sender
 {
     [self didPressLink];
 }
 
-- (IBAction)clearDocs:(id)sender
-{
-    dispatch_queue_t delete = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
-        dispatch_async(delete, ^{
-            //Background Process;
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = [paths objectAtIndex:0];
-            NSFileManager *fileMgr = [NSFileManager defaultManager];
-            NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:nil];
-            for (NSString *filename in fileArray)  {
-                [fileMgr removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                //Main UI Process
-                clearDocsBtn.titleLabel.text = @"Cleared Docs";
-                clearDocsBtn.hidden = YES;
-            });
-        });
-}
-
 - (void)didPressLink
 {
+    //Check if Dropbox is Setup
     if (![[DBSession sharedSession] isLinked]) {
+        //Dropbox is not setup
         [[DBSession sharedSession] linkFromController:self];
-        NSLog(@"Login");
+        NSLog(@"Logging into Dropbox...");
     } else {
-        //The session has already been linked
-        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-            //The user is on an iPhone - link the correct storyboard below
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
-            KioskDropboxPDFBrowserViewController *targetController = [storyboard instantiateViewControllerWithIdentifier:@"KioskDropboxPDFBrowserViewControllerID"];
+        //Dropbox has already been setup
         
-            targetController.modalPresentationStyle = UIModalPresentationFormSheet;
-            targetController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            [self presentViewController:targetController animated:YES completion:nil];
+        //Setup KioskDropboxPDFBrowserViewController
+        KioskDropboxPDFBrowserViewController *browser = [[KioskDropboxPDFBrowserViewController alloc] init];
+        [browser setDelegate:self];
         
-            targetController.view.superview.frame = CGRectMake(0, 0, 320, 480);
-            UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
+        //Setup Storyboard. If you aren't using iPad, set the iPad Storyboard the same as the iPhone Storyboard. If you have an iPad-only project, set the iPhone Storyboard as NIL.
+        UIStoryboard *iPhoneStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
+        UIStoryboard *iPadStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
         
-            if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
-                targetController.view.superview.center = self.view.center;
-            } else {
-                targetController.view.superview.center = CGPointMake(self.view.center.y, self.view.center.x);
-            }
-        
-            targetController.uiDelegate = self;
-            // List the Dropbox Directory
-            [targetController listDropboxDirectory];
-        } else {
-            //The user is on an iPhone - link the correct storyboard below
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
-            KioskDropboxPDFBrowserViewController *targetController = [storyboard instantiateViewControllerWithIdentifier:@"KioskDropboxPDFBrowserViewControllerID"];
-            
-            targetController.modalPresentationStyle = UIModalPresentationFormSheet;
-            targetController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-            [self presentViewController:targetController animated:YES completion:nil];
-            
-            //targetController.view.superview.frame = CGRectMake(0, 0, 748, 720);
-            UIInterfaceOrientation interfaceOrientation = self.interfaceOrientation;
-            
-            if (UIInterfaceOrientationIsPortrait(interfaceOrientation))  {
-                targetController.view.superview.center = self.view.center;
-            } else {
-                targetController.view.superview.center = CGPointMake(self.view.center.y, self.view.center.x);
-            }
-            
-            targetController.uiDelegate = self;
-            // List the Dropbox Directory
-            [targetController listDropboxDirectory];
-        }
+        //Present Dropbox Browser
+        [KioskDropboxPDFBrowserViewController displayDropboxBrowserInPhoneStoryboard:iPhoneStoryboard
+                                                displayDropboxBrowserInPadStoryboard:iPadStoryboard
+                                                                              onView:self
+                                                               withPresentationStyle:UIModalPresentationFormSheet
+                                                                 withTransitionStyle:UIModalTransitionStyleFlipHorizontal
+                                                                        withDelegate:self];
     }
 }
 
@@ -130,8 +83,39 @@
     NSLog(@"Final Filename: %@", [KioskDropboxPDFRootViewController fileName]);
 }
 
+#pragma mark - Documents
+
+- (IBAction)clearDocs:(id)sender
+{
+    dispatch_queue_t delete = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
+    dispatch_async(delete, ^{
+        //Background Process;
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSFileManager *fileMgr = [NSFileManager defaultManager];
+        NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:nil];
+        for (NSString *filename in fileArray)  {
+            [fileMgr removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //Main UI Process
+            clearDocsBtn.titleLabel.text = @"Cleared Docs";
+            clearDocsBtn.hidden = YES;
+        });
+    });
+}
+
+#pragma mark - iOS Methods
+
 - (void)viewDidUnload {
     [self setClearDocsBtn:nil];
     [super viewDidUnload];
 }
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 @end
