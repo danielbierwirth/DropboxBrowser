@@ -1,6 +1,6 @@
 //
 // MBProgressHUD.m
-// Version 0.5
+// Version 0.6
 // Created by Matej Bukovinski on 2.4.09.
 //
 
@@ -15,6 +15,12 @@
 	#define MB_AUTORELEASE(exp) [exp autorelease]
 	#define MB_RELEASE(exp) [exp release]
 	#define MB_RETAIN(exp) [exp retain]
+#endif
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000
+    #define MBLabelAlignmentCenter NSTextAlignmentCenter
+#else
+    #define MBLabelAlignmentCenter UITextAlignmentCenter
 #endif
 
 
@@ -98,15 +104,15 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 #pragma mark - Class methods
 
-+ (MBProgressHUD *)showHUDAddedTo:(UIView *)view animated:(BOOL)animated {
-	MBProgressHUD *hud = [[MBProgressHUD alloc] initWithView:view];
++ (MB_INSTANCETYPE)showHUDAddedTo:(UIView *)view animated:(BOOL)animated {
+	MBProgressHUD *hud = [[self alloc] initWithView:view];
 	[view addSubview:hud];
 	[hud show:animated];
 	return MB_AUTORELEASE(hud);
 }
 
 + (BOOL)hideHUDForView:(UIView *)view animated:(BOOL)animated {
-	MBProgressHUD *hud = [MBProgressHUD HUDForView:view];
+	MBProgressHUD *hud = [self HUDForView:view];
 	if (hud != nil) {
 		hud.removeFromSuperViewOnHide = YES;
 		[hud hide:animated];
@@ -116,7 +122,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 }
 
 + (NSUInteger)hideAllHUDsForView:(UIView *)view animated:(BOOL)animated {
-	NSArray *huds = [self allHUDsForView:view];
+	NSArray *huds = [MBProgressHUD allHUDsForView:view];
 	for (MBProgressHUD *hud in huds) {
 		hud.removeFromSuperViewOnHide = YES;
 		[hud hide:animated];
@@ -124,11 +130,10 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	return [huds count];
 }
 
-+ (MBProgressHUD *)HUDForView:(UIView *)view {
-	Class hudClass = [MBProgressHUD class];
++ (MB_INSTANCETYPE)HUDForView:(UIView *)view {
 	NSEnumerator *subviewsEnum = [view.subviews reverseObjectEnumerator];
 	for (UIView *subview in subviewsEnum) {
-		if ([subview isKindOfClass:hudClass]) {
+		if ([subview isKindOfClass:self]) {
 			return (MBProgressHUD *)subview;
 		}
 	}
@@ -138,9 +143,8 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 + (NSArray *)allHUDsForView:(UIView *)view {
 	NSMutableArray *huds = [NSMutableArray array];
 	NSArray *subviews = view.subviews;
-	Class hudClass = [MBProgressHUD class];
 	for (UIView *aView in subviews) {
-		if ([aView isKindOfClass:hudClass]) {
+		if ([aView isKindOfClass:self]) {
 			[huds addObject:aView];
 		}
 	}
@@ -192,12 +196,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (id)initWithView:(UIView *)view {
 	NSAssert(view, @"View must not be nil.");
-	id me = [self initWithFrame:view.bounds];
-	// We need to take care of rotation ourselfs if we're adding the HUD to a window
-	if ([view isKindOfClass:[UIWindow class]]) {
-		[self setTransformForCurrentOrientation:NO];
-	}
-	return me;
+	return [self initWithFrame:view.bounds];
 }
 
 - (id)initWithWindow:(UIWindow *)window {
@@ -277,6 +276,15 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 
 - (void)handleMinShowTimer:(NSTimer *)theTimer {
 	[self hideUsingAnimation:useAnimation];
+}
+
+#pragma mark - View Hierrarchy
+
+- (void)didMoveToSuperview {
+	// We need to take care of rotation ourselfs if we're adding the HUD to a window
+	if ([self.superview isKindOfClass:[UIWindow class]]) {
+		[self setTransformForCurrentOrientation:NO];
+	}
 }
 
 #pragma mark - Internal show & hide operations
