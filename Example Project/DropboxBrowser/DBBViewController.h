@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KioskDropboxPDFBrowserViewController.h"
+#import "DropboxBrowserViewController.h"
 #import <DropboxSDK/DropboxSDK.h>
 #import <AssetsLibrary/ALAsset.h>
 
-@interface DBBViewController : UIViewController <KioskDropboxPDFBrowserViewControllerUIDelegate, DBRestClientDelegate, UINavigationControllerDelegate>
+@interface DBBViewController : UIViewController <DropboxBrowserDelegate, DBRestClientDelegate, UINavigationControllerDelegate>
 
 - (IBAction)browseDropbox:(id)sender;
 - (IBAction)clearDocs:(id)sender;

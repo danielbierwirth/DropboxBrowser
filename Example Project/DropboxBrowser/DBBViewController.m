@@ -8,8 +8,7 @@
 
 #import "DBBViewController.h"
 
-@interface DBBViewController ()
-{
+@interface DBBViewController () {
     DBRestClient *restClient;
 }
 
@@ -18,16 +17,39 @@
 @implementation DBBViewController
 @synthesize clearDocsBtn;
 
-#pragma mark - Setup
+//------------------------------------------------------------------------------------------------------------//
+//Region: View Lifecycle -------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
+#pragma mark - View Lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.view.backgroundColor = [UIColor underPageBackgroundColor];
-    clearDocsBtn.hidden = NO;
+    [super viewDidLoad];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    clearDocsBtn.hidden = NO;
+    [super viewWillAppear:YES];
+}
+
+- (void)viewDidUnload {
+    [self setClearDocsBtn:nil];
+    [super viewDidUnload];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+//------------------------------------------------------------------------------------------------------------//
+//Region: Dropbox --------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
 #pragma mark - Dropbox
 
 - (IBAction)browseDropbox:(id)sender
@@ -45,8 +67,8 @@
     } else {
         //Dropbox has already been setup
         
-        //Setup KioskDropboxPDFBrowserViewController
-        KioskDropboxPDFBrowserViewController *browser = [[KioskDropboxPDFBrowserViewController alloc] init];
+        //Setup DropboxBrowserViewController
+        DropboxBrowserViewController *browser = [[DropboxBrowserViewController alloc] init];
         [browser setDelegate:self];
         
         //Setup Storyboard. If you aren't using iPad, set the iPad Storyboard the same as the iPhone Storyboard. If you have an iPad-only project, set the iPhone Storyboard as NIL.
@@ -54,7 +76,7 @@
         UIStoryboard *iPadStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
         
         //Present Dropbox Browser
-        [KioskDropboxPDFBrowserViewController displayDropboxBrowserInPhoneStoryboard:iPhoneStoryboard
+        [DropboxBrowserViewController displayDropboxBrowserInPhoneStoryboard:iPhoneStoryboard
                                                 displayDropboxBrowserInPadStoryboard:iPadStoryboard
                                                                               onView:self
                                                                withPresentationStyle:UIModalPresentationFormSheet
@@ -80,13 +102,17 @@
 
 - (void)refreshLibrarySection
 {
-    NSLog(@"Final Filename: %@", [KioskDropboxPDFRootViewController fileName]);
+    NSLog(@"Final Filename: %@", [DropboxRootViewController fileName]);
 }
 
+//------------------------------------------------------------------------------------------------------------//
+//Region: Documents ------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
 #pragma mark - Documents
 
 - (IBAction)clearDocs:(id)sender
 {
+    //Clear all files from the local documents folder. This is helpful for testing purposes
     dispatch_queue_t delete = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(delete, ^{
         //Background Process;
@@ -94,28 +120,17 @@
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSFileManager *fileMgr = [NSFileManager defaultManager];
         NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:nil];
+        
         for (NSString *filename in fileArray)  {
             [fileMgr removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
         }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             //Main UI Process
             clearDocsBtn.titleLabel.text = @"Cleared Docs";
             clearDocsBtn.hidden = YES;
         });
     });
-}
-
-#pragma mark - iOS Methods
-
-- (void)viewDidUnload {
-    [self setClearDocsBtn:nil];
-    [super viewDidUnload];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3080" systemVersion="12C60" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="2">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2078"/>
+        <deployment version="1280" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -12,10 +13,15 @@
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sge-wa-cce">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Background~ipad.png" id="tB9-L8-puc">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="1004"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="sge-wa-cce">
+                                <rect key="frame" x="245" y="480" width="279" height="44"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Browse Dropbox">
-                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" red="0.34509803919999998" green="0.56078431370000004" blue="0.82592951640000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <state key="highlighted">
@@ -25,32 +31,69 @@
                                     <action selector="browseDropbox:" destination="2" eventType="touchUpInside" id="u6D-zJ-vYf"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ZdA-aF-1AY">
+                                <rect key="frame" x="610" y="944" width="138" height="41"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                                <state key="normal" title="Clear Documents">
+                                    <color key="titleColor" red="0.34509803919999998" green="0.56078431370000004" blue="0.82592951640000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearDocs:" destination="2" eventType="touchUpInside" id="rqt-iR-HHM"/>
+                                </connections>
+                            </button>
+                            <navigationBar alpha="0.0" contentMode="scaleToFill" id="m2U-IC-mTI">
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Title" id="hGL-fC-j3N"/>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="sge-wa-cce" firstAttribute="centerX" secondItem="5" secondAttribute="centerX" type="default" id="BZp-We-kt9"/>
-                            <constraint firstItem="sge-wa-cce" firstAttribute="top" secondItem="5" secondAttribute="top" constant="480" id="FFp-jF-0DU"/>
-                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="clearDocsBtn" destination="ZdA-aF-1AY" id="Yip-cY-12f"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="15" y="-85"/>
         </scene>
-        <!--Kiosk DropboxPDF Root View Controller - Root View Controller-->
+        <!--Dropbox Root View Controller - Root View Controller-->
         <scene sceneID="NkX-lE-xIk">
             <objects>
-                <tableViewController id="BqC-fJ-hQY" customClass="KioskDropboxPDFRootViewController" sceneMemberID="viewController">
+                <tableViewController id="BqC-fJ-hQY" customClass="DropboxRootViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Wl5-oB-RMU">
                         <rect key="frame" x="0.0" y="64" width="540" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="KioskDropboxBrowserCell" id="r2H-yo-7q0">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DropboxBrowserCell" textLabel="NH0-9g-9gs" detailTextLabel="F93-lr-gkQ" style="IBUITableViewCellStyleSubtitle" id="r2H-yo-7q0">
                                 <rect key="frame" x="0.0" y="22" width="540" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="540" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NH0-9g-9gs">
+                                            <rect key="frame" x="10" y="2" width="38" height="22"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="F93-lr-gkQ">
+                                            <rect key="frame" x="10" y="24" width="47" height="18"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                             </tableViewCell>
@@ -60,12 +103,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PVW-vt-wn8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1778" y="-79"/>
+            <point key="canvasLocation" x="1531" y="55"/>
         </scene>
-        <!--Kiosk DropboxPDF Browser View Controller-->
+        <!--Dropbox Browser View Controller-->
         <scene sceneID="ePe-3D-GtR">
             <objects>
-                <navigationController storyboardIdentifier="KioskDropboxPDFBrowserViewControllerID" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="npb-qJ-KKk" customClass="KioskDropboxPDFBrowserViewController" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="DropboxBrowserID" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="npb-qJ-KKk" customClass="DropboxBrowserViewController" sceneMemberID="viewController">
                     <modalFormSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="7Ko-Ke-qEt">
                         <autoresizingMask key="autoresizingMask"/>
@@ -76,24 +119,26 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FB5-pf-jTy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="928" y="73"/>
+            <point key="canvasLocation" x="831" y="55"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Background~ipad.png" width="768" height="1004"/>
+    </resources>
     <classes>
         <class className="DBBViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DBBViewController.h"/>
             <relationships>
                 <relationship kind="action" name="browseDropbox:"/>
+                <relationship kind="action" name="clearDocs:"/>
+                <relationship kind="outlet" name="clearDocsBtn" candidateClass="UIButton"/>
             </relationships>
         </class>
-        <class className="KioskDropboxPDFBrowserViewController" superclassName="UINavigationController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/KioskDropboxPDFBrowserViewController.h"/>
+        <class className="DropboxBrowserViewController" superclassName="UINavigationController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DropboxBrowserViewController.h"/>
         </class>
-        <class className="KioskDropboxPDFRootViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/KioskDropboxPDFRootViewController.h"/>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        <class className="DropboxRootViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DropboxRootViewController.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
