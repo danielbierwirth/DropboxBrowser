@@ -100,7 +100,8 @@ static NSString *currentFileName = nil;
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonSystemItemDone target:self action:@selector(removeDropboxBrowser)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
-    //Setup Search Bar
+    //Setup Search Bar - Coming Soon
+    /*
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     searchBar.delegate = self;
     self.tableView.tableHeaderView = searchBar;
@@ -108,6 +109,7 @@ static NSString *currentFileName = nil;
     searchController.searchResultsDataSource = self;
     searchController.searchResultsDelegate = self;
     searchController.delegate = self;
+    */
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         //The user is on an iPad

@@ -44,7 +44,7 @@ Just a quick note on files and downloads. Files from DropboxBrowser are **always
 ## User Interface
 DropboxBrowser has a nice UI that can easily be customized. All graphics have been Retina-Display, and iPhone 5 optimized. A quick preview of what the UI looks like can be seen below. 
 
-<img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
+<img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Interface.png?raw=true"/>
 
 Here are a few simple ways to customize the interface:  
  - Swap any images (PNGs) included with Dropbox Browser with your own. Use the same size image with the exact same name.  
@@ -77,18 +77,18 @@ This project is ready for primetime use in any iOS application. Just follow the 
  - Added open-source license (MIT license)  
 
 **Version 3.0**  
-	- Code reorganized, cleaned-up, and many comments have been added  
-	- Back button now goes up one level instead of returning to the Root Directory. Back button also only appears when the user is not in the Root Directory (i.e. they have somewhere to back up to).
-	- Improved Download Progress View. Now centered in the Navigation Bar and hides NavBar title when shown.
-	- Any file type is shown in DropboxBrowser - no file types are excluded
-	- Duplicate `@implementation` calls have been removed and condensed into one implementation  
-	- New iOS 6 features including `UIRefreshControl` have been added  
-	- New design. Removed accessory buttons from UITableViewCells. Updated graphics. Added Dropbox-esque tint to `UINavgationBar` and `UIRefreshControl`  
-	- Sample project now has an icon and uses Autolayout instead of Autosizing (may have caused build errors for iOS 5 in older versions of DropboxBrowser)  
-	- Dropbox SDK updated to version 1.3.4  
-	- Renamed classes. Generally removed `Kiosk` and `PDF` from all class names and delegates.
-	- Numerous minor bug fixes and improvements
-	- Improved performance  
+ - Code reorganized, cleaned-up, and many comments have been added  
+ - Back button now goes up one level instead of returning to the Root Directory. Back button also only appears when the user is not in the Root Directory (i.e. they have somewhere to back up to).
+ - Improved Download Progress View. Now centered in the Navigation Bar and hides NavBar title when shown.
+ - Any file type is shown in DropboxBrowser - no file types are excluded
+ - Duplicate `@implementation` calls have been removed and condensed into one implementation  
+ - New iOS 6 features including `UIRefreshControl` have been added  
+ - New design. Removed accessory buttons from UITableViewCells. Updated graphics. Added Dropbox-esque tint to `UINavgationBar` and `UIRefreshControl`  
+ - Sample project now has an icon and uses Autolayout instead of Autosizing (may have caused build errors for iOS 5 in older versions of DropboxBrowser)  
+ - Dropbox SDK updated to version 1.3.4  
+ - Renamed classes. Generally removed `Kiosk` and `PDF` from all class names and delegates.
+ - Numerous minor bug fixes and improvements
+ - Improved performance  
 
 **Version 2.3**  
  - Condenses presentation of DropboxBrowser to four lines (compared to a previous 40+ lines of code) using one simple method  
