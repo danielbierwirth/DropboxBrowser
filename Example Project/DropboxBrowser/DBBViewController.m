@@ -15,36 +15,52 @@
 @end
 
 @implementation DBBViewController
-@synthesize clearDocsBtn;
+@synthesize clearDocsBtn, navBar, imgView;
 
 //------------------------------------------------------------------------------------------------------------//
 //Region: View Lifecycle -------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - View Lifecycle
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    //Setup Background Color
     self.view.backgroundColor = [UIColor underPageBackgroundColor];
+    
+    //Setup Navigation Bar Image
+    [navBar setBackgroundImage:[UIImage imageNamed:@"navBar"] forBarMetrics:UIBarMetricsDefault];
+    
+    //Setup Background Image
+    if ([[UIScreen mainScreen] bounds].size.height == 568) {
+        [imgView setImage:[UIImage imageNamed:@"Background-568h"]];
+    } else {
+        [imgView setImage:[UIImage imageNamed:@"Background"]];
+    }
+    
     [super viewDidLoad];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     clearDocsBtn.hidden = NO;
     [super viewWillAppear:YES];
 }
 
 - (void)viewDidUnload {
     [self setClearDocsBtn:nil];
+    [self setNavBar:nil];
+    [self setImgView:nil];
     [super viewDidUnload];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)done {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 //------------------------------------------------------------------------------------------------------------//
@@ -52,41 +68,18 @@
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - Dropbox
 
-- (IBAction)browseDropbox:(id)sender
-{
-    [self didPressLink];
-}
-
-- (void)didPressLink
-{
+- (IBAction)browseDropbox:(id)sender {
     //Check if Dropbox is Setup
     if (![[DBSession sharedSession] isLinked]) {
         //Dropbox is not setup
         [[DBSession sharedSession] linkFromController:self];
-        NSLog(@"Logging into Dropbox...");
     } else {
         //Dropbox has already been setup
-        
-        //Setup DropboxBrowserViewController
-        DropboxBrowserViewController *browser = [[DropboxBrowserViewController alloc] init];
-        [browser setDelegate:self];
-        
-        //Setup Storyboard. If you aren't using iPad, set the iPad Storyboard the same as the iPhone Storyboard. If you have an iPad-only project, set the iPhone Storyboard as NIL.
-        UIStoryboard *iPhoneStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
-        UIStoryboard *iPadStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
-        
-        //Present Dropbox Browser
-        [DropboxBrowserViewController displayDropboxBrowserInPhoneStoryboard:iPhoneStoryboard
-                                                displayDropboxBrowserInPadStoryboard:iPadStoryboard
-                                                                              onView:self
-                                                               withPresentationStyle:UIModalPresentationFormSheet
-                                                                 withTransitionStyle:UIModalTransitionStyleFlipHorizontal
-                                                                        withDelegate:self];
+        [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
     }
 }
 
-- (DBRestClient *)restClient
-{
+- (DBRestClient *)restClient {
     if (!restClient) {
         restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
         restClient.delegate = self;
@@ -94,15 +87,8 @@
     return restClient;
 }
 
-- (void)removeDropboxBrowser
-{
-    //This is where you can handle the cancellation of selection, ect.
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)refreshLibrarySection
-{
-    NSLog(@"Final Filename: %@", [DropboxRootViewController fileName]);
+- (void)downloadedFileFromDropbox:(NSString *)fileName {
+    NSLog(@"Loaded File: %@", fileName);
 }
 
 //------------------------------------------------------------------------------------------------------------//

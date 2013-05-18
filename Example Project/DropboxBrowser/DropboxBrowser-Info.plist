@@ -32,7 +32,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>4.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -45,7 +45,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>4.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIMainStoryboardFile</key>
@@ -67,11 +67,11 @@
 			<key>TintColor</key>
 			<dict>
 				<key>Blue</key>
-				<real>0.8901960784313725</real>
+				<real>0.8745098039215686</real>
 				<key>Green</key>
-				<real>0.592156862745098</real>
+				<real>0.4784313725490196</real>
 				<key>Red</key>
-				<real>0.1450980392156863</real>
+				<real>0</real>
 			</dict>
 			<key>Translucent</key>
 			<false/>

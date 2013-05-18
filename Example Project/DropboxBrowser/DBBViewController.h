@@ -16,5 +16,7 @@
 - (IBAction)browseDropbox:(id)sender;
 - (IBAction)clearDocs:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *clearDocsBtn;
+@property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (weak, nonatomic) IBOutlet UIImageView *imgView;
 
 @end
