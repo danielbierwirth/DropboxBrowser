@@ -100,8 +100,7 @@ static NSString *currentFileName = nil;
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonSystemItemDone target:self action:@selector(removeDropboxBrowser)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
-    //Setup Search Bar -- Coming Soon
-    /*
+    //Setup Search Bar
     UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
     searchBar.delegate = self;
     self.tableView.tableHeaderView = searchBar;
@@ -109,7 +108,6 @@ static NSString *currentFileName = nil;
     searchController.searchResultsDataSource = self;
     searchController.searchResultsDelegate = self;
     searchController.delegate = self;
-    */
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         //The user is on an iPad
@@ -143,11 +141,11 @@ static NSString *currentFileName = nil;
 - (void)viewWillAppear:(BOOL)animated {
     if (![self isDropboxLinked]) {
         //Raise alert
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Warning"
-                                                            message:@"This app is not linked to your Dropbox account."
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"Okay"
-                                                  otherButtonTitles:nil];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Not Signed In to Dropbox"
+                                                            message:[NSString stringWithFormat:@"%@ is not linked to your Dropbox account. Would you like to sign-in now?", [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]]
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Sign In to Dropbox", nil];
         [alertView show];
     } else {
         //Start progress indicator
@@ -317,13 +315,30 @@ static NSString *currentFileName = nil;
 }
 
 //------------------------------------------------------------------------------------------------------------//
+//Region: AlertView Delegate ---------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
+#pragma mark - AlertView Delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([buttonTitle isEqualToString:@"Sign In to Dropbox"]) {
+        [[DBSession sharedSession] linkFromController:self];
+    } else if ([buttonTitle isEqualToString:@"Cancel"]) {
+        if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed)])
+            [[self rootViewDelegate] dropboxBrowserDismissed];
+        
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+//------------------------------------------------------------------------------------------------------------//
 //Region: DataController Delegate ----------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - DataController Delegate
 
 - (void)removeDropboxBrowser {
-    if ([[self rootViewDelegate] respondsToSelector:@selector(dismissedDropboxBrowser)])
-        [[self rootViewDelegate] dismissedDropboxBrowser];
+    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed)])
+        [[self rootViewDelegate] dropboxBrowserDismissed];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -337,12 +352,13 @@ static NSString *currentFileName = nil;
     }
 }
 
-- (void)updateTableData; {
+- (void)updateTableData {
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-    // code here to populate your data source
-    // call refreshTableViewOnMainThread like below:
+    
+    //Code here to populate data source
+    
     [self performSelectorOnMainThread:@selector(refreshTableView) withObject:nil waitUntilDone:NO];
     
 }
@@ -359,8 +375,8 @@ static NSString *currentFileName = nil;
                                               otherButtonTitles:nil];
     [alertView show];
 
-    if ([[self rootViewDelegate] respondsToSelector:@selector(downloadedFileFromDropbox:)])
-        [[self rootViewDelegate] downloadedFileFromDropbox:currentFileName];
+    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDownloadedFile:)])
+        [[self rootViewDelegate] dropboxBrowserDownloadedFile:currentFileName];
     
 }
 
@@ -374,8 +390,8 @@ static NSString *currentFileName = nil;
     self.navigationItem.title = [currentPath lastPathComponent];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     
-    if ([[self rootViewDelegate] respondsToSelector:@selector(failedToDownloadDropboxFile:)])
-        [[self rootViewDelegate] failedToDownloadDropboxFile:currentFileName];
+    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserFailedToDownloadFile:)])
+        [[self rootViewDelegate] dropboxBrowserFailedToDownloadFile:currentFileName];
 }
 
 - (void)updateDownloadProgressTo:(CGFloat) progress {
@@ -448,8 +464,8 @@ static NSString *currentFileName = nil;
                     
                     NSDictionary *conflict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:file, @"File already exists in the Documents folder", nil] forKeys:[NSArray arrayWithObjects:@"file", @"message", nil]];
                     
-                    if ([[self rootViewDelegate] respondsToSelector:@selector(fileDownloadConflictError:)])
-                        [[self rootViewDelegate] fileDownloadConflictError:conflict];
+                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserFileConflictError:)])
+                        [[self rootViewDelegate] dropboxBrowserFileConflictError:conflict];
                     
                 } else if (result == NSOrderedDescending) {
                     //Dropbox File is newer than local file
@@ -463,8 +479,8 @@ static NSString *currentFileName = nil;
                     
                     NSDictionary *conflict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:file, @"File exists in Dropbox and the Documents folder. The Dropbox file is newer.", nil] forKeys:[NSArray arrayWithObjects:@"file", @"message", nil]];
                     
-                    if ([[self rootViewDelegate] respondsToSelector:@selector(fileDownloadConflictError:)])
-                        [[self rootViewDelegate] fileDownloadConflictError:conflict];
+                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserFileConflictError:)])
+                        [[self rootViewDelegate] dropboxBrowserFileConflictError:conflict];
                 }
                 
                 [self updateTableData];

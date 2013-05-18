@@ -8,9 +8,7 @@
 
 #import "DBBViewController.h"
 
-@interface DBBViewController () {
-    DBRestClient *restClient;
-}
+@interface DBBViewController ()
 
 @end
 
@@ -69,26 +67,28 @@
 #pragma mark - Dropbox
 
 - (IBAction)browseDropbox:(id)sender {
-    //Check if Dropbox is Setup
-    if (![[DBSession sharedSession] isLinked]) {
-        //Dropbox is not setup
-        [[DBSession sharedSession] linkFromController:self];
-    } else {
-        //Dropbox has already been setup
-        [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
-    }
+    [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
 }
 
-- (DBRestClient *)restClient {
-    if (!restClient) {
-        restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-        restClient.delegate = self;
-    }
-    return restClient;
+- (void)dropboxBrowserDownloadedFile:(NSString *)fileName {
+    NSLog(@"Downloaded %@", fileName);
 }
 
-- (void)downloadedFileFromDropbox:(NSString *)fileName {
-    NSLog(@"Loaded File: %@", fileName);
+- (void)dropboxBrowserFailedToDownloadFile:(NSString *)fileName {
+    NSLog(@"Failed to download %@", fileName);
+}
+
+- (void)dropboxBrowserFileConflictError:(NSDictionary *)conflict {
+    DBMetadata *file = [conflict objectForKey:@"file"];
+    NSString *errorMessage = [conflict objectForKey:@"message"];
+    NSLog(@"Conflict error with %@\n%@ last modified on %@\nError: %@", file.filename, file.filename, file.lastModifiedDate, errorMessage);
+}
+
+- (void)dropboxBrowserDismissed {
+    //This method is called after Dropbox Browser is dismissed. Do NOT dismiss DropboxBrowser from this method
+    //Perform any UI updates here to display any new data from Dropbox Browser
+    // ex. Update a UITableView that shows downloaded files or get the name of the most recently selected file:
+    //     NSString *fileName = [DropboxBrowserViewController fileName];
 }
 
 //------------------------------------------------------------------------------------------------------------//
@@ -96,8 +96,7 @@
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - Documents
 
-- (IBAction)clearDocs:(id)sender
-{
+- (IBAction)clearDocs:(id)sender {
     //Clear all files from the local documents folder. This is helpful for testing purposes
     dispatch_queue_t delete = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(delete, ^{

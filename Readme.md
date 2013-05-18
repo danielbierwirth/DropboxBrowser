@@ -3,7 +3,7 @@ Dropbox Browser provides a simple and effective way to browse, view, and downloa
 
 <img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
 
-If you like the project, please <a href=https://github.com/iRareMedia/DropboxBrowser/star>star it</a> on GitHub!
+If you like the project, please <a href=https://github.com/iRareMedia/DropboxBrowser>star it</a> on GitHub!
 
 ##Integration
 To properly integrate DropboxBrowser into your project follow the instructions below. Use the included Sample Project (inside of the "Example" folder) as a guide for setting up your project. 
@@ -17,34 +17,23 @@ To properly integrate DropboxBrowser into your project follow the instructions b
     - CoreGraphics  
 2. Add the DropboxSDK Framework to your project. The latest version of the SDK can be <a href=https://www.dropbox.com/developers>downloaded here</a> | DropboxBrowser uses version 1.3.4 of the Dropbox SDK  
 3. Register as a developer on Dropbox and setup your App. If you've already done this, skip this step. If you haven't already done this, <a href=https://www.dropbox.com/developers/start/setup#ios>get setup</a>.  
-4. Setup and add the required methods used by Dropbox for authenticating. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are <a href=https://www.dropbox.com/developers/start/authentication#ios>available here</a>  
+4. Setup your Dropbox App Key and Secret. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are <a href=https://www.dropbox.com/developers/start/authentication#ios>available here</a>  
 5. Add all of the DropboxBrowser files to your project
 	- `DropboxBrowserViewController` Implementation (.m) and Header (.h)
 	- Make sure to include the "Graphics" and "Utilities" folders
 6. In your ViewController's header file, add the following import statement: `#import "DropboxBrowserViewController.h"`. Also add the following delegate: `DropboxBrowserDelegate`.
-7. In your Implementation File (.m) add the method listed below. This project (and its code) assumes you're using Xcode 4, iOS 5+, and Storyboards. If you aren't using storyboards, you'll need to present the Navigation Controller with your own code.
-
-        - (IBAction)browseDropbox {
-            //Check if Dropbox is Setup
-            if (![[DBSession sharedSession] isLinked]) {
-                 //Dropbox is not setup
-                [[DBSession sharedSession] linkFromController:self];
-           } else {
-                //Dropbox has already been setup - display the navigation controller (modally)
-           }
-        }
-
-8. Edit the required interface files. In your storyboard, add the following UI Objects from the Objects Library:
+7. Edit the required interface files. In your storyboard, add the following UI Objects from the Objects Library:
     - Navigation Controller  
-9.  Select the Table View Controller just added along with the Navigation Controller and change the class to `DropboxRootViewController` using the Identity Inspector.  
-13. Click on the first cell of the Table View and change its identifier to `DropboxBrowserCell` and change the cell style to `Subtitle`.
+8.  Select the Table View Controller just added along with the Navigation Controller and change the class to `DropboxRootViewController` using the Identity Inspector.  
+9. Click on the first cell of the Table View and change its identifier to `DropboxBrowserCell` and change the cell style to `Subtitle`.  
+10. In your Implementation File (.m), add a method / action that dispays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox. Dropbox Browser handles authentication and login.  
 
 ## Delegates & Results
 There are four optional delegate methods available with DropboxBrowser (not Dropbox SDK). Here is a list of all the methods and descriptions:  
-    - `downloadedFileFromDropbox:(NSString *)fileName` called when a file is **successfully** downloaded from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
-    - `failedToDownloadDropboxFile:(NSString *)fileName`  called when there is an issue while downloading a file from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
-    - `fileDownloadConflictError:(NSDictionary *)conflict` called when there is an issue downloading a file because it already exists in the local Documents Directory.  The `conflict` NSDictionary contains two values. The first value, `file`, contains the DBMetadata for the Dropbox File. You can access properties such as file name, modified date, and size using the DBMetadata properties. The second value is a human-readable error message called `message`.  
-    - `dismissedDropboxBrowser` called when the DropboxBrowser is dismissed by the user. **Do NOT use this method to dismiss the DropboxBrowser** - it has already been dismissed by the time this method is called (hence the past-tense method name).  
+    - `dropboxBrowserDownloadedFile:(NSString *)fileName` called when a file is **successfully** downloaded from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
+    - `dropboxBrowserFailedToDownloadFile:(NSString *)fileName`  called when there is an issue while downloading a file from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
+    - `dropboxBrowserFileConflictError:(NSDictionary *)conflict` called when there is an issue downloading a file because it already exists in the local Documents Directory.  The `conflict` NSDictionary contains two values. The first value, `file`, contains the DBMetadata for the Dropbox File. You can access properties such as file name, modified date, and size using the DBMetadata properties. The second value is a human-readable error message called `message`.  
+    - `dropboxBrowserDismissed` called when the DropboxBrowser is dismissed by the user. **Do NOT use this method to dismiss the DropboxBrowser** - it has already been dismissed by the time this method is called (hence the past-tense method name).  
 
 The next function allows you to retrieve the file name of the last file selected. Simply call this function:  
     NSString *fileName = [DropboxRootViewController fileName];
@@ -63,7 +52,12 @@ Here are a few simple ways to customize the interface:
  - Change the colors and properties in DropboxBrowserViewController's viewDidLoad method you can change the tint of the UINavigationBar, UIRefreshControl, and the position of the UIProgressView.  
  
 ## Change Log
-This project is ready for primetime use in any iOS application. Just follow the steps above to integrate Dropbox Browser. Make sure to get your app approved for Production Status from the Dropbox Team before submitting to the AppStore. Here are a few key changes in the project:
+This project is ready for primetime use in any iOS application. Just follow the steps above to integrate Dropbox Browser. Make sure to get your app approved for Production Status from the Dropbox Team before submitting to the AppStore. Here are a few key changes in the project:  
+
+**Version 4.1**  
+	- DropboxBrowser now handles authentication and login with Dropbox. There is no need to check if the user is logged in to Dropbox before presenting the DropboxBrowser. If the user is not logged in, DropboxBrowser will prompt the user to do so. If the user opts-out of login then DropboxBrowser will dismiss itself. However, you may still handle login operations yourself.  
+	- Updated delegate names 
+	- Added code comments and standardized header definitions
 
 **Version 4.0**  
 	- Code reorganized, cleaned-up, and condensed. DropboxBrowser is now one easy-to-use class (previously three classes with complex delegate calls)  

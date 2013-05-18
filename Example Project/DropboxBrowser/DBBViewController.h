@@ -8,10 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "DropboxBrowserViewController.h"
-#import <DropboxSDK/DropboxSDK.h>
-#import <AssetsLibrary/ALAsset.h>
 
-@interface DBBViewController : UIViewController <DropboxBrowserDelegate, DBRestClientDelegate, UINavigationControllerDelegate>
+@interface DBBViewController : UIViewController <DropboxBrowserDelegate, UINavigationControllerDelegate>
 
 - (IBAction)browseDropbox:(id)sender;
 - (IBAction)clearDocs:(id)sender;

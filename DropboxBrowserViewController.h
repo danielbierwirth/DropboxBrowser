@@ -35,34 +35,43 @@
 @class DBRestClient;
 @class DBMetadata;
 @protocol DropboxBrowserDelegate;
-@interface DropboxBrowserViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate> {
+@interface DropboxBrowserViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIAlertViewDelegate> {
     DBRestClient *restClient;
 }
 
 @property (nonatomic, weak) id <DropboxBrowserDelegate> rootViewDelegate;
 
-//Current File Path and File Name
+//Current File Path, Name, and List
 @property (nonatomic, strong) NSString *currentPath;
-+ (NSString*)fileName;
-
-//List of Files
 @property (nonatomic, copy, readwrite) NSMutableArray *list;
+- (void)setList:(NSMutableArray *)newList;
++ (NSString *)fileName;
 
 //Busy indicator while loading new directory info - No longer used in iOS 6+
 @property (strong, nonatomic) MBProgressHUD *hud;
+- (void)dismissHUD;
+- (void)timeout:(id)arg;
 
 //Download indicator in toolbar to indicate progress of file download
 @property (strong, nonatomic) UIProgressView *downloadProgressView;
-- (void)timeout:(id)arg;
 
-//List content of home directory inside rootview controller
+//Download Operations
+- (BOOL)downloadFile:(DBMetadata *)file;
+- (void)downloadedFile;
+- (void)startDownloadFile;
+- (void)downloadedFileFailed;
+- (void)updateDownloadProgressTo:(CGFloat) progress;
+
+//List content of the root directory
 - (BOOL)listHomeDirectory;
-
-//Refresh content
-- (void)refreshTableView;
 
 //Move up one directory
 - (void)moveToParentDirectory;
+
+//Refresh content
+- (void)refreshTableView;
+- (void)updateContent;
+- (void)updateTableData;
 
 //List content of specific subdirectories
 - (BOOL)listDirectoryAtPath:(NSString*)path;
@@ -70,8 +79,8 @@
 //Check if app is linked to dropbox
 - (BOOL)isDropboxLinked;
 
-//Called on download button press - see root controller
-- (BOOL)downloadFile:(DBMetadata *)file;
+//Remove DropboxBrowser
+- (void)removeDropboxBrowser;
 
 @end
 
@@ -82,16 +91,16 @@
 @optional
 
 //Successful File Download
-- (void)downloadedFileFromDropbox:(NSString *)fileName;
+- (void)dropboxBrowserDownloadedFile:(NSString *)fileName;
 
 //Failed to download file from Dropbox
-- (void)failedToDownloadDropboxFile:(NSString *)fileName;
+- (void)dropboxBrowserFailedToDownloadFile:(NSString *)fileName;
 
 //Selected file already exists locally
-- (void)fileDownloadConflictError:(NSDictionary *)conflict;
+- (void)dropboxBrowserFileConflictError:(NSDictionary *)conflict;
 
 //Dropbox Browser was dismissed by the user - Do NOT use this method to dismiss the DropboxBrowser
-- (void)dismissedDropboxBrowser;
+- (void)dropboxBrowserDismissed;
 
 //Dereciated Methods
 

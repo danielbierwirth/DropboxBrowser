@@ -163,11 +163,11 @@
 		9934FCF5170F842E00890A53 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
 		9934FCF6170F842E00890A53 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iTunesArtwork.png; sourceTree = "<group>"; };
 		9934FCF7170F842E00890A53 /* iTunesArtwork@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iTunesArtwork@2x.png"; sourceTree = "<group>"; };
-		999ACD0C1745926100CADEC3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		999ACD0E1745926500CADEC3 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		999ACD12174593A300CADEC3 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		999ACD141745955E00CADEC3 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
-		999ACD161745956400CADEC3 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		999ACD0C1745926100CADEC3 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
+		999ACD0E1745926500CADEC3 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
+		999ACD12174593A300CADEC3 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
+		999ACD141745955E00CADEC3 /* Default-Portrait@2x~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait@2x~ipad.png"; path = "../Default-Portrait@2x~ipad.png"; sourceTree = "<group>"; };
+		999ACD161745956400CADEC3 /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Portrait~ipad.png"; path = "../Default-Portrait~ipad.png"; sourceTree = "<group>"; };
 		99A9F9D5174479DE00205C32 /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		99A9F9D6174479DE00205C32 /* folder@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "folder@2x.png"; sourceTree = "<group>"; };
 		99A9F9D7174479DE00205C32 /* folder_app.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder_app.png; sourceTree = "<group>"; };
@@ -266,9 +266,6 @@
 		99DDE35C168B7B780071241C /* DropboxBrowser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DropboxBrowser-Prefix.pch"; sourceTree = "<group>"; };
 		99DDE35D168B7B780071241C /* DBBAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBBAppDelegate.h; sourceTree = "<group>"; };
 		99DDE35E168B7B780071241C /* DBBAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBBAppDelegate.m; sourceTree = "<group>"; };
-		99DDE360168B7B780071241C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		99DDE362168B7B780071241C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		99DDE364168B7B780071241C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		99DDE367168B7B780071241C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		99DDE36A168B7B780071241C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		99DDE36C168B7B780071241C /* DBBViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBBViewController.h; sourceTree = "<group>"; };
@@ -438,11 +435,6 @@
 		99DDE342168B7B780071241C = {
 			isa = PBXGroup;
 			children = (
-				999ACD161745956400CADEC3 /* Default-Portrait~ipad.png */,
-				999ACD141745955E00CADEC3 /* Default-Portrait@2x~ipad.png */,
-				999ACD12174593A300CADEC3 /* Default-568h@2x.png */,
-				999ACD0E1745926500CADEC3 /* Default@2x.png */,
-				999ACD0C1745926100CADEC3 /* Default.png */,
 				99A9F9CE174479DE00205C32 /* Graphics */,
 				9934FCC7170F7FEE00890A53 /* Icons and Backgrounds */,
 				99DDE39C168B7C190071241C /* Utilities */,
@@ -499,9 +491,11 @@
 				99DDE357168B7B780071241C /* InfoPlist.strings */,
 				99DDE35A168B7B780071241C /* main.m */,
 				99DDE35C168B7B780071241C /* DropboxBrowser-Prefix.pch */,
-				99DDE360168B7B780071241C /* Default.png */,
-				99DDE362168B7B780071241C /* Default@2x.png */,
-				99DDE364168B7B780071241C /* Default-568h@2x.png */,
+				999ACD161745956400CADEC3 /* Default-Portrait~ipad.png */,
+				999ACD141745955E00CADEC3 /* Default-Portrait@2x~ipad.png */,
+				999ACD12174593A300CADEC3 /* Default-568h@2x.png */,
+				999ACD0E1745926500CADEC3 /* Default@2x.png */,
+				999ACD0C1745926100CADEC3 /* Default.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
