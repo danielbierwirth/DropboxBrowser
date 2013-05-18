@@ -30,10 +30,10 @@ To properly integrate DropboxBrowser into your project follow the instructions b
 
 ## Delegates & Results
 There are four optional delegate methods available with DropboxBrowser (not Dropbox SDK). Here is a list of all the methods and descriptions:  
-    - `dropboxBrowserDownloadedFile:(NSString *)fileName` called when a file is **successfully** downloaded from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
-    - `dropboxBrowserFailedToDownloadFile:(NSString *)fileName`  called when there is an issue while downloading a file from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
-    - `dropboxBrowserFileConflictError:(NSDictionary *)conflict` called when there is an issue downloading a file because it already exists in the local Documents Directory.  The `conflict` NSDictionary contains two values. The first value, `file`, contains the DBMetadata for the Dropbox File. You can access properties such as file name, modified date, and size using the DBMetadata properties. The second value is a human-readable error message called `message`.  
-    - `dropboxBrowserDismissed` called when the DropboxBrowser is dismissed by the user. **Do NOT use this method to dismiss the DropboxBrowser** - it has already been dismissed by the time this method is called (hence the past-tense method name).  
+ - `dropboxBrowserDownloadedFile:(NSString *)fileName` called when a file is **successfully** downloaded from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
+ - `dropboxBrowserFailedToDownloadFile:(NSString *)fileName`  called when there is an issue while downloading a file from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
+ - `dropboxBrowserFileConflictError:(NSDictionary *)conflict` called when there is an issue downloading a file because it already exists in the local Documents Directory.  The `conflict` NSDictionary contains two values. The first value, `file`, contains the DBMetadata for the Dropbox File. You can access properties such as file name, modified date, and size using the DBMetadata properties. The second value is a human-readable error message called `message`.  
+ - `dropboxBrowserDismissed` called when the DropboxBrowser is dismissed by the user. **Do NOT use this method to dismiss the DropboxBrowser** - it has already been dismissed by the time this method is called (hence the past-tense method name).  
 
 The next function allows you to retrieve the file name of the last file selected. Simply call this function:  
     NSString *fileName = [DropboxRootViewController fileName];
@@ -55,26 +55,26 @@ Here are a few simple ways to customize the interface:
 This project is ready for primetime use in any iOS application. Just follow the steps above to integrate Dropbox Browser. Make sure to get your app approved for Production Status from the Dropbox Team before submitting to the AppStore. Here are a few key changes in the project:  
 
 **Version 4.1**  
-	- DropboxBrowser now handles authentication and login with Dropbox. There is no need to check if the user is logged in to Dropbox before presenting the DropboxBrowser. If the user is not logged in, DropboxBrowser will prompt the user to do so. If the user opts-out of login then DropboxBrowser will dismiss itself. However, you may still handle login operations yourself.  
-	- Updated delegate names 
-	- Added code comments and standardized header definitions
+ - DropboxBrowser now handles authentication and login with Dropbox. There is no need to check if the user is logged in to Dropbox before presenting the DropboxBrowser. If the user is not logged in, DropboxBrowser will prompt the user to do so. If the user opts-out of login then DropboxBrowser will dismiss itself. However, you may still handle login operations yourself.  
+ - Updated delegate names  
+ - Added code comments and standardized header definitions
 
 **Version 4.0**  
-	- Code reorganized, cleaned-up, and condensed. DropboxBrowser is now one easy-to-use class (previously three classes with complex delegate calls)  
-	- New icon, graphics, and help menu for example project  
-	- Added Icons for over 100 types of files and folders supported by Dropbox - proper icon is shown next to each file  
-	- Added four new delegate methods and depreciated older methods  
-	- New TableView animations - changes in directories are now animated  
-	- New Navigation Bar - new design, also shows title of current folder  
-	- Simplified Navigation Controller customization. Please refer to the new setup and integration procedures  
-	- Updated Refresh Control - now the refresh control actually fetches updates from Dropbox and displays them  
-	- Removed Loading HUD for iOS 6+ users - the refresh control now appears instead of the black overlay. If you support versions lower than iOS 6, the HUD will be used.  
-	- Fixed Done Button Bug where it may randomly disappear or reappear
-	- Fixed Back Button issue where the user could back up past the Root Directory  
-	- Fixed TableView Subtitle information. Formatting now mimics the Dropbox App
-	- Fixed Download Progress View issue where the download progress would not reset after each download  
-	- Major Performance Improvements
-	- Added open-source license (MIT license)  
+ - Code reorganized, cleaned-up, and condensed. DropboxBrowser is now one easy-to-use class (previously three classes with complex delegate calls)  
+ - New icon, graphics, and help menu for example project  
+ - Added Icons for over 100 types of files and folders supported by Dropbox - proper icon is shown next to each file  
+ - Added four new delegate methods and depreciated older methods  
+ - New TableView animations - changes in directories are now animated  
+ - New Navigation Bar - new design, also shows title of current folder  
+ - Simplified Navigation Controller customization. Please refer to the new setup and integration procedures  
+ - Updated Refresh Control - now the refresh control actually fetches updates from Dropbox and displays them  
+ - Removed Loading HUD for iOS 6+ users - the refresh control now appears instead of the black overlay. If you support versions lower than iOS 6, the HUD will be used.  
+ - Fixed Done Button Bug where it may randomly disappear or reappear
+ - Fixed Back Button issue where the user could back up past the Root Directory  
+ - Fixed TableView Subtitle information. Formatting now mimics the Dropbox App
+ - Fixed Download Progress View issue where the download progress would not reset after each download  
+ - Major Performance Improvements
+ - Added open-source license (MIT license)  
 
 **Version 3.0**  
 	- Code reorganized, cleaned-up, and many comments have been added  
@@ -91,26 +91,31 @@ This project is ready for primetime use in any iOS application. Just follow the 
 	- Improved performance  
 
 **Version 2.3**  
-	- Condenses presentation of DropboxBrowser to four lines (compared to a previous 40+ lines of code) using one simple method  
-	- New convenience method.  
+ - Condenses presentation of DropboxBrowser to four lines (compared to a previous 40+ lines of code) using one simple method  
+ - New convenience method.  
+
 **Version 2.2**  
-	- Dropbox Browser now fits all screen sizes using Autosizing instead of defined sizes - in other words, iPhone 5 compatibility  
+ - Dropbox Browser now fits all screen sizes using Autosizing instead of defined sizes - in other words, iPhone 5 compatibility  
+
 **Version 2.1**  
-	- Updated Documentation  
-	- New Methods  
-	- Improved Selection  
+ - Updated Documentation  
+ - New Methods  
+ - Improved Selection  
+
 **Version 2.0**  
-	- Added Sample Project  
-	- iOS 6 Support  
-	- ARC Support  
-	- New Documentation  
-	- Improved ReadMe  
-	- Improved UI  
-	- More!  
+ - Added Sample Project  
+ - iOS 6 Support  
+ - ARC Support  
+ - New Documentation  
+ - Improved ReadMe  
+ - Improved UI  
+ - More!  
 
 **Version 1.2**  
-	- Added Download Indicator  
+ - Added Download Indicator  
+
 **Version 1.1**  
-	- Added Sync Functionality  
+ - Added Sync Functionality 
+
 **Version 1.0**  
-	- Initial Commit
+ - Initial Commit
