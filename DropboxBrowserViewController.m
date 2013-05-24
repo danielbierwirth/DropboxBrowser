@@ -252,11 +252,14 @@ static NSString *currentFileName = nil;
     
     if ([file isDirectory]) {
         //Show Back Button for a new directory
-        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonSystemItemDone target:self action:@selector(moveToParentDirectory)];
+        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:self
+                                                     action:@selector(moveToParentDirectory)];
         self.navigationItem.leftBarButtonItem = leftButton;
         
         //Push new tableviewcontroller
-        NSString *subpath = [NSString stringWithFormat:@"%@%@",self.currentPath, file.filename];
+        NSString *subpath = [self.currentPath stringByAppendingPathComponent:file.filename];
         self.currentPath = subpath;
         self.title = [currentPath lastPathComponent];
         
@@ -279,9 +282,17 @@ static NSString *currentFileName = nil;
         NSLog(@"Path: %@", currentPath);
         
     } else {
-        //Download file
-        [self downloadFile:file];
+        
         currentFileName = file.filename;
+        
+        // check if our delegate handles file selection
+        if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:selectedFile:)]) {
+            [self.rootViewDelegate dropboxBrowser:self selectedFile:file];
+        }
+        else {
+            //Download file
+            [self downloadFile:file];
+        }
     }
 }
 
@@ -493,6 +504,13 @@ static NSString *currentFileName = nil;
     return res;
 }
 
+- (void) loadShareLinkForFile:(DBMetadata*)file {
+    
+    [self.restClient loadSharableLinkForFile:file.path shortUrl:YES];
+    
+}
+
+
 //------------------------------------------------------------------------------------------------------------//
 //Region: Dropbox Delegate -----------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------------------//
@@ -539,6 +557,18 @@ static NSString *currentFileName = nil;
 
 - (void)restClient:(DBRestClient*)client loadProgress:(CGFloat)progress forFile:(NSString*)destPath {
     [self updateDownloadProgressTo:progress];
+}
+
+- (void) restClient:(DBRestClient *)client loadedSharableLink:(NSString *)link forFile:(NSString *)path {
+    if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:didLoadShareLink:)]) {
+        [self.rootViewDelegate dropboxBrowser:self didLoadShareLink:link];
+    }
+}
+
+- (void) restClient:(DBRestClient *)client loadSharableLinkFailedWithError:(NSError *)error {
+    if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:failedLoadingShareLinkWithError:)]) {
+        [self.rootViewDelegate dropboxBrowser:self failedLoadingShareLinkWithError:error];
+    }
 }
 
 @end
