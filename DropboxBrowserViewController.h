@@ -57,6 +57,7 @@
 
 //Download Operations
 - (BOOL)downloadFile:(DBMetadata *)file;
+- (void)loadShareLinkForFile:(DBMetadata*)file;
 - (void)downloadedFile;
 - (void)startDownloadFile;
 - (void)downloadedFileFailed;
@@ -93,6 +94,11 @@
 //Successful File Download
 - (void)dropboxBrowserDownloadedFile:(NSString *)fileName;
 
+- (void)dropboxBrowser:(DropboxBrowserViewController*)browser selectedFile:(DBMetadata*)file;
+
+- (void)dropboxBrowser:(DropboxBrowserViewController*)browser didLoadShareLink:(NSString*)link;
+
+- (void)dropboxBrowser:(DropboxBrowserViewController*)browser failedLoadingShareLinkWithError:(NSError*)error;
 //Failed to download file from Dropbox
 - (void)dropboxBrowserFailedToDownloadFile:(NSString *)fileName;
 
