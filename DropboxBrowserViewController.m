@@ -259,7 +259,7 @@ static NSString *currentFileName = nil;
         self.navigationItem.leftBarButtonItem = leftButton;
         
         //Push new tableviewcontroller
-        NSString *subpath = [NSString stringWithFormat:@"%@%@",self.currentPath, file.filename];
+        NSString *subpath = [self.currentPath stringByAppendingPathComponent:file.filename];
         self.currentPath = subpath;
         self.title = [currentPath lastPathComponent];
         
