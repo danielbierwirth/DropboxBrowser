@@ -94,11 +94,15 @@
 //Successful File Download
 - (void)dropboxBrowserDownloadedFile:(NSString *)fileName;
 
+// delegate method to give more control to the delegate on what to do when the user selects a file
 - (void)dropboxBrowser:(DropboxBrowserViewController*)browser selectedFile:(DBMetadata*)file;
 
+// handle success full share link
 - (void)dropboxBrowser:(DropboxBrowserViewController*)browser didLoadShareLink:(NSString*)link;
 
+// handle share link error
 - (void)dropboxBrowser:(DropboxBrowserViewController*)browser failedLoadingShareLinkWithError:(NSError*)error;
+
 //Failed to download file from Dropbox
 - (void)dropboxBrowserFailedToDownloadFile:(NSString *)fileName;
 
