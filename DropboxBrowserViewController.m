@@ -252,7 +252,10 @@ static NSString *currentFileName = nil;
     
     if ([file isDirectory]) {
         //Show Back Button for a new directory
-        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonSystemItemDone target:self action:@selector(moveToParentDirectory)];
+        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:self
+                                                     action:@selector(moveToParentDirectory)];
         self.navigationItem.leftBarButtonItem = leftButton;
         
         //Push new tableviewcontroller
