@@ -5,7 +5,7 @@ Dropbox Browser provides a simple and effective way to browse, view, and downloa
 
 If you like the project, please <a href=https://github.com/iRareMedia/DropboxBrowser>star it</a> on GitHub!
 
-##Integration
+##Integration & Setup
 To properly integrate DropboxBrowser into your project follow the instructions below. Use the included Sample Project (inside of the "Example" folder) as a guide for setting up your project. 
  
 1. Add the following Frameworks, already available in Xcode, to your project:  
@@ -26,20 +26,113 @@ To properly integrate DropboxBrowser into your project follow the instructions b
     - Navigation Controller  
 8.  Select the Table View Controller just added along with the Navigation Controller and change the class to `DropboxRootViewController` using the Identity Inspector.  
 9. Click on the first cell of the Table View and change its identifier to `DropboxBrowserCell` and change the cell style to `Subtitle`.  
-10. In your Implementation File (.m), add a method / action that dispays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox. Dropbox Browser handles authentication and login.  
+10. In your Implementation File (.m), add a method / action that displays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox. Dropbox Browser handles authentication and login.  
 
-## Delegates & Results
-There are four optional delegate methods available with DropboxBrowser (not Dropbox SDK). Here is a list of all the methods and descriptions:  
- - `dropboxBrowserDownloadedFile:(NSString *)fileName` called when a file is **successfully** downloaded from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
- - `dropboxBrowserFailedToDownloadFile:(NSString *)fileName`  called when there is an issue while downloading a file from Dropbox. The `fileName` property contains an NSString with the downloaded file's name.  
- - `dropboxBrowserFileConflictError:(NSDictionary *)conflict` called when there is an issue downloading a file because it already exists in the local Documents Directory.  The `conflict` NSDictionary contains two values. The first value, `file`, contains the DBMetadata for the Dropbox File. You can access properties such as file name, modified date, and size using the DBMetadata properties. The second value is a human-readable error message called `message`.  
- - `dropboxBrowserDismissed` called when the DropboxBrowser is dismissed by the user. **Do NOT use this method to dismiss the DropboxBrowser** - it has already been dismissed by the time this method is called (hence the past-tense method name).  
+## Delegates, Methods, and Properties
+Dropbox Browser provides many paths to customization and control. DropboxBrowser has seven delegate methods available for use - they are all optional. There are multiple properties which can easily be retrieved and set. A handful of methods are available for you to call on your own - however they are not required for use. 
 
-The next function allows you to retrieve the file name of the last file selected. Simply call this function:  
-    NSString *fileName = [DropboxRootViewController fileName];
+Keep in mind that all content listed below is optional. DropboxBrowser will work perfectly out of the box using only the steps described in the *Integration and Setup* portion of this document.
+
+<table>
+  <tr><th colspan="2" style="text-align:center;">Delegates</th></tr>
+  <tr>
+    <td>Downloaded File</td>
+    <td>Optional delegate method called when the selected file is successfully downloaded from Dropbox. The fileName <tt>NSString</tt> object contains the filename of the downloaded file.
+    <br /><br />
+           ```- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName```
+    </td>
+  </tr>
+ <tr>
+    <td>Selected File</td>
+    <td>Optional delegate method called when the user selects a file from the <tt>UITableView</tt>. When implemented, DropboxBrowser will make this method responsible for downloading the file and updating the UI as the file downloads and when the download completes. If this delegate method is not implemented, DropboxBrowser will download the file and update the UI normally. The file <tt>DBMetadata</tt> object contains the metadata about the selected file.
+    <br /><br />
+       <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser selectedFile:(DBMetadata *)file</tt>
+    </td>
+  </tr>
+  <tr>
+    <td>File Download Failed</td>
+    <td>Optional delegate method called when the selected file could not be downloaded from Dropbox. The fileName <tt>NSString</tt> object contains the file name of the file which could not be downloaded.
+    <br /><br />
+       <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedToDownloadFile:(NSString *)fileName</tt>
+    </td>
+  </tr>
+  <tr>
+    <td>File Conflict Error</td>
+    <td>Called when there is an issue downloading a file because it already exists in the local Documents Directory.  The conflict `NSDictionary` contains two values. The first value, file, contains the `DBMetadata` for the Dropbox File. You can access properties such as file name, modified date, and size using the `DBMetadata` properties. The second value is a human-readable error message called `message`. 
+    <br /><br />
+       <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser fileConflictError:(NSDictionary *)conflict</tt>
+    </td>
+  </tr>
+ <tr>
+    <td>Created Share Link</td>
+    <td>Called when a file share link is successfully created for the selected file.  You can create a link for a file by calling the `loadShareLinkForFile` method. 
+    <br /><br />
+       <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser didLoadShareLink:(NSString *)link</tt>
+    </td>
+  </tr>
+  <tr>
+    <td>Share Link Error</td>
+    <td>Called when a there is an error loading or creating a share link for the selected file or directory.  You can create a share link for a file by calling the `loadShareLinkForFile` method. The error `NSError` contains an error message detailing the issue.
+    <br /><br />
+       <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedLoadingShareLinkWithError:(NSError *)error</tt>
+    </td>
+  </tr>
+    <tr>
+    <td>Dropbox Browser was Dismissed</td>
+    <td>Called when the DropboxBrowser is dismissed by the user. **Do NOT** use this method to dismiss the DropboxBrowser - it has already been dismissed by the time this method is called (hence the past-tense method name).
+    <br /><br />
+       <tt>- (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser</tt>
+    </td>
+  </tr>
+  
+  <tr><th colspan="2" style="text-align:center;">Properties</th></tr>
+
+  <tr>
+    <td>`currentPath`</td>
+    <td>An `NSString` containing the path of the directory the user is currently viewing.</td>
+  </tr>
+  <tr>
+    <td>`list`</td>
+    <td>An `NSMutableArray` containing the list of files currently being viewed by the user.</td>
+  </tr>
+  <tr>
+    <tr>
+    <td>`fileName`</td>
+    <td>An `NSString` containing the file last selected by the user.</td>
+  </tr>
+   <tr>
+    <tr>
+    <td>`allowedFileTypes`</td>
+    <td>Coming Soon. Allows you to set the file types which can be displayed (like a filter).</td>
+  </tr>
+
+  <tr><th colspan="2" style="text-align:center;">Methods</th></tr>
+  <tr>
+    <td>Download File</td>
+    <td>Download a file from Dropbox to the Documents Directory. Returns a `BOOL` value of YES if the download is successful, NO if it is not. You may also want to implement the file `failedToDownloadFile` delegate method for more information on failed file downloads.
+    <br /><br />
+       <tt>- (BOOL)downloadFile:(DBMetadata *)file</tt>
+    </td>
+  </tr>
+  <tr>
+    <td>Create Share Link</td>
+    <td>Create a share link for the specified file in Dropbox. You'll need to implement the `didLoadShareLink` delegate method to get the share link of the specified file. You may also want to implement the `failedLoadingShareLinkWithError` delegate method for more information on share link creation errors.
+    <br /><br />
+       <tt>- (void)loadShareLinkForFile:(DBMetadata*)file</tt>
+    </td>
+  </tr>
+    <tr>
+    <td>Update Download Progress</td>
+    <td>Use this method to update the download progress of a currently downloading file. This method is only needed if you implement the `selectedFile` delegate method.
+    <br /><br />
+       <tt>- (void)updateDownloadProgressTo:(CGFloat)progress</tt>
+    </td>
+  </tr>
+</table>
+
   
 ##Files
-Just a quick note on files and downloads. Files from DropboxBrowser are **always** downloaded to your **application's Documents Directory**.
+Just a quick note on files and downloads. Files from DropboxBrowser are **always** downloaded to your **application's Documents Directory**. If a conflict arises between a local and remote file, you can use the `fileConflictError` delegate method.
 
 ## User Interface
 DropboxBrowser has a nice UI that can easily be customized. All graphics have been Retina-Display, and iPhone 5 optimized. A quick preview of what the UI looks like can be seen below. 
@@ -54,6 +147,12 @@ Here are a few simple ways to customize the interface:
 ## Change Log
 This project is ready for primetime use in any iOS application. Just follow the steps above to integrate Dropbox Browser. Make sure to get your app approved for Production Status from the Dropbox Team before submitting to the AppStore. Here are a few key changes in the project:  
 
+**Version 4.2**  
+ - Create file share links using the `loadShareLinkForFile` method. Added by <a href=https://github.com/ekurutepe>ekurutepe</a>.  
+ - New delegate methods help create and process share links. Added by <a href=https://github.com/ekurutepe>ekurutepe</a>.  
+ - Updated delegate names and properties. Now delegates have more conventional names and provide more information. Make sure you re-implement the updated delegate methods. The old ones have been marked as depreciated.  
+ - Fixed a major bug where subdirectories were not loaded properly. Thank you <a href=https://github.com/ekurutepe>ekurutepe</a>!
+ 
 **Version 4.1**  
  - DropboxBrowser now handles authentication and login with Dropbox. There is no need to check if the user is logged in to Dropbox before presenting the DropboxBrowser. If the user is not logged in, DropboxBrowser will prompt the user to do so. If the user opts-out of login then DropboxBrowser will dismiss itself. However, you may still handle login operations yourself.  
  - Updated delegate names  
