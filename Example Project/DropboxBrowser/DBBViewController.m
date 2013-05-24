@@ -70,21 +70,21 @@
     [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
 }
 
-- (void)dropboxBrowserDownloadedFile:(NSString *)fileName {
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName {
     NSLog(@"Downloaded %@", fileName);
 }
 
-- (void)dropboxBrowserFailedToDownloadFile:(NSString *)fileName {
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedToDownloadFile:(NSString *)fileName {
     NSLog(@"Failed to download %@", fileName);
 }
 
-- (void)dropboxBrowserFileConflictError:(NSDictionary *)conflict {
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser fileConflictError:(NSDictionary *)conflict {
     DBMetadata *file = [conflict objectForKey:@"file"];
     NSString *errorMessage = [conflict objectForKey:@"message"];
     NSLog(@"Conflict error with %@\n%@ last modified on %@\nError: %@", file.filename, file.filename, file.lastModifiedDate, errorMessage);
 }
 
-- (void)dropboxBrowserDismissed {
+- (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser {
     //This method is called after Dropbox Browser is dismissed. Do NOT dismiss DropboxBrowser from this method
     //Perform any UI updates here to display any new data from Dropbox Browser
     // ex. Update a UITableView that shows downloaded files or get the name of the most recently selected file:

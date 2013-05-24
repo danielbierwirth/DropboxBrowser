@@ -57,11 +57,11 @@
 
 //Download Operations
 - (BOOL)downloadFile:(DBMetadata *)file;
-- (void)loadShareLinkForFile:(DBMetadata*)file;
+- (void)loadShareLinkForFile:(DBMetadata *)file;
 - (void)downloadedFile;
 - (void)startDownloadFile;
 - (void)downloadedFileFailed;
-- (void)updateDownloadProgressTo:(CGFloat) progress;
+- (void)updateDownloadProgressTo:(CGFloat)progress;
 
 //List content of the root directory
 - (BOOL)listHomeDirectory;
@@ -92,30 +92,32 @@
 @optional
 
 //Successful File Download
-- (void)dropboxBrowserDownloadedFile:(NSString *)fileName;
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName;
 
-// delegate method to give more control to the delegate on what to do when the user selects a file
-- (void)dropboxBrowser:(DropboxBrowserViewController*)browser selectedFile:(DBMetadata*)file;
+//User selected a file - automatically downloads file if not implemented. Implementing this method will require you to download or manage the selection on your own
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser selectedFile:(DBMetadata *)file;
 
-// handle success full share link
-- (void)dropboxBrowser:(DropboxBrowserViewController*)browser didLoadShareLink:(NSString*)link;
+//Successfully loaded share link
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser didLoadShareLink:(NSString *)link;
 
-// handle share link error
-- (void)dropboxBrowser:(DropboxBrowserViewController*)browser failedLoadingShareLinkWithError:(NSError*)error;
+//Error creating or loading share link
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedLoadingShareLinkWithError:(NSError *)error;
 
 //Failed to download file from Dropbox
-- (void)dropboxBrowserFailedToDownloadFile:(NSString *)fileName;
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedToDownloadFile:(NSString *)fileName;
 
 //Selected file already exists locally
-- (void)dropboxBrowserFileConflictError:(NSDictionary *)conflict;
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser fileConflictError:(NSDictionary *)conflict;
 
 //Dropbox Browser was dismissed by the user - Do NOT use this method to dismiss the DropboxBrowser
-- (void)dropboxBrowserDismissed;
+- (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser;
 
-//Dereciated Methods
-
+//Dereciated Methods - No longer called. Do not use.
 - (void)removeDropboxBrowser __deprecated;
-
 - (void)refreshLibrarySection __deprecated;
+- (void)dropboxBrowserDismissed __deprecated;
+- (void)dropboxBrowserDownloadedFile:(NSString *)fileName __deprecated;
+- (void)dropboxBrowserFailedToDownloadFile:(NSString *)fileName __deprecated;
+- (void)dropboxBrowserFileConflictError:(NSDictionary *)conflict __deprecated;
 
 @end

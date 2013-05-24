@@ -207,8 +207,8 @@ static NSString *currentFileName = nil;
         cell.textLabel.textColor = [UIColor darkGrayColor];
         return cell;
     } else {
-        #warning Use the correct UITableViewCell ID in your Storyboard: DropboxBrowserCell
         //Setup the Cell and its ID
+        #warning Use the correct UITableViewCell ID in your Storyboard: DropboxBrowserCell
         static NSString *CellIdentifier = @"DropboxBrowserCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
@@ -337,8 +337,8 @@ static NSString *currentFileName = nil;
     if ([buttonTitle isEqualToString:@"Sign In to Dropbox"]) {
         [[DBSession sharedSession] linkFromController:self];
     } else if ([buttonTitle isEqualToString:@"Cancel"]) {
-        if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed)])
-            [[self rootViewDelegate] dropboxBrowserDismissed];
+        if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed:)])
+            [[self rootViewDelegate] dropboxBrowserDismissed:self];
         
         [self dismissViewControllerAnimated:YES completion:nil];
     }
@@ -350,8 +350,8 @@ static NSString *currentFileName = nil;
 #pragma mark - DataController Delegate
 
 - (void)removeDropboxBrowser {
-    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed)])
-        [[self rootViewDelegate] dropboxBrowserDismissed];
+    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed:)])
+        [[self rootViewDelegate] dropboxBrowserDismissed:self];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -388,8 +388,8 @@ static NSString *currentFileName = nil;
                                               otherButtonTitles:nil];
     [alertView show];
 
-    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDownloadedFile:)])
-        [[self rootViewDelegate] dropboxBrowserDownloadedFile:currentFileName];
+    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:downloadedFile:)])
+        [[self rootViewDelegate] dropboxBrowser:self downloadedFile:currentFileName];
     
 }
 
@@ -403,8 +403,8 @@ static NSString *currentFileName = nil;
     self.navigationItem.title = [currentPath lastPathComponent];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     
-    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserFailedToDownloadFile:)])
-        [[self rootViewDelegate] dropboxBrowserFailedToDownloadFile:currentFileName];
+    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:failedToDownloadFile:)])
+        [[self rootViewDelegate] dropboxBrowser:self failedToDownloadFile:currentFileName];
 }
 
 - (void)updateDownloadProgressTo:(CGFloat) progress {
@@ -463,7 +463,6 @@ static NSString *currentFileName = nil;
             NSError *error;
             [fileUrl getResourceValue:&fileDate forKey:NSURLContentModificationDateKey error:&error];
             if (!error) {
-                #warning Handle any file conflicts here
                 NSComparisonResult result; //has three possible values: NSOrderedSame, NSOrderedDescending, NSOrderedAscending
                 result = [file.lastModifiedDate compare:fileDate]; //Compare the Dates
                 if (result == NSOrderedAscending || result == NSOrderedSame) {
@@ -477,8 +476,8 @@ static NSString *currentFileName = nil;
                     
                     NSDictionary *conflict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:file, @"File already exists in the Documents folder", nil] forKeys:[NSArray arrayWithObjects:@"file", @"message", nil]];
                     
-                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserFileConflictError:)])
-                        [[self rootViewDelegate] dropboxBrowserFileConflictError:conflict];
+                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:fileConflictError:)])
+                        [[self rootViewDelegate] dropboxBrowser:self fileConflictError:conflict];
                     
                 } else if (result == NSOrderedDescending) {
                     //Dropbox File is newer than local file
@@ -492,8 +491,8 @@ static NSString *currentFileName = nil;
                     
                     NSDictionary *conflict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:file, @"File exists in Dropbox and the Documents folder. The Dropbox file is newer.", nil] forKeys:[NSArray arrayWithObjects:@"file", @"message", nil]];
                     
-                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserFileConflictError:)])
-                        [[self rootViewDelegate] dropboxBrowserFileConflictError:conflict];
+                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:fileConflictError:)])
+                        [[self rootViewDelegate] dropboxBrowser:self fileConflictError:conflict];
                 }
                 
                 [self updateTableData];
