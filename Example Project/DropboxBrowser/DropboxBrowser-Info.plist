@@ -40,7 +40,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>db-APP_KEY</string>
+				<string>db-knluvbkqi6hsm5j</string>
 			</array>
 		</dict>
 	</array>
@@ -67,11 +67,11 @@
 			<key>TintColor</key>
 			<dict>
 				<key>Blue</key>
-				<real>0.87450980392156863</real>
+				<real>0.8745098039215686</real>
 				<key>Green</key>
-				<real>0.47843137254901957</real>
+				<real>0.4784313725490196</real>
 				<key>Red</key>
-				<real>0.0</real>
+				<real>0</real>
 			</dict>
 			<key>Translucent</key>
 			<false/>

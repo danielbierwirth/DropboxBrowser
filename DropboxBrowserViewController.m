@@ -42,7 +42,7 @@
 @implementation DropboxBrowserViewController
 @synthesize downloadProgressView;
 @synthesize hud, currentPath;
-@synthesize rootViewDelegate, list;
+@synthesize rootViewDelegate, list, allowedFileTypes;
 static NSString *currentFileName = nil;
 
 //------------------------------------------------------------------------------------------------------------//
@@ -52,6 +52,16 @@ static NSString *currentFileName = nil;
 
 + (NSString *)fileName {
     return currentFileName;
+}
+
+- (void)setAllowedFileTypes:(NSMutableArray *)allowedFiles {
+    allowedFileTypes = allowedFiles;
+    NSLog(@"Allowed Files From Class: %@\nAllowed Files Set: %@", allowedFiles, allowedFileTypes);
+}
+
+- (void)setupAllowedFileTypes:(NSMutableArray *)allowedFiles {
+    allowedFileTypes = allowedFiles;
+    NSLog(@"Allowed Files From Class: %@\nAllowed Files Set: %@", allowedFiles, allowedFileTypes);
 }
 
 - (void)moveToParentDirectory {
@@ -503,10 +513,8 @@ static NSString *currentFileName = nil;
     return res;
 }
 
-- (void) loadShareLinkForFile:(DBMetadata*)file {
-    
+- (void)loadShareLinkForFile:(DBMetadata*)file {
     [self.restClient loadSharableLinkForFile:file.path shortUrl:YES];
-    
 }
 
 
@@ -521,7 +529,8 @@ static NSString *currentFileName = nil;
     if (metadata.isDirectory) {
         for (DBMetadata *file in metadata.contents) {
             //Check if directory or document
-            if ([file isDirectory] || ![file.filename hasSuffix:@"exe"])
+            NSLog(@"Allowed File Types: %@", allowedFileTypes);
+            if ([file isDirectory] || ![file.filename hasSuffix:@".exe"]) //|| [allowedFileTypes containsObject:[file.filename pathExtension]])
                 [dirList addObject:file];
         }
     }

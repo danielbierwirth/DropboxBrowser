@@ -67,6 +67,8 @@
 #pragma mark - Dropbox
 
 - (IBAction)browseDropbox:(id)sender {
+    DropboxBrowserViewController *db = [[DropboxBrowserViewController alloc] init];
+    [db setupAllowedFileTypes:[NSMutableArray arrayWithObjects:@"pdf", nil]];
     [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
 }
 

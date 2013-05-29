@@ -39,7 +39,7 @@ Keep in mind that all content listed below is optional. DropboxBrowser will work
     <td>Downloaded File</td>
     <td>Optional delegate method called when the selected file is successfully downloaded from Dropbox. The fileName <tt>NSString</tt> object contains the filename of the downloaded file.
     <br /><br />
-           ```- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName```
+           <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName</tt>
     </td>
   </tr>
  <tr>
@@ -58,28 +58,28 @@ Keep in mind that all content listed below is optional. DropboxBrowser will work
   </tr>
   <tr>
     <td>File Conflict Error</td>
-    <td>Called when there is an issue downloading a file because it already exists in the local Documents Directory.  The conflict `NSDictionary` contains two values. The first value, file, contains the `DBMetadata` for the Dropbox File. You can access properties such as file name, modified date, and size using the `DBMetadata` properties. The second value is a human-readable error message called `message`. 
+    <td>Called when there is an issue downloading a file because it already exists in the local Documents Directory.  The conflict <tt>NSDictionary</tt> contains two values. The first value, file, contains the <tt>DBMetadata</tt> for the Dropbox File. You can access properties such as file name, modified date, and size using the <tt>DBMetadata</tt> properties. The second value is a human-readable error message called <tt>message</tt>. 
     <br /><br />
        <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser fileConflictError:(NSDictionary *)conflict</tt>
     </td>
   </tr>
  <tr>
     <td>Created Share Link</td>
-    <td>Called when a file share link is successfully created for the selected file.  You can create a link for a file by calling the `loadShareLinkForFile` method. 
+    <td>Called when a file share link is successfully created for the selected file.  You can create a link for a file by calling the <tt>loadShareLinkForFile</tt> method. 
     <br /><br />
        <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser didLoadShareLink:(NSString *)link</tt>
     </td>
   </tr>
   <tr>
     <td>Share Link Error</td>
-    <td>Called when a there is an error loading or creating a share link for the selected file or directory.  You can create a share link for a file by calling the `loadShareLinkForFile` method. The error `NSError` contains an error message detailing the issue.
+    <td>Called when a there is an error loading or creating a share link for the selected file or directory.  You can create a share link for a file by calling the <tt>loadShareLinkForFile</tt> method. The error <tt>NSError</tt> contains an error message detailing the issue.
     <br /><br />
        <tt>- (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedLoadingShareLinkWithError:(NSError *)error</tt>
     </td>
   </tr>
     <tr>
     <td>Dropbox Browser was Dismissed</td>
-    <td>Called when the DropboxBrowser is dismissed by the user. **Do NOT** use this method to dismiss the DropboxBrowser - it has already been dismissed by the time this method is called (hence the past-tense method name).
+    <td>Called when the DropboxBrowser is dismissed by the user. <strong>Do NOT</strong> use this method to dismiss the DropboxBrowser - it has already been dismissed by the time this method is called (hence the past-tense method name).
     <br /><br />
        <tt>- (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser</tt>
     </td>
@@ -88,42 +88,42 @@ Keep in mind that all content listed below is optional. DropboxBrowser will work
   <tr><th colspan="2" style="text-align:center;">Properties</th></tr>
 
   <tr>
-    <td>`currentPath`</td>
-    <td>An `NSString` containing the path of the directory the user is currently viewing.</td>
+    <td><tt>currentPath</tt></td>
+    <td>An <tt>NSString</tt> containing the path of the directory the user is currently viewing.</td>
   </tr>
   <tr>
-    <td>`list`</td>
-    <td>An `NSMutableArray` containing the list of files currently being viewed by the user.</td>
+    <td><tt>list</tt></td>
+    <td>An <tt>NSMutableArray</tt> containing the list of files currently being viewed by the user.</td>
   </tr>
   <tr>
     <tr>
-    <td>`fileName`</td>
-    <td>An `NSString` containing the file last selected by the user.</td>
+    <td><tt>fileName</tt></td>
+    <td>An <tt>NSString</tt> containing the file last selected by the user.</td>
   </tr>
    <tr>
     <tr>
-    <td>`allowedFileTypes`</td>
+    <td><tt>allowedFileTypes</tt></td>
     <td>Coming Soon. Allows you to set the file types which can be displayed (like a filter).</td>
   </tr>
 
   <tr><th colspan="2" style="text-align:center;">Methods</th></tr>
   <tr>
     <td>Download File</td>
-    <td>Download a file from Dropbox to the Documents Directory. Returns a `BOOL` value of YES if the download is successful, NO if it is not. You may also want to implement the file `failedToDownloadFile` delegate method for more information on failed file downloads.
+    <td>Download a file from Dropbox to the Documents Directory. Returns a <tt>BOOL</tt> value of YES if the download is successful, NO if it is not. You may also want to implement the file <tt>failedToDownloadFile</tt> delegate method for more information on failed file downloads.
     <br /><br />
        <tt>- (BOOL)downloadFile:(DBMetadata *)file</tt>
     </td>
   </tr>
   <tr>
     <td>Create Share Link</td>
-    <td>Create a share link for the specified file in Dropbox. You'll need to implement the `didLoadShareLink` delegate method to get the share link of the specified file. You may also want to implement the `failedLoadingShareLinkWithError` delegate method for more information on share link creation errors.
+    <td>Create a share link for the specified file in Dropbox. You'll need to implement the <tt>didLoadShareLink</tt> delegate method to get the share link of the specified file. You may also want to implement the <tt>failedLoadingShareLinkWithError</tt> delegate method for more information on share link creation errors.
     <br /><br />
        <tt>- (void)loadShareLinkForFile:(DBMetadata*)file</tt>
     </td>
   </tr>
     <tr>
     <td>Update Download Progress</td>
-    <td>Use this method to update the download progress of a currently downloading file. This method is only needed if you implement the `selectedFile` delegate method.
+    <td>Use this method to update the download progress of a currently downloading file. This method is only needed if you implement the <tt>selectedFile</tt> delegate method.
     <br /><br />
        <tt>- (void)updateDownloadProgressTo:(CGFloat)progress</tt>
     </td>
@@ -144,6 +144,29 @@ Here are a few simple ways to customize the interface:
  - Use UITableView Prototype Cells to customize the TableView appearance. It is recommended that you set the cell type to `Subtitle`. This will allow DropboxBrowser to display file / folder names, last modified dates, and file sizes.  
  - Change the colors and properties in DropboxBrowserViewController's viewDidLoad method you can change the tint of the UINavigationBar, UIRefreshControl, and the position of the UIProgressView.  
  
+ ## License
+ The MIT License (MIT)
+
+Copyright (c) 2013  iRare Media
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
 ## Change Log
 This project is ready for primetime use in any iOS application. Just follow the steps above to integrate Dropbox Browser. Make sure to get your app approved for Production Status from the Dropbox Team before submitting to the AppStore. Here are a few key changes in the project:  
 
