@@ -144,7 +144,7 @@ Here are a few simple ways to customize the interface:
  - Use UITableView Prototype Cells to customize the TableView appearance. It is recommended that you set the cell type to `Subtitle`. This will allow DropboxBrowser to display file / folder names, last modified dates, and file sizes.  
  - Change the colors and properties in DropboxBrowserViewController's viewDidLoad method you can change the tint of the UINavigationBar, UIRefreshControl, and the position of the UIProgressView.  
  
- ## License
+## License
  The MIT License (MIT)
 
 Copyright (c) 2013  iRare Media
