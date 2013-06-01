@@ -9,84 +9,97 @@
 #import "DBBViewController.h"
 
 @interface DBBViewController ()
-{
-    DBRestClient *restClient;
-}
 
 @end
 
 @implementation DBBViewController
-@synthesize clearDocsBtn;
+@synthesize clearDocsBtn, navBar, imgView;
 
-#pragma mark - Setup
+//------------------------------------------------------------------------------------------------------------//
+//Region: View Lifecycle -------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
+#pragma mark - View Lifecycle
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    //Setup Background Color
     self.view.backgroundColor = [UIColor underPageBackgroundColor];
-    clearDocsBtn.hidden = NO;
-}
-
-#pragma mark - Dropbox
-
-- (IBAction)browseDropbox:(id)sender
-{
-    [self didPressLink];
-}
-
-- (void)didPressLink
-{
-    //Check if Dropbox is Setup
-    if (![[DBSession sharedSession] isLinked]) {
-        //Dropbox is not setup
-        [[DBSession sharedSession] linkFromController:self];
-        NSLog(@"Logging into Dropbox...");
+    
+    //Setup Navigation Bar Image
+    [navBar setBackgroundImage:[UIImage imageNamed:@"navBar"] forBarMetrics:UIBarMetricsDefault];
+    
+    //Setup Background Image
+    if ([[UIScreen mainScreen] bounds].size.height == 568) {
+        [imgView setImage:[UIImage imageNamed:@"Background-568h"]];
     } else {
-        //Dropbox has already been setup
-        
-        //Setup KioskDropboxPDFBrowserViewController
-        KioskDropboxPDFBrowserViewController *browser = [[KioskDropboxPDFBrowserViewController alloc] init];
-        [browser setDelegate:self];
-        
-        //Setup Storyboard. If you aren't using iPad, set the iPad Storyboard the same as the iPhone Storyboard. If you have an iPad-only project, set the iPhone Storyboard as NIL.
-        UIStoryboard *iPhoneStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:[NSBundle mainBundle]];
-        UIStoryboard *iPadStoryboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:[NSBundle mainBundle]];
-        
-        //Present Dropbox Browser
-        [KioskDropboxPDFBrowserViewController displayDropboxBrowserInPhoneStoryboard:iPhoneStoryboard
-                                                displayDropboxBrowserInPadStoryboard:iPadStoryboard
-                                                                              onView:self
-                                                               withPresentationStyle:UIModalPresentationFormSheet
-                                                                 withTransitionStyle:UIModalTransitionStyleFlipHorizontal
-                                                                        withDelegate:self];
+        [imgView setImage:[UIImage imageNamed:@"Background"]];
     }
+    
+    [super viewDidLoad];
 }
 
-- (DBRestClient *)restClient
-{
-    if (!restClient) {
-        restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-        restClient.delegate = self;
-    }
-    return restClient;
+- (void)viewWillAppear:(BOOL)animated {
+    clearDocsBtn.hidden = NO;
+    [super viewWillAppear:YES];
 }
 
-- (void)removeDropboxBrowser
-{
-    //This is where you can handle the cancellation of selection, ect.
+- (void)viewDidUnload {
+    [self setClearDocsBtn:nil];
+    [self setNavBar:nil];
+    [self setImgView:nil];
+    [super viewDidUnload];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)done {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)refreshLibrarySection
-{
-    NSLog(@"Final Filename: %@", [KioskDropboxPDFRootViewController fileName]);
+//------------------------------------------------------------------------------------------------------------//
+//Region: Dropbox --------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
+#pragma mark - Dropbox
+
+- (IBAction)browseDropbox:(id)sender {
+    DropboxBrowserViewController *db = [[DropboxBrowserViewController alloc] init];
+    [db setupAllowedFileTypes:[NSMutableArray arrayWithObjects:@"pdf", nil]];
+    [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
 }
 
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName {
+    NSLog(@"Downloaded %@", fileName);
+}
+
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedToDownloadFile:(NSString *)fileName {
+    NSLog(@"Failed to download %@", fileName);
+}
+
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser fileConflictError:(NSDictionary *)conflict {
+    DBMetadata *file = [conflict objectForKey:@"file"];
+    NSString *errorMessage = [conflict objectForKey:@"message"];
+    NSLog(@"Conflict error with %@\n%@ last modified on %@\nError: %@", file.filename, file.filename, file.lastModifiedDate, errorMessage);
+}
+
+- (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser {
+    //This method is called after Dropbox Browser is dismissed. Do NOT dismiss DropboxBrowser from this method
+    //Perform any UI updates here to display any new data from Dropbox Browser
+    // ex. Update a UITableView that shows downloaded files or get the name of the most recently selected file:
+    //     NSString *fileName = [DropboxBrowserViewController fileName];
+}
+
+//------------------------------------------------------------------------------------------------------------//
+//Region: Documents ------------------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
 #pragma mark - Documents
 
-- (IBAction)clearDocs:(id)sender
-{
+- (IBAction)clearDocs:(id)sender {
+    //Clear all files from the local documents folder. This is helpful for testing purposes
     dispatch_queue_t delete = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(delete, ^{
         //Background Process;
@@ -94,28 +107,17 @@
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSFileManager *fileMgr = [NSFileManager defaultManager];
         NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:nil];
+        
         for (NSString *filename in fileArray)  {
             [fileMgr removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:NULL];
         }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             //Main UI Process
             clearDocsBtn.titleLabel.text = @"Cleared Docs";
             clearDocsBtn.hidden = YES;
         });
     });
-}
-
-#pragma mark - iOS Methods
-
-- (void)viewDidUnload {
-    [self setClearDocsBtn:nil];
-    [super viewDidUnload];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end
