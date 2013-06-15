@@ -42,7 +42,8 @@
 @implementation DropboxBrowserViewController
 @synthesize downloadProgressView;
 @synthesize hud, currentPath;
-@synthesize rootViewDelegate, list, allowedFileTypes;
+@synthesize rootViewDelegate, list;
+@synthesize allowedFileTypes;
 static NSString *currentFileName = nil;
 
 //------------------------------------------------------------------------------------------------------------//
@@ -54,14 +55,12 @@ static NSString *currentFileName = nil;
     return currentFileName;
 }
 
-- (void)setAllowedFileTypes:(NSMutableArray *)allowedFiles {
-    allowedFileTypes = allowedFiles;
-    NSLog(@"Allowed Files From Class: %@\nAllowed Files Set: %@", allowedFiles, allowedFileTypes);
-}
-
-- (void)setupAllowedFileTypes:(NSMutableArray *)allowedFiles {
-    allowedFileTypes = allowedFiles;
-    NSLog(@"Allowed Files From Class: %@\nAllowed Files Set: %@", allowedFiles, allowedFileTypes);
+- (void)setAllowedFiles:(NSArray *)allowedFiles {
+    //This is a beta feature. Please refrain from using until fixed.
+    //If you're interested in helping solve the issue - here's a run down of why this is still in beta:
+    //When this method is called, the allowedFileTypes can be set and retrieved properly, but when loading files allowedFileTypes returns NULL
+    self.allowedFileTypes = [[NSArray alloc] initWithArray:allowedFiles];
+    NSLog(@"Allowed Files: %@", self.allowedFileTypes);
 }
 
 - (void)moveToParentDirectory {
@@ -74,6 +73,7 @@ static NSString *currentFileName = nil;
         self.navigationItem.leftBarButtonItem = nil;
         self.title = @"Dropbox";
     } else {
+        leftButton.image = [UIImage imageNamed:@"BackButton"];
         leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonSystemItemDone target:self action:@selector(moveToParentDirectory)];
         self.navigationItem.leftBarButtonItem = leftButton;
         self.title = [currentPath lastPathComponent];
@@ -87,10 +87,18 @@ static NSString *currentFileName = nil;
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark  - View Lifecycle
 
-- (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
-    if (self) {
+- (id)init {
+	self = [super init];
+	if (self)  {
         //Custom initialization
+	}
+	return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        //Custom Init
     }
     return self;
 }
@@ -98,7 +106,6 @@ static NSString *currentFileName = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    #warning Customize UIRefreshControl, UIProgressView, and UINavigationBar here
     self.title = @"Dropbox";
     self.currentPath = @"/";
     
@@ -107,6 +114,8 @@ static NSString *currentFileName = nil;
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navBar"] forBarMetrics:UIBarMetricsDefault];
     
     //Set Bar Button
+    [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"DoneButton"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[UIImage imageNamed:@"BackButton"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonSystemItemDone target:self action:@selector(removeDropboxBrowser)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
@@ -258,51 +267,54 @@ static NSString *currentFileName = nil;
     if (indexPath == nil)
         return;
     
-    DBMetadata *file = (DBMetadata*)[self.list objectAtIndex:indexPath.row];
-    
-    if ([file isDirectory]) {
-        //Show Back Button for a new directory
-        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
-                                                      style:UIBarButtonItemStyleDone
-                                                     target:self
-                                                     action:@selector(moveToParentDirectory)];
-        self.navigationItem.leftBarButtonItem = leftButton;
-        
-        //Push new tableviewcontroller
-        NSString *subpath = [self.currentPath stringByAppendingPathComponent:file.filename];
-        self.currentPath = subpath;
-        self.title = [currentPath lastPathComponent];
-        
-        //Start progress indicator
-        if ([UIRefreshControl class]) {
-            [self.refreshControl beginRefreshing];
-            [self.tableView setContentOffset:CGPointMake(0, -self.refreshControl.frame.size.height) animated:YES];
-        } else {
-            [NSObject cancelPreviousPerformRequestsWithTarget:self];
-            [MBProgressHUD hideHUDForView:self.view animated:YES];
-        
-            self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            self.hud.labelText = @"Loading Data...";
-            [self performSelector:@selector(timeout:) withObject:nil afterDelay:30.0];
-        }
-        
-        [self listDirectoryAtPath:subpath];
+    if ([list count] == 0) {
+        //Do nothing, there are no items in the list. We don't want to download a file that doesn't exist (that'd cause a crash)
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        
-        NSLog(@"Path: %@", currentPath);
-        
     } else {
+        DBMetadata *file = (DBMetadata*)[self.list objectAtIndex:indexPath.row];
         
-        currentFileName = file.filename;
-        
-        // check if our delegate handles file selection
-        if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:selectedFile:)]) {
-            [self.rootViewDelegate dropboxBrowser:self selectedFile:file];
+        if ([file isDirectory]) {
+            //Show Back Button for a new directory
+            leftButton.image = [UIImage imageNamed:@"BackButton"];
+            leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(moveToParentDirectory)];
+            self.navigationItem.leftBarButtonItem = leftButton;
+            
+            //Push new tableviewcontroller
+            NSString *subpath = [self.currentPath stringByAppendingPathComponent:file.filename];
+            self.currentPath = subpath;
+            self.title = [currentPath lastPathComponent];
+            
+            //Start progress indicator
+            if ([UIRefreshControl class]) {
+                [self.refreshControl beginRefreshing];
+                [self.tableView setContentOffset:CGPointMake(0, -self.refreshControl.frame.size.height) animated:YES];
+            } else {
+                [NSObject cancelPreviousPerformRequestsWithTarget:self];
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+                
+                self.hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+                self.hud.labelText = @"Loading Data...";
+                [self performSelector:@selector(timeout:) withObject:nil afterDelay:30.0];
+            }
+            
+            [self listDirectoryAtPath:subpath];
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            
+            NSLog(@"Path: %@", currentPath);
+            
+        } else {
+            
+            currentFileName = file.filename;
+            
+            //Check if our delegate handles file selection
+            if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:selectedFile:)]) {
+                [self.rootViewDelegate dropboxBrowser:self selectedFile:file];
+            } else {
+                //Download file
+                [self downloadFile:file];
+            }
         }
-        else {
-            //Download file
-            [self downloadFile:file];
-        }
+
     }
 }
 
@@ -529,7 +541,7 @@ static NSString *currentFileName = nil;
     if (metadata.isDirectory) {
         for (DBMetadata *file in metadata.contents) {
             //Check if directory or document
-            NSLog(@"Allowed File Types: %@", allowedFileTypes);
+            NSLog(@"Metadata Allowed File Types: %@", self.allowedFileTypes);
             if ([file isDirectory] || ![file.filename hasSuffix:@".exe"]) //|| [allowedFileTypes containsObject:[file.filename pathExtension]])
                 [dirList addObject:file];
         }

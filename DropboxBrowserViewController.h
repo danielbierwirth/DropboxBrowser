@@ -37,7 +37,6 @@
 @protocol DropboxBrowserDelegate;
 @interface DropboxBrowserViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIAlertViewDelegate> {
     DBRestClient *restClient;
-    NSMutableArray *allowedFileTypes;
 }
 
 @property (nonatomic, weak) id <DropboxBrowserDelegate> rootViewDelegate;
@@ -45,10 +44,9 @@
 //Current File Path, Name, and List
 @property (nonatomic, strong) NSString *currentPath;
 @property (nonatomic, copy, readwrite) NSMutableArray *list;
-@property (readwrite, strong, nonatomic, setter = setAllowedFileTypes:) NSMutableArray *allowedFileTypes;
+@property (nonatomic, strong) NSArray *allowedFileTypes;
 - (void)setList:(NSMutableArray *)newList;
-- (void)setAllowedFileTypes:(NSMutableArray *)allowedFiles;
-- (void)setupAllowedFileTypes:(NSMutableArray *)allowedFiles;
+//- (void)setAllowedFiles:(NSArray *)allowedFiles;
 + (NSString *)fileName;
 
 //Busy indicator while loading new directory info - No longer used in iOS 6+
