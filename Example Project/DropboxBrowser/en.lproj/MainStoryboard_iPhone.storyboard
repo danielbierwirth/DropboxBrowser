@@ -14,7 +14,7 @@
                         <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Background-568h@2x.png" id="yTi-dd-0qy">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="Default-568h@2x.png" id="yTi-dd-0qy">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
@@ -400,7 +400,7 @@ DropboxBrowser is currently in version 4.2. Check GitHub for full details and ch
         </scene>
     </scenes>
     <resources>
-        <image name="Background-568h@2x.png" width="640" height="1096"/>
+        <image name="Default-568h@2x.png" width="640" height="1096"/>
     </resources>
     <classes>
         <class className="DBBViewController" superclassName="UIViewController">

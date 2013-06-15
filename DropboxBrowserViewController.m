@@ -69,12 +69,12 @@ static NSString *currentFileName = nil;
     self.currentPath = filePath;
     
     if ([self.currentPath isEqualToString:@"/"]) {
-        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonSystemItemDone target:self action:@selector(moveToParentDirectory)];
+        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(moveToParentDirectory)];
         self.navigationItem.leftBarButtonItem = nil;
         self.title = @"Dropbox";
     } else {
         leftButton.image = [UIImage imageNamed:@"BackButton"];
-        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonSystemItemDone target:self action:@selector(moveToParentDirectory)];
+        leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(moveToParentDirectory)];
         self.navigationItem.leftBarButtonItem = leftButton;
         self.title = [currentPath lastPathComponent];
     }
@@ -116,7 +116,7 @@ static NSString *currentFileName = nil;
     //Set Bar Button
     [[UIBarButtonItem appearance] setBackgroundImage:[UIImage imageNamed:@"DoneButton"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:[UIImage imageNamed:@"BackButton"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonSystemItemDone target:self action:@selector(removeDropboxBrowser)];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(removeDropboxBrowser)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
     //Setup Search Bar - Coming Soon
@@ -193,7 +193,7 @@ static NSString *currentFileName = nil;
     self.hud.detailsLabelText = @"Please try again later.";
     self.hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
 	self.hud.mode = MBProgressHUDModeCustomView;
-    [self performSelector:@selector(dismissHUD:) withObject:nil afterDelay:3.0];
+    [self performSelector:@selector(dismissHUD) withObject:nil afterDelay:3.0];
     if ([UIRefreshControl class]) {
         [self.refreshControl endRefreshing];
         [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
