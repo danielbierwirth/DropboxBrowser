@@ -109,6 +109,9 @@ static NSString *currentFileName = nil;
     self.title = @"Dropbox";
     self.currentPath = @"/";
     
+    //Register for cell reuse
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"DropboxBrowserCell"];
+    
     //Setup Navigation Bar color
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:0.0/255.0f green:122.0/255.0f blue:223.0/255.0f alpha:1.0f];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"navBar"] forBarMetrics:UIBarMetricsDefault];
