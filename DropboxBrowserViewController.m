@@ -55,12 +55,12 @@ static NSString *currentFileName = nil;
     return currentFileName;
 }
 
-- (void)setAllowedFiles:(NSArray *)allowedFiles {
-    //This is a beta feature. Please refrain from using until fixed.
-    //If you're interested in helping solve the issue - here's a run down of why this is still in beta:
-    //When this method is called, the allowedFileTypes can be set and retrieved properly, but when loading files allowedFileTypes returns NULL
-    self.allowedFileTypes = [[NSArray alloc] initWithArray:allowedFiles];
-    NSLog(@"Allowed Files: %@", self.allowedFileTypes);
+- (NSArray *) allowedFileTypes
+{
+    if (allowedFileTypes == nil) {
+        allowedFileTypes = [NSArray array];
+    }
+    return allowedFileTypes;
 }
 
 - (void)moveToParentDirectory {
@@ -540,10 +540,12 @@ static NSString *currentFileName = nil;
     
     if (metadata.isDirectory) {
         for (DBMetadata *file in metadata.contents) {
-            //Check if directory or document
-            NSLog(@"Metadata Allowed File Types: %@", self.allowedFileTypes);
-            if ([file isDirectory] || ![file.filename hasSuffix:@".exe"]) //|| [allowedFileTypes containsObject:[file.filename pathExtension]])
-                [dirList addObject:file];
+            if (![file.filename hasSuffix:@".exe"]) {
+                // add to list if not '.exe' and either the file is a directory, there are no allowed files set or the file ext is contained in the allowed types
+                if ([file isDirectory] || allowedFileTypes.count == 0 || [allowedFileTypes containsObject:[file.filename pathExtension]] ) {
+                    [dirList addObject:file];
+                }
+            }
         }
     }
     

@@ -66,6 +66,22 @@
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - Dropbox
 
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"showDropboxBrowser"])
+    {
+        // Get reference to the destination view controller
+        UINavigationController *navigationController = [segue destinationViewController];
+        
+        // Pass any objects to the view controller here, like...
+        
+        DropboxBrowserViewController *dropboxBrowser = (DropboxBrowserViewController *) navigationController.topViewController;
+        
+        #warning create an array of allowed types. (N.B. to allow all file types simply don't set the property)
+        dropboxBrowser.allowedFileTypes = @[@"docx", @"pdf"];
+        
+    }}
+
 - (IBAction)browseDropbox:(id)sender {
     [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
 }

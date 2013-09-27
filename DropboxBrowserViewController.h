@@ -46,7 +46,6 @@
 @property (nonatomic, copy, readwrite) NSMutableArray *list;
 @property (nonatomic, strong) NSArray *allowedFileTypes;
 - (void)setList:(NSMutableArray *)newList;
-//- (void)setAllowedFiles:(NSArray *)allowedFiles;
 + (NSString *)fileName;
 
 //Busy indicator while loading new directory info - No longer used in iOS 6+
