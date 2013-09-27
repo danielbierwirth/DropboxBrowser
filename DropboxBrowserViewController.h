@@ -45,6 +45,7 @@
 @property (nonatomic, strong) NSString *currentPath;
 @property (nonatomic, copy, readwrite) NSMutableArray *list;
 @property (nonatomic, strong) NSArray *allowedFileTypes;
+
 - (void)setList:(NSMutableArray *)newList;
 + (NSString *)fileName;
 
@@ -57,7 +58,7 @@
 @property (strong, nonatomic) UIProgressView *downloadProgressView;
 
 //Download Operations
-- (BOOL)downloadFile:(DBMetadata *)file;
+- (BOOL)downloadFile:(DBMetadata *)file replaceLocalVersion: (BOOL) replaceLocalVersion;
 - (void)loadShareLinkForFile:(DBMetadata *)file;
 - (void)downloadedFile;
 - (void)startDownloadFile;
@@ -93,7 +94,7 @@
 @optional
 
 //Successful File Download
-- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName;
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName isLocalFileOverwritten: (BOOL) isLocalFileOverwritten;
 
 //User selected a file - automatically downloads file if not implemented. Implementing this method will require you to download or manage the selection on your own
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser selectedFile:(DBMetadata *)file;

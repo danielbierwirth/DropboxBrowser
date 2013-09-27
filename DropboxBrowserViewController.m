@@ -30,9 +30,15 @@
 
 #import "DropboxBrowserViewController.h"
 
+// view tags to differeniate alert views
+static NSUInteger const kDBSignInAlertViewTag = 1;
+static NSUInteger const kFileExistsAlertViewTag = 2;
+
 @interface DropboxBrowserViewController () <DBRestClientDelegate> {
     //Back Button
     UIBarButtonItem *leftButton;
+    DBMetadata *selectedFile;
+    BOOL isLocalFileOverwritten;
 }
 
 - (DBRestClient *)restClient;
@@ -91,6 +97,7 @@ static NSString *currentFileName = nil;
 	self = [super init];
 	if (self)  {
         //Custom initialization
+        isLocalFileOverwritten = NO;
 	}
 	return self;
 }
@@ -167,6 +174,8 @@ static NSString *currentFileName = nil;
                                                            delegate:self
                                                   cancelButtonTitle:@"Cancel"
                                                   otherButtonTitles:@"Sign In to Dropbox", nil];
+        alertView.tag = kDBSignInAlertViewTag;
+        
         [alertView show];
     } else {
         //Start progress indicator
@@ -264,6 +273,7 @@ static NSString *currentFileName = nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     if (indexPath == nil)
         return;
     
@@ -271,16 +281,16 @@ static NSString *currentFileName = nil;
         //Do nothing, there are no items in the list. We don't want to download a file that doesn't exist (that'd cause a crash)
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     } else {
-        DBMetadata *file = (DBMetadata*)[self.list objectAtIndex:indexPath.row];
+            selectedFile = (DBMetadata*)[self.list objectAtIndex:indexPath.row];
         
-        if ([file isDirectory]) {
+        if ([selectedFile isDirectory]) {
             //Show Back Button for a new directory
             leftButton.image = [UIImage imageNamed:@"BackButton"];
             leftButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStyleBordered target:self action:@selector(moveToParentDirectory)];
             self.navigationItem.leftBarButtonItem = leftButton;
             
             //Push new tableviewcontroller
-            NSString *subpath = [self.currentPath stringByAppendingPathComponent:file.filename];
+            NSString *subpath = [self.currentPath stringByAppendingPathComponent:selectedFile.filename];
             self.currentPath = subpath;
             self.title = [currentPath lastPathComponent];
             
@@ -304,14 +314,14 @@ static NSString *currentFileName = nil;
             
         } else {
             
-            currentFileName = file.filename;
+            currentFileName = selectedFile.filename;
             
             //Check if our delegate handles file selection
             if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:selectedFile:)]) {
-                [self.rootViewDelegate dropboxBrowser:self selectedFile:file];
+                [self.rootViewDelegate dropboxBrowser:self selectedFile:selectedFile];
             } else {
                 //Download file
-                [self downloadFile:file];
+                [self downloadFile:selectedFile replaceLocalVersion:NO];
             }
         }
 
@@ -355,15 +365,36 @@ static NSString *currentFileName = nil;
 #pragma mark - AlertView Delegate
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    NSString *buttonTitle = [alertView buttonTitleAtIndex:buttonIndex];
-    if ([buttonTitle isEqualToString:@"Sign In to Dropbox"]) {
-        [[DBSession sharedSession] linkFromController:self];
-    } else if ([buttonTitle isEqualToString:@"Cancel"]) {
-        if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed:)])
-            [[self rootViewDelegate] dropboxBrowserDismissed:self];
+    
+    if (alertView.tag == kDBSignInAlertViewTag) {
         
-        [self dismissViewControllerAnimated:YES completion:nil];
+        switch (buttonIndex) {
+            case 0:
+                if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed:)]) {
+                    [[self rootViewDelegate] dropboxBrowserDismissed:self];
+                }
+                [self dismissViewControllerAnimated:YES completion:nil];
+                break;
+            case 1:
+                [[DBSession sharedSession] linkFromController:self];
+                break;
+            default:
+                break;
+        }
+
+    } else if (alertView.tag == kFileExistsAlertViewTag) {
+        switch (buttonIndex) {
+            case 0:
+                break;
+            case 1:
+                // user selected overwrite
+                [self downloadFile:selectedFile replaceLocalVersion:YES];
+                break;
+            default:
+                break;
+        }
     }
+    
 }
 
 //------------------------------------------------------------------------------------------------------------//
@@ -399,6 +430,9 @@ static NSString *currentFileName = nil;
 }
 
 - (void)downloadedFile {
+    
+    self.tableView.userInteractionEnabled = YES;
+    
     [self.downloadProgressView setHidden:YES];
     [self.downloadProgressView setProgress:0.0];
     self.navigationItem.title = @"Dropbox";
@@ -410,8 +444,8 @@ static NSString *currentFileName = nil;
                                               otherButtonTitles:nil];
     [alertView show];
 
-    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:downloadedFile:)])
-        [[self rootViewDelegate] dropboxBrowser:self downloadedFile:currentFileName];
+    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:downloadedFile:isLocalFileOverwritten:)])
+        [[self rootViewDelegate] dropboxBrowser:self downloadedFile:currentFileName isLocalFileOverwritten:isLocalFileOverwritten];
     
 }
 
@@ -421,6 +455,10 @@ static NSString *currentFileName = nil;
 }
 
 - (void)downloadedFileFailed {
+    
+    self.tableView.userInteractionEnabled = YES;
+
+    
     [self.downloadProgressView setHidden:YES];
     self.navigationItem.title = [currentPath lastPathComponent];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
@@ -469,18 +507,31 @@ static NSString *currentFileName = nil;
     return [[DBSession sharedSession] isLinked];
 }
 
-- (BOOL)downloadFile:(DBMetadata *)file {
+- (BOOL)downloadFile:(DBMetadata *)file replaceLocalVersion: (BOOL) replaceLocalVersion {
     BOOL res = NO;
     
     if (!file.isDirectory) {
+       
         NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSString *localPath = [documentsPath stringByAppendingPathComponent:file.filename];
+        
+        if (replaceLocalVersion) {
+            isLocalFileOverwritten = YES;
+            [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil];
+        } else {
+            isLocalFileOverwritten = NO;
+        }
+        
         if(![[NSFileManager defaultManager] fileExistsAtPath:localPath]) {
+            
+            self.tableView.userInteractionEnabled = NO;
+            
             [self startDownloadFile];
             res = YES;
             [[self restClient] loadFile:file.path intoPath:localPath];
         } else {
-            NSURL *fileUrl = [NSURL URLWithString:localPath];
+            // use [NSURL fileURLWithPath:] with local files, otherwise NSURLContentModificationDateKey returns null
+            NSURL *fileUrl = [NSURL fileURLWithPath:localPath];
             NSDate *fileDate;
             NSError *error;
             [fileUrl getResourceValue:&fileDate forKey:NSURLContentModificationDateKey error:&error];
@@ -491,9 +542,10 @@ static NSString *currentFileName = nil;
                     //Dropbox File is older than local file
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Already Downloaded"
                                                                         message:[NSString stringWithFormat:@"%@ is already in the Documents folder.", file.filename]
-                                                                       delegate:nil
-                                                              cancelButtonTitle:@"Okay"
-                                                              otherButtonTitles:nil];
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"Cancel"
+                                                              otherButtonTitles:@"Overwrite", nil];
+                    alertView.tag = kFileExistsAlertViewTag;
                     [alertView show];
                     
                     NSDictionary *conflict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:file, @"File already exists in the Documents folder", nil] forKeys:[NSArray arrayWithObjects:@"file", @"message", nil]];
@@ -506,9 +558,11 @@ static NSString *currentFileName = nil;
                     NSLog(@"Dropbox File is newer than local file");
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Conflict"
                                                                         message:[NSString stringWithFormat:@"%@ exists in both Dropbox and the Documents folder. The one in Dropbox is newer.", file.filename]
-                                                                       delegate:nil
-                                                              cancelButtonTitle:@"Okay"
-                                                              otherButtonTitles:nil];
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"Cancel"
+                                                              otherButtonTitles:@"Overwrite", nil];
+                    alertView.tag = kFileExistsAlertViewTag;
+
                     [alertView show];
                     
                     NSDictionary *conflict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:file, @"File exists in Dropbox and the Documents folder. The Dropbox file is newer.", nil] forKeys:[NSArray arrayWithObjects:@"file", @"message", nil]];

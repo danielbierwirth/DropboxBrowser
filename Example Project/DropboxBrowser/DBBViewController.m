@@ -79,6 +79,7 @@
         
         #warning create an array of allowed types. (N.B. to allow all file types simply don't set the property)
         dropboxBrowser.allowedFileTypes = @[@"docx", @"pdf"];
+        dropboxBrowser.rootViewDelegate = self;
         
     }}
 
@@ -86,8 +87,8 @@
     [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
 }
 
-- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName {
-    NSLog(@"Downloaded %@", fileName);
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName isLocalFileOverwritten:(BOOL)isLocalFileOverwritten{
+    NSLog(@"Downloaded %@ overwritten = %d", fileName, isLocalFileOverwritten);
 }
 
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedToDownloadFile:(NSString *)fileName {
