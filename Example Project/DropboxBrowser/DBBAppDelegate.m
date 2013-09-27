@@ -13,8 +13,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     //Setup Dropbox Here with YOUR OWN APP info
     //#error Dropbox App Key and Secret are required for basic functionality. Add them below AND in the Info.plist file in the URL-Schemes section. Replace the "APP_KEY" text with your app key (make sure to leave the "db-" there)
-    DBSession* dbSession = [[DBSession alloc] initWithAppKey:@"APP_KEY" appSecret:@"APP_SECRET" root:kDBRootAppFolder];
+    DBSession* dbSession = [[DBSession alloc] initWithAppKey:@"qct8rlh22noazpu" appSecret:@"cp770lwfixp0rq4" root:kDBRootAppFolder];
     [DBSession setSharedSession:dbSession];
+#warning remove before commit
+    //[[DBSession sharedSession] unlinkAll];
     
     //Override point for customization after application launch.
     return YES;
