@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		990EEF9E17F648FA00A657DB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 990EEF9D17F648FA00A657DB /* Images.xcassets */; };
+		99362DC1184720B700B48B48 /* Changelog.md in Resources */ = {isa = PBXBuildFile; fileRef = 99362DBE184720B700B48B48 /* Changelog.md */; };
+		99362DC2184720B700B48B48 /* License.md in Resources */ = {isa = PBXBuildFile; fileRef = 99362DBF184720B700B48B48 /* License.md */; };
+		99362DC3184720B700B48B48 /* Readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 99362DC0184720B700B48B48 /* Readme.md */; };
 		999D32A517108B9B00A9FCB6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE352168B7B780071241C /* CoreGraphics.framework */; };
 		999D32A617108BA100A9FCB6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3AF168B7E090071241C /* QuartzCore.framework */; };
 		999D32A717108BA900A9FCB6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3AD168B7DFE0071241C /* Security.framework */; };
@@ -25,6 +28,9 @@
 
 /* Begin PBXFileReference section */
 		990EEF9D17F648FA00A657DB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		99362DBE184720B700B48B48 /* Changelog.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.md; path = ../Changelog.md; sourceTree = "<group>"; };
+		99362DBF184720B700B48B48 /* License.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = License.md; path = ../License.md; sourceTree = "<group>"; };
+		99362DC0184720B700B48B48 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Readme.md; path = ../Readme.md; sourceTree = "<group>"; };
 		99DDE34B168B7B780071241C /* DropboxBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DropboxBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		99DDE34E168B7B780071241C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		99DDE350168B7B780071241C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -67,6 +73,9 @@
 		99DDE342168B7B780071241C = {
 			isa = PBXGroup;
 			children = (
+				99362DBE184720B700B48B48 /* Changelog.md */,
+				99362DBF184720B700B48B48 /* License.md */,
+				99362DC0184720B700B48B48 /* Readme.md */,
 				99DDE354168B7B780071241C /* DropboxBrowser */,
 				99DDE34D168B7B780071241C /* Frameworks */,
 				99DDE34C168B7B780071241C /* Products */,
@@ -185,7 +194,10 @@
 			files = (
 				99DDE359168B7B780071241C /* InfoPlist.strings in Resources */,
 				99DDE368168B7B780071241C /* MainStoryboard_iPhone.storyboard in Resources */,
+				99362DC3184720B700B48B48 /* Readme.md in Resources */,
 				990EEF9E17F648FA00A657DB /* Images.xcassets in Resources */,
+				99362DC1184720B700B48B48 /* Changelog.md in Resources */,
+				99362DC2184720B700B48B48 /* License.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

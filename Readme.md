@@ -1,8 +1,6 @@
 # Dropbox Browser
 Dropbox Browser provides a simple and effective way to browse, view, and download files using the iOS Dropbox SDK. Add the required files to your Xcode iOS project, setup Dropbox, add one simple method and a navigation controller and now you've got a wonderful View Controller that lets users browse their Dropbox files and folders, and even download them. 
 
-Note that as of July 9, 2013 - Dropbox has an official API similar to this library. The new *Drop ins* Chooser API allows you add official Dropbox File Choosers and Savers to your app. You may use the [new API available here](https://www.dropbox.com/developers/dropins), or you can continue using Dropbox Browser for easier integration, added features, etc.
-
 <img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
 
 If you like the project, please <a href=https://github.com/iRareMedia/DropboxBrowser>star it</a> on GitHub!
@@ -12,18 +10,18 @@ To properly integrate DropboxBrowser into your project follow the instructions b
  
 1. Add the following Frameworks, already available in Xcode, to your project:  
     - Security  
-    - QuartzCore 
-2. Add the DropboxSDK Framework to your project. The latest version of the SDK can be <a href=https://www.dropbox.com/developers>downloaded here</a> | DropboxBrowser uses version 1.3.5 of the Dropbox SDK  
-3. Register as a developer on Dropbox and setup your App. If you've already done this, skip this step. If you haven't already done this, <a href=https://www.dropbox.com/developers/start/setup#ios>get setup</a>.  
-4. Setup your Dropbox App Key and Secret. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are <a href=https://www.dropbox.com/developers/start/authentication#ios>available here</a>  
-5. Add all of the DropboxBrowser files to your project
+    - QuartzCore  
+    - DropboxSDK Framework The latest version of the SDK can be <a href=https://www.dropbox.com/developers>downloaded here</a> | DropboxBrowser uses version 1.3.9 of the Dropbox SDK  
+2. Register as a developer on Dropbox and setup your App. If you've already done this, skip this step. If you haven't already done this, <a href=https://www.dropbox.com/developers/start/setup#ios>get setup</a>.  
+3. Setup your Dropbox App Key and Secret. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are <a href=https://www.dropbox.com/developers/start/authentication#ios>available here</a>  
+4. Add all of the DropboxBrowser files to your project
 	- `DropboxBrowserViewController` Implementation (.m) and Header (.h)
 	- Make sure to include the "Graphics" and "Utilities" folders
-6. In your ViewController's header file, add the following import statement: `#import "DropboxBrowserViewController.h"`. Also add the following delegate: `DropboxBrowserDelegate`.
-7. Edit the required interface files. In your storyboard, add the following UI Objects from the Objects Library:
+5. In your ViewController's header file, add the following import statement: `#import "DropboxBrowserViewController.h"`. Also add the following delegate: `DropboxBrowserDelegate`.
+6. Edit the required interface files. In your storyboard, add the following UI Objects from the Objects Library:
     - Navigation Controller  
-8.  Select the Table View Controller just added along with the Navigation Controller and change the class to `DropboxRootViewController` using the Identity Inspector.  
-9. In your Implementation File (.m), add a method / action that displays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox. Dropbox Browser handles authentication and login.  
+7.  Select the Table View Controller just added along with the Navigation Controller and change the class to `DropboxRootViewController` using the Identity Inspector.  
+8. In your Implementation File (.m), add a method / action that displays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox. Dropbox Browser handles authentication and login.  
 
 ## Delegates, Methods, and Properties
 Dropbox Browser provides many paths to customization and control. DropboxBrowser has seven delegate methods available for use - they are all optional. There are multiple properties which can easily be retrieved and set. A handful of methods are available for you to call on your own - however they are not required for use. 
@@ -140,101 +138,3 @@ Here are a few simple ways to customize the interface:
  - Swap any images (PNGs) included with Dropbox Browser with your own. Use the same size image with the exact same name.  
  - Use UITableView Prototype Cells to customize the TableView appearance. It is recommended that you set the cell type to `Subtitle`. This will allow DropboxBrowser to display file / folder names, last modified dates, and file sizes.  
  - Change the colors and properties in DropboxBrowserViewController's viewDidLoad method you can change the tint of the UINavigationBar, UIRefreshControl, and the position of the UIProgressView.  
- 
-## License
- The MIT License (MIT)
-
-Copyright (c) 2013  iRare Media
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-
-## Change Log
-This project is ready for primetime use in any iOS application. Just follow the steps above to integrate Dropbox Browser. Make sure to get your app approved for Production Status from the Dropbox Team before submitting to the AppStore. Here are a few key changes in the project:  
-
-**Version 4.2**  
- - Create file share links using the `loadShareLinkForFile` method. Added by <a href=https://github.com/ekurutepe>ekurutepe</a>.  
- - New delegate methods help create and process share links. Added by <a href=https://github.com/ekurutepe>ekurutepe</a>.  
- - Updated delegate names and properties. Now delegates have more conventional names and provide more information. Make sure you re-implement the updated delegate methods. The old ones have been marked as depreciated.  
- - Fixed a major bug where subdirectories were not loaded properly. Thank you <a href=https://github.com/ekurutepe>ekurutepe</a>!
- 
-**Version 4.1**  
- - DropboxBrowser now handles authentication and login with Dropbox. There is no need to check if the user is logged in to Dropbox before presenting the DropboxBrowser. If the user is not logged in, DropboxBrowser will prompt the user to do so. If the user opts-out of login then DropboxBrowser will dismiss itself. However, you may still handle login operations yourself.  
- - Updated delegate names  
- - Added code comments and standardized header definitions
-
-**Version 4.0**  
- - Code reorganized, cleaned-up, and condensed. DropboxBrowser is now one easy-to-use class (previously three classes with complex delegate calls)  
- - New icon, graphics, and help menu for example project  
- - Added Icons for over 100 types of files and folders supported by Dropbox - proper icon is shown next to each file  
- - Added four new delegate methods and depreciated older methods  
- - New TableView animations - changes in directories are now animated  
- - New Navigation Bar - new design, also shows title of current folder  
- - Simplified Navigation Controller customization. Please refer to the new setup and integration procedures  
- - Updated Refresh Control - now the refresh control actually fetches updates from Dropbox and displays them  
- - Removed Loading HUD for iOS 6+ users - the refresh control now appears instead of the black overlay. If you support versions lower than iOS 6, the HUD will be used.  
- - Fixed Done Button Bug where it may randomly disappear or reappear
- - Fixed Back Button issue where the user could back up past the Root Directory  
- - Fixed TableView Subtitle information. Formatting now mimics the Dropbox App
- - Fixed Download Progress View issue where the download progress would not reset after each download  
- - Major Performance Improvements
- - Added open-source license (MIT license)  
-
-**Version 3.0**  
- - Code reorganized, cleaned-up, and many comments have been added  
- - Back button now goes up one level instead of returning to the Root Directory. Back button also only appears when the user is not in the Root Directory (i.e. they have somewhere to back up to).
- - Improved Download Progress View. Now centered in the Navigation Bar and hides NavBar title when shown.
- - Any file type is shown in DropboxBrowser - no file types are excluded
- - Duplicate `@implementation` calls have been removed and condensed into one implementation  
- - New iOS 6 features including `UIRefreshControl` have been added  
- - New design. Removed accessory buttons from UITableViewCells. Updated graphics. Added Dropbox-esque tint to `UINavgationBar` and `UIRefreshControl`  
- - Sample project now has an icon and uses Autolayout instead of Autosizing (may have caused build errors for iOS 5 in older versions of DropboxBrowser)  
- - Dropbox SDK updated to version 1.3.4  
- - Renamed classes. Generally removed `Kiosk` and `PDF` from all class names and delegates.
- - Numerous minor bug fixes and improvements
- - Improved performance  
-
-**Version 2.3**  
- - Condenses presentation of DropboxBrowser to four lines (compared to a previous 40+ lines of code) using one simple method  
- - New convenience method.  
-
-**Version 2.2**  
- - Dropbox Browser now fits all screen sizes using Autosizing instead of defined sizes - in other words, iPhone 5 compatibility  
-
-**Version 2.1**  
- - Updated Documentation  
- - New Methods  
- - Improved Selection  
-
-**Version 2.0**  
- - Added Sample Project  
- - iOS 6 Support  
- - ARC Support  
- - New Documentation  
- - Improved ReadMe  
- - Improved UI  
- - More!  
-
-**Version 1.2**  
- - Added Download Indicator  
-
-**Version 1.1**  
- - Added Sync Functionality 
-
-**Version 1.0**  
- - Initial Commit
