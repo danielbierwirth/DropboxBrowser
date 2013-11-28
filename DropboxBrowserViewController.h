@@ -30,7 +30,6 @@
 
 #import <UIKit/UIKit.h>
 #import <DropboxSDK/DropboxSDK.h>
-#import "MBProgressHUD.h"
 
 @class DBRestClient;
 @class DBMetadata;
@@ -39,82 +38,79 @@
     DBRestClient *restClient;
 }
 
+/// Dropbox Delegate Property
 @property (nonatomic, weak) id <DropboxBrowserDelegate> rootViewDelegate;
 
-//Current File Path, Name, and List
+// Current File Path, Name, and List
 @property (nonatomic, strong) NSString *currentPath;
-@property (nonatomic, copy, readwrite) NSMutableArray *list;
+@property (nonatomic, copy, readwrite) NSMutableArray *fileList;
+
+/// Set allowed file types (like a filter). Just create an array of allowed file extensions. Do not set to allow all files
 @property (nonatomic, strong) NSArray *allowedFileTypes;
+
+/// Set the tableview cell ID for dequeueing
+@property (nonatomic, strong) NSString *tableCellID;
+
+/// Set the tableview cell ID for dequeueing
+@property BOOL deliverDownloadNotifications;
 
 - (void)setList:(NSMutableArray *)newList;
 + (NSString *)fileName;
 
-//Busy indicator while loading new directory info - No longer used in iOS 6+
-@property (strong, nonatomic) MBProgressHUD *hud;
-- (void)dismissHUD;
-- (void)timeout:(id)arg;
-
-//Download indicator in toolbar to indicate progress of file download
+// Download indicator in toolbar to indicate progress of file download
 @property (strong, nonatomic) UIProgressView *downloadProgressView;
 
-//Download Operations
-- (BOOL)downloadFile:(DBMetadata *)file replaceLocalVersion: (BOOL) replaceLocalVersion;
+// Download Operations
+- (BOOL)downloadFile:(DBMetadata *)file replaceLocalVersion:(BOOL)replaceLocalVersion;
 - (void)loadShareLinkForFile:(DBMetadata *)file;
 - (void)downloadedFile;
 - (void)startDownloadFile;
 - (void)downloadedFileFailed;
 - (void)updateDownloadProgressTo:(CGFloat)progress;
 
-//List content of the root directory
-- (BOOL)listHomeDirectory;
-
-//Move up one directory
-- (void)moveToParentDirectory;
-
-//Refresh content
+// Refresh content
 - (void)refreshTableView;
 - (void)updateContent;
 - (void)updateTableData;
 
-//List content of specific subdirectories
-- (BOOL)listDirectoryAtPath:(NSString*)path;
+// List content of specific subdirectories
+- (BOOL)listDirectoryAtPath:(NSString *)path;
 
-//Check if app is linked to dropbox
+/// Check if app is linked to dropbox
 - (BOOL)isDropboxLinked;
 
-//Remove DropboxBrowser
+// Remove DropboxBrowser
 - (void)removeDropboxBrowser;
 
 @end
 
-//DropboxBrowser Delegate
-
+/// The DropboxBrowser Delegate can be used to recieve download notifications, failures, successes, errors, file conflicts, and even handle the download yourself.
 @protocol DropboxBrowserDelegate <NSObject>
 
 @optional
 
-//Successful File Download
-- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName isLocalFileOverwritten: (BOOL) isLocalFileOverwritten;
+/// Sent to the delegate when there is a successful file download
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName isLocalFileOverwritten:(BOOL)isLocalFileOverwritten;
 
-//User selected a file - automatically downloads file if not implemented. Implementing this method will require you to download or manage the selection on your own
+/// Sent to the delegate when the user selects a file. Implementing this method will require you to download or manage the selection on your own. Otherwise, automatically downloads file if not implemented.
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser selectedFile:(DBMetadata *)file;
 
-//Successfully loaded share link
+/// Sent to the delegate if the share link is successfully loaded
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser didLoadShareLink:(NSString *)link;
 
-//Error creating or loading share link
+/// Sent to the delegate if there was an error creating or loading share link
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedLoadingShareLinkWithError:(NSError *)error;
 
-//Failed to download file from Dropbox
+/// Sent to the delegate if DropboxBrowser failed to download file from Dropbox
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedToDownloadFile:(NSString *)fileName;
 
-//Selected file already exists locally
+/// Sent to the delegate if the selected file already exists locally
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser fileConflictError:(NSDictionary *)conflict;
 
-//Dropbox Browser was dismissed by the user - Do NOT use this method to dismiss the DropboxBrowser
+/// Dropbox Browser was dismissed by the user - Do NOT use this method to dismiss the DropboxBrowser
 - (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser;
 
-//Dereciated Methods - No longer called. Do not use.
+// Dereciated Methods - No longer called. Do not use.
 - (void)removeDropboxBrowser __deprecated;
 - (void)refreshLibrarySection __deprecated;
 - (void)dropboxBrowserDismissed __deprecated;

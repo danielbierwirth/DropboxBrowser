@@ -16,40 +16,20 @@
 @synthesize clearDocsBtn, navBar, imgView;
 
 //------------------------------------------------------------------------------------------------------------//
-//Region: View Lifecycle -------------------------------------------------------------------------------------//
+//------- View Lifecycle -------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - View Lifecycle
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
-    //Setup Background Color
-    self.view.backgroundColor = [UIColor underPageBackgroundColor];
-    
-    //Setup Navigation Bar Image
-    [navBar setBackgroundImage:[UIImage imageNamed:@"navBar"] forBarMetrics:UIBarMetricsDefault];
-    
-    //Setup Background Image
-    if ([[UIScreen mainScreen] bounds].size.height == 568) {
-        [imgView setImage:[UIImage imageNamed:@"Background-568h"]];
-    } else {
-        [imgView setImage:[UIImage imageNamed:@"Background"]];
-    }
-    
-    [super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    clearDocsBtn.hidden = NO;
     [super viewWillAppear:YES];
-}
-
-- (void)viewDidUnload {
-    [self setClearDocsBtn:nil];
-    [self setNavBar:nil];
-    [self setImgView:nil];
-    [super viewDidUnload];
+    [UIView animateWithDuration:0.45 animations:^{
+        clearDocsBtn.alpha = 1.0;
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,33 +42,34 @@
 }
 
 //------------------------------------------------------------------------------------------------------------//
-//Region: Dropbox --------------------------------------------------------------------------------------------//
+//------- Dropbox --------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - Dropbox
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    if ([[segue identifier] isEqualToString:@"showDropboxBrowser"])
-    {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showDropboxBrowser"]) {
         // Get reference to the destination view controller
         UINavigationController *navigationController = [segue destinationViewController];
         
         // Pass any objects to the view controller here, like...
+        DropboxBrowserViewController *dropboxBrowser = (DropboxBrowserViewController *)navigationController.topViewController;
         
-        DropboxBrowserViewController *dropboxBrowser = (DropboxBrowserViewController *) navigationController.topViewController;
-        
-        #warning create an array of allowed types. (N.B. to allow all file types simply don't set the property)
-        dropboxBrowser.allowedFileTypes = @[@"docx", @"pdf"];
+        // dropboxBrowser.allowedFileTypes = @[@"doc", @"pdf"]; // Uncomment to filter file types. Create an array of allowed types. To allow all file types simply don't set the property
+        // dropboxBrowser.tableCellID = @"DropboxBrowserCell"; // Uncomment to use a custom UITableViewCell ID. This property is not required
         dropboxBrowser.rootViewDelegate = self;
-        
-    }}
+    }
+}
 
 - (IBAction)browseDropbox:(id)sender {
     [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
 }
 
-- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName isLocalFileOverwritten:(BOOL)isLocalFileOverwritten{
-    NSLog(@"Downloaded %@ overwritten = %d", fileName, isLocalFileOverwritten);
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName isLocalFileOverwritten:(BOOL)isLocalFileOverwritten {
+    if (isLocalFileOverwritten == YES) {
+        NSLog(@"Downloaded %@ by overwriting local file", fileName);
+    } else {
+        NSLog(@"Downloaded %@ without overwriting", fileName);
+    }
 }
 
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedToDownloadFile:(NSString *)fileName {
@@ -102,22 +83,22 @@
 }
 
 - (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser {
-    //This method is called after Dropbox Browser is dismissed. Do NOT dismiss DropboxBrowser from this method
-    //Perform any UI updates here to display any new data from Dropbox Browser
+    // This method is called after Dropbox Browser is dismissed. Do NOT dismiss DropboxBrowser from this method
+    // Perform any UI updates here to display any new data from Dropbox Browser
     // ex. Update a UITableView that shows downloaded files or get the name of the most recently selected file:
     //     NSString *fileName = [DropboxBrowserViewController fileName];
 }
 
 //------------------------------------------------------------------------------------------------------------//
-//Region: Documents ------------------------------------------------------------------------------------------//
+//------- Documents ------------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - Documents
 
 - (IBAction)clearDocs:(id)sender {
-    //Clear all files from the local documents folder. This is helpful for testing purposes
+    // Clear all files from the local documents folder. This is helpful for testing purposes
     dispatch_queue_t delete = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0ul);
     dispatch_async(delete, ^{
-        //Background Process;
+        // Background Process;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];
         NSFileManager *fileMgr = [NSFileManager defaultManager];
@@ -128,9 +109,14 @@
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            //Main UI Process
-            clearDocsBtn.titleLabel.text = @"Cleared Docs";
-            clearDocsBtn.hidden = YES;
+            [UIView animateWithDuration:0.45 animations:^{
+                clearDocsBtn.titleLabel.text = @"Cleared Local Documents";
+                clearDocsBtn.titleLabel.textAlignment = NSTextAlignmentCenter;
+            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:0.45 animations:^{
+                    clearDocsBtn.titleLabel.text = @"Clear Local Documents";
+                }];
+            }];
         });
     });
 }

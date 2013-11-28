@@ -1,5 +1,7 @@
 # Dropbox Browser
-Dropbox Browser provides a simple and effective way to browse, view, and download files using the iOS Dropbox SDK. Add the required files to your Xcode iOS project, setup Dropbox, add one simple method and a navigation controller and now you've got a wonderful View Controller that lets users browse their Dropbox files and folders, and even download them.
+Dropbox Browser provides a simple and effective way to browse, view, and download files using the iOS Dropbox SDK. Add the required files to your Xcode iOS project, setup Dropbox, add one simple method and a navigation controller and now you've got a wonderful View Controller that lets users browse their Dropbox files and folders, and even download them. 
+
+Note that as of July 9, 2013 - Dropbox has an official API similar to this library. The new *Drop ins* Chooser API allows you add official Dropbox File Choosers and Savers to your app. You may use the [new API available here](https://www.dropbox.com/developers/dropins), or you can continue using Dropbox Browser for easier integration, added features, etc.
 
 <img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Screenshot.png?raw=true"/>
 
@@ -10,12 +12,8 @@ To properly integrate DropboxBrowser into your project follow the instructions b
  
 1. Add the following Frameworks, already available in Xcode, to your project:  
     - Security  
-    - QuartzCore  
-    - AssetsLibrary  
-    - UIKit  
-    - Foundation  
-    - CoreGraphics  
-2. Add the DropboxSDK Framework to your project. The latest version of the SDK can be <a href=https://www.dropbox.com/developers>downloaded here</a> | DropboxBrowser uses version 1.3.4 of the Dropbox SDK  
+    - QuartzCore 
+2. Add the DropboxSDK Framework to your project. The latest version of the SDK can be <a href=https://www.dropbox.com/developers>downloaded here</a> | DropboxBrowser uses version 1.3.5 of the Dropbox SDK  
 3. Register as a developer on Dropbox and setup your App. If you've already done this, skip this step. If you haven't already done this, <a href=https://www.dropbox.com/developers/start/setup#ios>get setup</a>.  
 4. Setup your Dropbox App Key and Secret. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are <a href=https://www.dropbox.com/developers/start/authentication#ios>available here</a>  
 5. Add all of the DropboxBrowser files to your project
@@ -25,8 +23,7 @@ To properly integrate DropboxBrowser into your project follow the instructions b
 7. Edit the required interface files. In your storyboard, add the following UI Objects from the Objects Library:
     - Navigation Controller  
 8.  Select the Table View Controller just added along with the Navigation Controller and change the class to `DropboxRootViewController` using the Identity Inspector.  
-9. Click on the first cell of the Table View and change its identifier to `DropboxBrowserCell` and change the cell style to `Subtitle`.  
-10. In your Implementation File (.m), add a method / action that displays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox. Dropbox Browser handles authentication and login.  
+9. In your Implementation File (.m), add a method / action that displays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox. Dropbox Browser handles authentication and login.  
 
 ## Delegates, Methods, and Properties
 Dropbox Browser provides many paths to customization and control. DropboxBrowser has seven delegate methods available for use - they are all optional. There are multiple properties which can easily be retrieved and set. A handful of methods are available for you to call on your own - however they are not required for use. 

@@ -11,20 +11,19 @@
 @implementation DBBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    //Setup Dropbox Here with YOUR OWN APP info
-    //#error Dropbox App Key and Secret are required for basic functionality. Add them below AND in the Info.plist file in the URL-Schemes section. Replace the "APP_KEY" text with your app key (make sure to leave the "db-" there)
-    DBSession* dbSession = [[DBSession alloc] initWithAppKey:@"qct8rlh22noazpu" appSecret:@"cp770lwfixp0rq4" root:kDBRootAppFolder];
+    // Setup Dropbox Here with YOUR OWN APP info
+    // #error Dropbox App Key and Secret are required for basic functionality. Add them below AND in the Info.plist file in the URL-Schemes section. Replace the "APP_KEY" text with your app key (make sure to leave the "db-" there)
+    DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"knluvbkqi6hsm5j" appSecret:@"q8cl053qmx9ooaw" root:kDBRootAppFolder];
     [DBSession setSharedSession:dbSession];
-#warning remove before commit
-    //[[DBSession sharedSession] unlinkAll];
     
-    //Override point for customization after application launch.
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    // Override point for customization after application launch.
     return YES;
 
 }
 
-//This method is used instead of the handleOpenURL method because it is depreciated in iOS 6 and only one of the methods can be used
--(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
     if ([[DBSession sharedSession] handleOpenURL:url]) {
         if ([[DBSession sharedSession] isLinked]) {
             NSLog(@"App linked successfully!");
