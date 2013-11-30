@@ -9,12 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "DropboxBrowserViewController.h"
 
-@interface DBBViewController : UIViewController <DropboxBrowserDelegate, UINavigationControllerDelegate>
+@interface DBBViewController : UIViewController <DropboxBrowserDelegate, UINavigationControllerDelegate, UIBarPositioningDelegate>
 
-- (IBAction)browseDropbox:(id)sender;
 - (IBAction)clearDocs:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *clearDocsBtn;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;
-@property (weak, nonatomic) IBOutlet UIImageView *imgView;
 
 @end
