@@ -1,4 +1,4 @@
-<img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Banner.png?raw=true"/>
+<img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Banner.png"/>
 
 Dropbox Browser provides a simple and effective way to browse, view, and download files using the iOS Dropbox SDK. Follow the simple setup steps and in under ten minutes you'll have a working Dropbox File Browser in your app that lets users browse and download their Dropbox files and folders. 
 
@@ -10,7 +10,7 @@ Project highlights and key features are listed below. Dropbox Browser has a grea
 ## User Interface
 DropboxBrowser has a beautiful and simple interface similar to that of the actual Dropbox App. The interface is built for iOS 7, iPhone 5, and Retina Displays. it can also be easily customized using iOS 7 tint color, UITableViewCells, and a variety of properties.
 
-<img width=750 src="https://github.com/iRareMedia/DropboxBrowser/blob/master/Interface.png?raw=true"/>
+<img width=750 src="https://github.com/danielbierwirth/DropboxBrowser/blob/master/Interface.png"/>
 
 ##Files
 When a user taps on a file, DropboxBrowser checks to see if the file is already download. If the file hasn't been downloaded, it's downloaded to your application's **Documents Directory**. If a conflict arises between a local and remote file, DropboxBrowser will attempt to resolve it. In the event that a conflict can't be resolved, you'll be notified via delegate methods and have the chance to handle the download youself.
