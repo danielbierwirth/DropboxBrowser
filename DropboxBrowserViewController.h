@@ -41,8 +41,10 @@
 /// Dropbox Delegate Property
 @property (nonatomic, weak) id <DropboxBrowserDelegate> rootViewDelegate;
 
-// Current File Path, Name, and List
+/// The file path that the current DropboxBrowserViewController is at
 @property (nonatomic, strong) NSString *currentPath;
+
+/// The list of files currently being displayed in the DropboxBrowserViewController
 @property (nonatomic, copy, readwrite) NSMutableArray *fileList;
 
 /// Set allowed file types (like a filter). Just create an array of allowed file extensions. Do not set to allow all files
@@ -51,13 +53,16 @@
 /// Set the tableview cell ID for dequeueing
 @property (nonatomic, strong) NSString *tableCellID;
 
-/// Set the tableview cell ID for dequeueing
+/// Set whether or not DBBrowser should deliver notifications to the user about file downloads
 @property BOOL deliverDownloadNotifications;
+
+/// Set whether DropboxBrowserViewController should display a search bar
+@property BOOL shouldDisplaySearchBar;
 
 - (void)setList:(NSMutableArray *)newList;
 + (NSString *)fileName;
 
-// Download indicator in toolbar to indicate progress of file download
+/// Download indicator in toolbar to indicate progress of file download
 @property (strong, nonatomic) UIProgressView *downloadProgressView;
 
 // Download Operations
@@ -69,17 +74,16 @@
 - (void)updateDownloadProgressTo:(CGFloat)progress;
 
 // Refresh content
-- (void)refreshTableView;
 - (void)updateContent;
 - (void)updateTableData;
 
-// List content of specific subdirectories
+/// List content of specific subdirectories
 - (BOOL)listDirectoryAtPath:(NSString *)path;
 
 /// Check if app is linked to dropbox
 - (BOOL)isDropboxLinked;
 
-// Remove DropboxBrowser
+/// Remove DropboxBrowser from the view hierarchy - dismiss DropboxBrowserViewController
 - (void)removeDropboxBrowser;
 
 @end
@@ -109,6 +113,9 @@
 
 /// Dropbox Browser was dismissed by the user - Do NOT use this method to dismiss the DropboxBrowser
 - (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser;
+
+/// Sent to the delegate when a file download notification is delivered to the user. You can use this method to record the notification ID so you can clear the notification if ncessary.
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser deliveredFileDownloadNotification:(UILocalNotification *)notification;
 
 // Dereciated Methods - No longer called. Do not use.
 - (void)removeDropboxBrowser __deprecated;

@@ -13,7 +13,7 @@
 @end
 
 @implementation DBBViewController
-@synthesize clearDocsBtn, navBar, imgView;
+@synthesize clearDocsBtn, navBar;
 
 //------------------------------------------------------------------------------------------------------------//
 //------- View Lifecycle -------------------------------------------------------------------------------------//
@@ -27,6 +27,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:YES];
+    
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+    
     [UIView animateWithDuration:0.45 animations:^{
         clearDocsBtn.alpha = 1.0;
     }];
@@ -35,6 +39,10 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (UIBarPosition)positionForBar:(id<UIBarPositioning>)bar {
+    return UIBarPositionTopAttached;
 }
 
 - (IBAction)done {
@@ -56,6 +64,14 @@
         
         // dropboxBrowser.allowedFileTypes = @[@"doc", @"pdf"]; // Uncomment to filter file types. Create an array of allowed types. To allow all file types simply don't set the property
         // dropboxBrowser.tableCellID = @"DropboxBrowserCell"; // Uncomment to use a custom UITableViewCell ID. This property is not required
+        
+        // When a file is downloaded (either successfully or unsuccessfully) you can have DBBrowser notify the user with Notification Center. Default property is NO.
+        dropboxBrowser.deliverDownloadNotifications = YES;
+        
+        // Dropbox Browser can display a UISearchBar to allow the user to search their Dropbox for a file or folder. Default property is NO.
+        dropboxBrowser.shouldDisplaySearchBar = YES;
+        
+        // Set the delegate property to recieve delegate method calls
         dropboxBrowser.rootViewDelegate = self;
     }
 }
@@ -87,6 +103,11 @@
     // Perform any UI updates here to display any new data from Dropbox Browser
     // ex. Update a UITableView that shows downloaded files or get the name of the most recently selected file:
     //     NSString *fileName = [DropboxBrowserViewController fileName];
+}
+
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser deliveredFileDownloadNotification:(UILocalNotification *)notification {
+    long badgeNumber = [[UIApplication sharedApplication] applicationIconBadgeNumber]+1;
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeNumber];
 }
 
 //------------------------------------------------------------------------------------------------------------//
