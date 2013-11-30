@@ -1,12 +1,12 @@
 //
 //  DropboxBrowserViewController.m
 //
-//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 11/28/13
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 11/30/13
 //  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 // This code is distributed under the terms and conditions of the MIT license.
 //
-// Copyright (c) 2013 Daniel Bierwirth
+// Copyright (c) 2013 Daniel Bierwirth and iRare Media
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -44,6 +44,16 @@ static NSUInteger const kDBSignOutAlertViewTag = 3;
 }
 
 - (DBRestClient *)restClient;
+
+- (void)updateContent;
+- (void)updateTableData;
+
+- (void)downloadedFile;
+- (void)startDownloadFile;
+- (void)downloadedFileFailed;
+- (void)updateDownloadProgressTo:(CGFloat)progress;
+
+- (BOOL)listDirectoryAtPath:(NSString *)path;
 
 @end
 
@@ -179,7 +189,7 @@ static NSString *currentFileName = nil;
 }
 
 //------------------------------------------------------------------------------------------------------------//
-//------- Table View Setup -----------------------------------------------------------------------------------//
+//------- Table View -----------------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------------------//
 #pragma mark - Table View
 
@@ -281,14 +291,18 @@ static NSString *currentFileName = nil;
             [newSubdirectoryController listDirectoryAtPath:subpath];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
-            NSLog(@"Path: %@ | New Title: %@ | Subpath: %@", newSubdirectoryController.currentPath, newSubdirectoryController.title, subpath);
             [self.navigationController pushViewController:newSubdirectoryController animated:YES];
         } else {
             currentFileName = selectedFile.filename;
             
             // Check if our delegate handles file selection
-            if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:selectedFile:)]) {
+            if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:didSelectFile:)]) {
+                [self.rootViewDelegate dropboxBrowser:self didSelectFile:selectedFile];
+            } else if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:selectedFile:)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
                 [self.rootViewDelegate dropboxBrowser:self selectedFile:selectedFile];
+#pragma clang diagnostic pop
             } else {
                 // Download file
                 [self downloadFile:selectedFile replaceLocalVersion:NO];
@@ -314,7 +328,6 @@ static NSString *currentFileName = nil;
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    NSLog(@"Search Query: %@", searchBar.text);
     [[self restClient] searchPath:currentPath forKeyword:searchBar.text];
     [searchBar resignFirstResponder];
     
@@ -354,10 +367,7 @@ static NSString *currentFileName = nil;
     if (alertView.tag == kDBSignInAlertViewTag) {
         switch (buttonIndex) {
             case 0:
-                if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed:)]) {
-                    [[self rootViewDelegate] dropboxBrowserDismissed:self];
-                }
-                [self dismissViewControllerAnimated:YES completion:nil];
+                [self removeDropboxBrowser];
                 break;
             case 1:
                 [[DBSession sharedSession] linkFromController:self];
@@ -381,11 +391,7 @@ static NSString *currentFileName = nil;
             case 0: break;
             case 1: {
                 [[DBSession sharedSession] unlinkAll];
-                
-                [self dismissViewControllerAnimated:YES completion:^{
-                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowserDismissed:)])
-                        [[self rootViewDelegate] dropboxBrowserDismissed:self];
-                }];
+                [self removeDropboxBrowser];
             } break;
             default:
                 break;
@@ -403,9 +409,6 @@ static NSString *currentFileName = nil;
     
     [self.tableView reloadData];
     [self.refreshControl endRefreshing];
-    //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-    
-    //self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height);
 }
 
 - (void)updateContent {
@@ -428,6 +431,7 @@ static NSString *currentFileName = nil;
     self.tableView.userInteractionEnabled = YES;
     
     [UIView animateWithDuration:0.75 animations:^{
+        self.tableView.alpha = 1.0;
         downloadProgressView.alpha = 0.0;
     }];
     
@@ -445,8 +449,16 @@ static NSString *currentFileName = nil;
             [[self rootViewDelegate] dropboxBrowser:self deliveredFileDownloadNotification:localNotification];
     }
     
-    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:downloadedFile:isLocalFileOverwritten:)])
+    if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:didDownloadFile:didOverwriteFile:)]) {
+        [self.rootViewDelegate dropboxBrowser:self didDownloadFile:currentFileName didOverwriteFile:isLocalFileOverwritten];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    } else if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:downloadedFile:isLocalFileOverwritten:)]) {
         [[self rootViewDelegate] dropboxBrowser:self downloadedFile:currentFileName isLocalFileOverwritten:isLocalFileOverwritten];
+    } else if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:downloadedFile:)]) {
+        [[self rootViewDelegate] dropboxBrowser:self downloadedFile:currentFileName];
+    }
+#pragma clang diagnostic pop
     
     // End the background task
     [[UIApplication sharedApplication] endBackgroundTask:backgroundProcess];
@@ -462,7 +474,11 @@ static NSString *currentFileName = nil;
 - (void)downloadedFileFailed {
     self.tableView.userInteractionEnabled = YES;
     
-    [self.downloadProgressView setHidden:YES];
+    [UIView animateWithDuration:0.75 animations:^{
+        self.tableView.alpha = 1.0;
+        downloadProgressView.alpha = 0.0;
+    }];
+    
     self.navigationItem.title = [currentPath lastPathComponent];
     [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     
@@ -476,21 +492,21 @@ static NSString *currentFileName = nil;
             [[self rootViewDelegate] dropboxBrowser:self deliveredFileDownloadNotification:localNotification];
     }
     
-    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:failedToDownloadFile:)])
+    if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:didFailToDownloadFile:)]) {
+        [self.rootViewDelegate dropboxBrowser:self didFailToDownloadFile:currentFileName];
+    } else if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:failedToDownloadFile:)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [[self rootViewDelegate] dropboxBrowser:self failedToDownloadFile:currentFileName];
+#pragma clang diagnostic pop
+    }
     
     // End the background task
     [[UIApplication sharedApplication] endBackgroundTask:backgroundProcess];
 }
 
-- (void)updateDownloadProgressTo:(CGFloat) progress {
+- (void)updateDownloadProgressTo:(CGFloat)progress {
     [self.downloadProgressView setProgress:progress];
-}
-
-- (void)setList:(NSMutableArray *)newList {
-    if (fileList != newList) {
-        fileList = [newList mutableCopy];
-    }
 }
 
 //------------------------------------------------------------------------------------------------------------//
@@ -512,85 +528,125 @@ static NSString *currentFileName = nil;
 }
 
 - (BOOL)downloadFile:(DBMetadata *)file replaceLocalVersion:(BOOL)replaceLocalVersion {
-    // Background Process
+    // Begin Background Process
     backgroundProcess = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        // End the Background Process
         [[UIApplication sharedApplication] endBackgroundTask:backgroundProcess];
         backgroundProcess = UIBackgroundTaskInvalid;
     }];
     
-    BOOL res = NO;
+    // Check if the file is a directory
+    if (file.isDirectory) return NO;
     
-    if (!file.isDirectory) {
-        NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *localPath = [documentsPath stringByAppendingPathComponent:file.filename];
+    // Set download success
+    BOOL downloadSuccess = NO;
+    
+    // Setup the File Manager
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    // Create the local file path
+    NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *localPath = [documentsPath stringByAppendingPathComponent:file.filename];
+    
+    // Check if the local version should be overwritten
+    if (replaceLocalVersion) {
+        isLocalFileOverwritten = YES;
+        [fileManager removeItemAtPath:localPath error:nil];
+    } else {
+        isLocalFileOverwritten = NO;
+    }
+    
+    // Check if a file with the same name already exists locally
+    if ([fileManager fileExistsAtPath:localPath] == NO) {
+        // Prevent the user from downloading any more files while this donwload is in progress
+        self.tableView.userInteractionEnabled = NO;
+        [UIView animateWithDuration:0.75 animations:^{
+            self.tableView.alpha = 0.8;
+        }];
         
-        if (replaceLocalVersion) {
-            isLocalFileOverwritten = YES;
-            [[NSFileManager defaultManager] removeItemAtPath:localPath error:nil];
-        } else {
-            isLocalFileOverwritten = NO;
-        }
+        // Start the file download
+        [self startDownloadFile];
+        [[self restClient] loadFile:file.path intoPath:localPath];
         
-        if (![[NSFileManager defaultManager] fileExistsAtPath:localPath]) {
-            self.tableView.userInteractionEnabled = NO;
+        // The download was a success
+        downloadSuccess = YES;
+        
+    } else {
+        // Create the local URL and get the modification date
+        NSURL *fileUrl = [NSURL fileURLWithPath:localPath];
+        NSDate *fileDate;
+        NSError *error;
+        [fileUrl getResourceValue:&fileDate forKey:NSURLContentModificationDateKey error:&error];
+        
+        if (!error) {
+            NSComparisonResult result;
+            result = [file.lastModifiedDate compare:fileDate]; // Compare the Dates
             
-            [self startDownloadFile];
-            res = YES;
-            [[self restClient] loadFile:file.path intoPath:localPath];
-        } else {
-            // Use [NSURL fileURLWithPath:] with local files, otherwise NSURLContentModificationDateKey returns null
-            NSURL *fileUrl = [NSURL fileURLWithPath:localPath];
-            NSDate *fileDate;
-            NSError *error;
-            [fileUrl getResourceValue:&fileDate forKey:NSURLContentModificationDateKey error:&error];
-            if (!error) {
-                NSComparisonResult result; // Has three possible values: NSOrderedSame, NSOrderedDescending, NSOrderedAscending
-                result = [file.lastModifiedDate compare:fileDate]; // Compare the Dates
-                if (result == NSOrderedAscending || result == NSOrderedSame) {
-                    // Dropbox File is older than local file
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Already Downloaded"
-                                                                        message:[NSString stringWithFormat:@"%@ has already been downloaded from Dropbox. You can overwrite the local version with the Dropbox one.", file.filename]
-                                                                       delegate:self
-                                                              cancelButtonTitle:@"Cancel"
-                                                              otherButtonTitles:@"Overwrite", nil];
-                    alertView.tag = kFileExistsAlertViewTag;
-                    [alertView show];
-                    
-                    NSDictionary *conflict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:file, @"File already exists", nil] forKeys:[NSArray arrayWithObjects:@"file", @"message", nil]];
-                    
-                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:fileConflictError:)])
-                        [[self rootViewDelegate] dropboxBrowser:self fileConflictError:conflict];
-                    
-                } else if (result == NSOrderedDescending) {
-                    // Dropbox File is newer than local file
-                    NSLog(@"Dropbox File is newer than local file");
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Conflict"
-                                                                        message:[NSString stringWithFormat:@"%@ exists in both Dropbox and the local folder. The one in Dropbox is newer.", file.filename]
-                                                                       delegate:self
-                                                              cancelButtonTitle:@"Cancel"
-                                                              otherButtonTitles:@"Overwrite", nil];
-                    alertView.tag = kFileExistsAlertViewTag;
-                    [alertView show];
-                    
-                    NSDictionary *conflict = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:file, @"File exists in Dropbox and the local folder. The Dropbox file is newer.", nil] forKeys:[NSArray arrayWithObjects:@"file", @"message", nil]];
-                    
-                    if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:fileConflictError:)])
-                        [[self rootViewDelegate] dropboxBrowser:self fileConflictError:conflict];
+            if (result == NSOrderedAscending) {
+                // Dropbox file is older than local file
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Conflict" message:[NSString stringWithFormat:@"%@ has already been downloaded from Dropbox. You can overwrite the local version with the Dropbox one. The file in local files is newer than the Dropbox file.", file.filename] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Overwrite", nil];
+                alertView.tag = kFileExistsAlertViewTag;
+                [alertView show];
+                
+                NSDictionary *infoDictionary = @{@"file": file, @"message": @"File already exists in Dropbox and locally. The local file is newer."};
+                NSError *error = [NSError errorWithDomain:@"[DropboxBrowser] File Conflict Error: File already exists in Dropbox and locally. The local file is newer." code:kDBDropboxFileOlderError userInfo:infoDictionary];
+                
+                if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:fileConflictWithLocalFile:withDropboxFile:withError:)]) {
+                    [self.rootViewDelegate dropboxBrowser:self fileConflictWithLocalFile:fileUrl withDropboxFile:file withError:error];
+                } else if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:fileConflictError:)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                    [[self rootViewDelegate] dropboxBrowser:self fileConflictError:infoDictionary];
+#pragma clang diagnostic pop
                 }
                 
-                [self updateTableData];
+            } else if (result == NSOrderedDescending) {
+                // Dropbox file is newer than local file
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Conflict" message:[NSString stringWithFormat:@"%@ has already been downloaded from Dropbox. You can overwrite the local version with the Dropbox file. The file in Dropbox is newer than the local file.", file.filename] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Overwrite", nil];
+                alertView.tag = kFileExistsAlertViewTag;
+                [alertView show];
+                
+                NSDictionary *infoDictionary = @{@"file": file, @"message": @"File already exists in Dropbox and locally. The Dropbox file is newer."};
+                NSError *error = [NSError errorWithDomain:@"[DropboxBrowser] File Conflict Error: File already exists in Dropbox and locally. The Dropbox file is newer." code:kDBDropboxFileNewerError userInfo:infoDictionary];
+                
+                if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:fileConflictWithLocalFile:withDropboxFile:withError:)]) {
+                    [self.rootViewDelegate dropboxBrowser:self fileConflictWithLocalFile:fileUrl withDropboxFile:file withError:error];
+                } else if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:fileConflictError:)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                    [[self rootViewDelegate] dropboxBrowser:self fileConflictError:infoDictionary];
+#pragma clang diagnostic pop
+                }
+            } else if (result == NSOrderedSame) {
+                // Dropbox File and local file were both modified at the same time
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"File Conflict" message:[NSString stringWithFormat:@"%@ has already been downloaded from Dropbox. You can overwrite the local version with the Dropbox file. Both the local file and the Dropbox file were modified at the same time.", file.filename] delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Overwrite", nil];
+                alertView.tag = kFileExistsAlertViewTag;
+                [alertView show];
+                
+                NSDictionary *infoDictionary = @{@"file": file, @"message": @"File already exists in Dropbox and locally. Both files were modified at the same time."};
+                NSError *error = [NSError errorWithDomain:@"[DropboxBrowser] File Conflict Error: File already exists in Dropbox and locally. Both files were modified at the same time." code:kDBDropboxFileSameAsLocalFileError userInfo:infoDictionary];
+                
+                if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:fileConflictWithLocalFile:withDropboxFile:withError:)]) {
+                    [self.rootViewDelegate dropboxBrowser:self fileConflictWithLocalFile:fileUrl withDropboxFile:file withError:error];
+                } else if ([[self rootViewDelegate] respondsToSelector:@selector(dropboxBrowser:fileConflictError:)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+                    [[self rootViewDelegate] dropboxBrowser:self fileConflictError:infoDictionary];
+#pragma clang diagnostic pop
+                }
             }
+            
+            [self updateTableData];
+        } else {
+            downloadSuccess = NO;
         }
     }
     
-    return res;
+    return downloadSuccess;
 }
 
 - (void)loadShareLinkForFile:(DBMetadata*)file {
     [self.restClient loadSharableLinkForFile:file.path shortUrl:YES];
 }
-
 
 //------------------------------------------------------------------------------------------------------------//
 //------- Dropbox Delegate -----------------------------------------------------------------------------------//
@@ -626,13 +682,10 @@ static NSString *currentFileName = nil;
 
 - (void)restClient:(DBRestClient *)client loadedSearchResults:(NSArray *)results forPath:(NSString *)path keyword:(NSString *)keyword {
     fileList = [NSMutableArray arrayWithArray:results];
-    NSLog(@"List: %@", fileList);
-    
     [self updateTableData];
 }
 
 - (void)restClient:(DBRestClient *)restClient searchFailedWithError:(NSError *)error {
-    NSLog(@"Search Failed");
     [self updateTableData];
 }
 
@@ -640,15 +693,15 @@ static NSString *currentFileName = nil;
     [self updateTableData];
 }
 
-- (void)restClient:(DBRestClient*)client loadedFile:(NSString*)localPath {
+- (void)restClient:(DBRestClient *)client loadedFile:(NSString *)localPath {
     [self downloadedFile];
 }
 
-- (void)restClient:(DBRestClient*)client loadFileFailedWithError:(NSError*)error {
+- (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error {
     [self downloadedFileFailed];
 }
 
-- (void)restClient:(DBRestClient*)client loadProgress:(CGFloat)progress forFile:(NSString*)destPath {
+- (void)restClient:(DBRestClient *)client loadProgress:(CGFloat)progress forFile:(NSString *)destPath {
     [self updateDownloadProgressTo:progress];
 }
 
@@ -659,8 +712,13 @@ static NSString *currentFileName = nil;
 }
 
 - (void)restClient:(DBRestClient *)client loadSharableLinkFailedWithError:(NSError *)error {
-    if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:failedLoadingShareLinkWithError:)]) {
+    if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:didFailToLoadShareLinkWithError:)]) {
+        [self.rootViewDelegate dropboxBrowser:self didFailToLoadShareLinkWithError:error];
+    } else if ([self.rootViewDelegate respondsToSelector:@selector(dropboxBrowser:failedLoadingShareLinkWithError:)]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
         [self.rootViewDelegate dropboxBrowser:self failedLoadingShareLinkWithError:error];
+#pragma clang diagnostic pop
     }
 }
 

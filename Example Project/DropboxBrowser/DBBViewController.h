@@ -11,7 +11,6 @@
 
 @interface DBBViewController : UIViewController <DropboxBrowserDelegate, UINavigationControllerDelegate, UIBarPositioningDelegate>
 
-- (IBAction)browseDropbox:(id)sender;
 - (IBAction)clearDocs:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *clearDocsBtn;
 @property (weak, nonatomic) IBOutlet UINavigationBar *navBar;

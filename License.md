@@ -1,5 +1,7 @@
 ##Dropbox Browser License  
-###The MIT License (MIT)
+Attribution is appreciated but not required. Let us know if you use this in your app(s)! This project is available under the MIT License.
+
+The MIT License (MIT)
 
 Copyright (c) 2013  iRare Media and Daniel Bierwirth
 

@@ -76,11 +76,7 @@
     }
 }
 
-- (IBAction)browseDropbox:(id)sender {
-    [self performSegueWithIdentifier:@"showDropboxBrowser" sender:self];
-}
-
-- (void)dropboxBrowser:(DropboxBrowserViewController *)browser downloadedFile:(NSString *)fileName isLocalFileOverwritten:(BOOL)isLocalFileOverwritten {
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser didDownloadFile:(NSString *)fileName didOverwriteFile:(BOOL)isLocalFileOverwritten {
     if (isLocalFileOverwritten == YES) {
         NSLog(@"Downloaded %@ by overwriting local file", fileName);
     } else {
@@ -88,14 +84,12 @@
     }
 }
 
-- (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedToDownloadFile:(NSString *)fileName {
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser didFailToDownloadFile:(NSString *)fileName {
     NSLog(@"Failed to download %@", fileName);
 }
 
-- (void)dropboxBrowser:(DropboxBrowserViewController *)browser fileConflictError:(NSDictionary *)conflict {
-    DBMetadata *file = [conflict objectForKey:@"file"];
-    NSString *errorMessage = [conflict objectForKey:@"message"];
-    NSLog(@"Conflict error with %@\n%@ last modified on %@\nError: %@", file.filename, file.filename, file.lastModifiedDate, errorMessage);
+- (void)dropboxBrowser:(DropboxBrowserViewController *)browser fileConflictWithLocalFile:(NSURL *)localFileURL withDropboxFile:(DBMetadata *)dropboxFile withError:(NSError *)error {
+    NSLog(@"File conflict between %@ and %@\n%@ last modified on %@\nError: %@", localFileURL.lastPathComponent, dropboxFile.filename, dropboxFile.filename, dropboxFile.lastModifiedDate, error);
 }
 
 - (void)dropboxBrowserDismissed:(DropboxBrowserViewController *)browser {

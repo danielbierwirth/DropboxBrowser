@@ -2,7 +2,7 @@
 This project is ready for primetime use in any iOS application. Here are a few key changes in the project:  
 
 **Version 5.0**
-Beta. Coming soon. Check the feature branch for the latest stuff!
+Huge changes! iOS 7 Redesign, new features, enhancements, bug fixes, and better documentation. Detailed information coming soon.
 
 **Version 4.2**  
  - Create file share links using the `loadShareLinkForFile` method. Added by <a href=https://github.com/ekurutepe>ekurutepe</a>.  
