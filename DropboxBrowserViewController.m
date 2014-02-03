@@ -280,6 +280,7 @@ static NSString *currentFileName = nil;
         if ([selectedFile isDirectory]) {
             // Create new UITableViewController
             newSubdirectoryController = [[DropboxBrowserViewController alloc] init];
+            newSubdirectoryController.rootViewDelegate = self.rootViewDelegate;
             NSString *subpath = [currentPath stringByAppendingPathComponent:selectedFile.filename];
             newSubdirectoryController.currentPath = subpath;
             newSubdirectoryController.title = [subpath lastPathComponent];
