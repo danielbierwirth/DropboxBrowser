@@ -96,7 +96,7 @@
     // This method is called after Dropbox Browser is dismissed. Do NOT dismiss DropboxBrowser from this method
     // Perform any UI updates here to display any new data from Dropbox Browser
     // ex. Update a UITableView that shows downloaded files or get the name of the most recently selected file:
-    //     NSString *fileName = [DropboxBrowserViewController fileName];
+    //     NSString *fileName = [DropboxBrowserViewController currentFileName];
 }
 
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser deliveredFileDownloadNotification:(UILocalNotification *)notification {

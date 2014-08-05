@@ -2,7 +2,7 @@
 //  DropboxBrowserViewController.h
 //
 //  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 08/05/15
-//  Copyright (c) 2013 iRare Media. All rights reserved.
+//  Copyright (c) 2014 iRare Media. All rights reserved.
 //
 // This code is distributed under the terms and conditions of the MIT license.
 //
@@ -28,8 +28,25 @@
 //
 //
 
-#import <UIKit/UIKit.h>
+// Check for Objective-C Modules
+#if __has_feature(objc_modules)
+    // We recommend enabling Objective-C Modules in your project Build Settings for numerous benefits over regular #imports. Read more from the Modules documentation: http://clang.llvm.org/docs/Modules.html
+    @import Foundation;
+    @import UIKit;
+    @import QuartzCore;
+#else
+    #import <Foundation/Foundation.h>
+    #import <UIKit/UIKit.h>
+    #import <QuartzCore/QuartzCore.h>
+#endif
+
 #import <DropboxSDK/DropboxSDK.h>
+
+// Ensure that the build is for iOS 6.0 or higher
+#ifndef __IPHONE_6_0
+    #error DropboxBrowser is built with features only available is iOS SDK 6.0 and later.
+#endif
+
 
 /** @typedef kDBFileConflictError
  @abstract Error codes for file conflicts with Dropbox and Local files.
@@ -50,7 +67,8 @@ typedef NS_ENUM(NSInteger, kDBFileConflictError) {
 @class DBMetadata;
 @protocol DropboxBrowserDelegate;
 
-@interface DropboxBrowserViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIAlertViewDelegate>
+/// A Dropbox file browser, downloader, and conflict manager. Uses the DropboxSDK to display a user's Dropbox files.
+NS_CLASS_AVAILABLE_IOS(6_0) @interface DropboxBrowserViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIAlertViewDelegate>
 
 
 - (instancetype)init;
@@ -115,6 +133,12 @@ typedef NS_ENUM(NSInteger, kDBFileConflictError) {
 /** Remove DropboxBrowser from the view hierarchy.
  @discussion Dismisses DropboxBrowserViewController from the view hierarchy. Do not attempt to call \p dismissViewControllerAnimated:completion: on the DropboxBrowserViewController before or after calling this method. When dismissed the appropriate method is sent to the delegate. */
 - (void)removeDropboxBrowser;
+
+
+/** Current file name
+ @deprecated Deprecated in version 5.1. Use the \p currentFileName property instead.
+ @return The current or most recently selected file name */
+- (NSString *)fileName __attribute((deprecated(" use the currentFileName property instead.")));
 
 
 @end

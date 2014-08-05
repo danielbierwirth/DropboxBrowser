@@ -2,7 +2,7 @@
 //  DropboxBrowserViewController.m
 //
 //  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 08/05/14
-//  Copyright (c) 2013 iRare Media. All rights reserved.
+//  Copyright (c) 2014 iRare Media. All rights reserved.
 //
 // This code is distributed under the terms and conditions of the MIT license.
 //
@@ -29,6 +29,12 @@
 //
 
 #import "DropboxBrowserViewController.h"
+
+// Check for ARC
+#if !__has_feature(objc_arc)
+    // Add the -fobjc-arc flag to enable ARC for only these files, as described in the ARC documentation: http://clang.llvm.org/docs/AutomaticReferenceCounting.html
+    #error DropboxBrowser is built with Objective-C ARC. You must enable ARC for DropboxBrowser.
+#endif
 
 // View tags to differeniate alert views
 static NSUInteger const kDBSignInAlertViewTag = 1;
@@ -641,7 +647,7 @@ static NSUInteger const kDBSignOutAlertViewTag = 3;
 //------------------------------------------------------------------------------------------------------------//
 //------- Dropbox Delegate -----------------------------------------------------------------------------------//
 //------------------------------------------------------------------------------------------------------------//
-#pragma mark - DBRestClientDelegate methods
+#pragma mark - DBRestClientDelegate Methods
 
 - (DBRestClient *)restClient {
     if (!self.restClient) {
@@ -710,6 +716,17 @@ static NSUInteger const kDBSignOutAlertViewTag = 3;
         [self.rootViewDelegate dropboxBrowser:self failedLoadingShareLinkWithError:error];
 #pragma clang diagnostic pop
     }
+}
+
+//------------------------------------------------------------------------------------------------------------//
+//------- Deprecated Methods ---------------------------------------------------------------------------------//
+//------------------------------------------------------------------------------------------------------------//
+#pragma mark - Deprecated Methods
+
+- (NSString *)fileName {
+    for (int i = 0; i <= 5; i++)
+        NSLog(@"[DropboxBrowser] WARNING: The fileName method is deprecated. Use the currentFileName property instead. This method will become unavailable in a future version.");
+    return self.currentFileName;
 }
 
 @end
