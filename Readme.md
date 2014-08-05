@@ -25,10 +25,16 @@ Users can quickly get to the files they need by using the built-in search featur
 Learn more about the project requirements, licensing, contributions, and setup.
 
 ##Requirements
-Requires Xcode 5.0 for use in any iOS Project. Requires a minimum of iOS 5.1 as the deployment target.
-* Supported build target - iOS 7.0 (Xcode 5.0, Apple LLVM compiler 5.0)
-* Earliest compatible deployment target - iOS 6.0
-NOTE: *Supported* means that the project has been tested with this version. *Compatible* means that the library should work on this iOS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
+Requires Xcode 5.1 for use in any iOS Project. Requires a minimum of iOS 6.0 as the deployment target.
+
+| Current Build Target 	| Earliest Supported Build Target 	| Earliest Compatible Build Target 	|
+|:--------------------:	|:-------------------------------:	|:--------------------------------:	|
+|       iOS 7.1        	|            iOS 7.0              	|             iOS 6.0              	|
+|     Xcode 5.1.1      	|          Xcode 5.1.1            	|           Xcode 5.0.1            	|
+|      LLVM 5.0        	|             LLVM 5.0            	|             LLVM 5.0             	|
+
+> REQUIREMENTS NOTE  
+*Supported* means that the library has been tested with this version. *Compatible* means that the library should work on this OS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
 
 ##License
 You are free to make changes and use this in either personal or commercial projects. Attribution is not required, but it appreciated. We have spent a lot of time, energy, and resources working on this project - so a little Thanks! (or something to that affect) would be much appreciated. If you use DropboxBrowser in your app, send an email to contact@iraremedia.com or let us know on Twitter @iRareMedia. See the full [DropboxBrowser license here](https://github.com/danielbierwirth/Dropboxbrowser/tree/master/License.md).
@@ -42,12 +48,12 @@ To properly integrate DropboxBrowser into your project follow the instructions b
 1. Add the following Frameworks, already available in Xcode, to your project:  
     * Security
     * QuartzCore
-    * DropboxSDK Framework The latest version of the SDK can be <a href=https://www.dropbox.com/developers>downloaded here</a> | DropboxBrowser uses version 1.3.9 of the Dropbox SDK
+    * DropboxSDK Framework The latest version of the SDK can be <a href=https://www.dropbox.com/developers>downloaded here</a> | DropboxBrowser uses version 1.3.11 of the Dropbox SDK
 2. Register as a [developer on Dropbox](https://www.dropbox.com/developers/start/setup#ios) and setup your App.
 3. Setup your Dropbox App Key and Secret. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are [available here](https://www.dropbox.com/developers/start/authentication#ios)
 4. Add all of the DropboxBrowser files to your project
     * `DropboxBrowserViewController.m` and `DropboxBrowserViewController.h`
-    * Add the "Graphics" folder to your project - this is the folder with all the file icons
+    * Add the `DropboxMedia` Xcode Asset Catalog to your project - this is the catalog with all the file icons
 5. Import `#import "DropboxBrowserViewController.h"` and subscribe to the `DropboxBrowserDelegate` delegate.
 6. Edit the required interface files. In your storyboard, add a UINavigationController (with the UITableViewController)
 7. Select the UITableViewController that was just added (along with the UINavigationController) and change its class to `DropboxRootViewController` using the Identity Inspector.  

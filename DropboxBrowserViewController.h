@@ -1,12 +1,12 @@
 //
 //  DropboxBrowserViewController.h
 //
-//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 11/30/13
+//  Created by Daniel Bierwirth on 3/5/12. Edited and Updated by iRare Media on 08/05/15
 //  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 // This code is distributed under the terms and conditions of the MIT license.
 //
-// Copyright (c) 2013 Daniel Bierwirth and iRare Media
+// Copyright (c) 2014 Daniel Bierwirth and iRare Media
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -37,59 +37,89 @@
  @param kDBDropboxFileOlderError The Dropbox file was modified after the local file, and is therefore older.
  @param kDBDropboxFileSameAsLocalFileError Both the Dropbox file and the local file were modified at the same time.
  @discussion These error codes are used with the \p dropboxBrowser:fileConflictWithLocalFile:withDropboxFile:withError: delegate method's error parameter. That delegate method is caled when there is a file conflict between a local file and a Dropbox file. */
-typedef enum kDBFileConflictError : NSInteger {
+typedef NS_ENUM(NSInteger, kDBFileConflictError) {
+    /// The Dropbox file was modified more recently than the local file, and is therefore newer.
     kDBDropboxFileNewerError = 1,
+    /// The Dropbox file was modified after the local file, and is therefore older.
     kDBDropboxFileOlderError = 2,
+    /// Both the Dropbox file and the local file were modified at the same time.
     kDBDropboxFileSameAsLocalFileError = 3
-} kDBFileConflictError;
+};
 
 @class DBRestClient;
 @class DBMetadata;
 @protocol DropboxBrowserDelegate;
-@interface DropboxBrowserViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIAlertViewDelegate> {
-    DBRestClient *restClient;
-}
+
+@interface DropboxBrowserViewController : UITableViewController <UISearchBarDelegate, UISearchDisplayDelegate, UIAlertViewDelegate>
+
+
+- (instancetype)init;
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder;
+
 
 /// Dropbox Delegate Property
 @property (nonatomic, weak) id <DropboxBrowserDelegate> rootViewDelegate;
 
-/// The file path that the current DropboxBrowserViewController is at
-@property (nonatomic, strong) NSString *currentPath;
+
+/// The current or most recently selected file name
+@property (nonatomic, strong, readonly) NSString *currentFileName;
+
+/// The current file path of the DropboxBrowserViewController
+@property (nonatomic, strong, readonly) NSString *currentPath;
+
 
 /// The list of files currently being displayed in the DropboxBrowserViewController
 @property (nonatomic, copy, readwrite) NSMutableArray *fileList;
 
-/// Set allowed file types (like a filter). Just create an array of allowed file extensions. Do not set to allow all files
+/// Allowed file types (like a filter). Create an array of allowed file extensions. Leave this property nil to allow all files.
 @property (nonatomic, strong) NSArray *allowedFileTypes;
 
-/// Set the tableview cell ID for dequeueing
+
+/// The tableview cell ID for dequeueing
 @property (nonatomic, strong) NSString *tableCellID;
 
 /// Download indicator in UINavigationBar to indicate progress of file download
-@property (strong, nonatomic) UIProgressView *downloadProgressView;
+@property (nonatomic, strong, readonly) UIProgressView *downloadProgressView;
 
-/// Set whether or not DBBrowser should deliver notifications to the user about file downloads
-@property BOOL deliverDownloadNotifications;
 
-/// Set whether DropboxBrowserViewController should display a search bar
-@property BOOL shouldDisplaySearchBar;
+/// Deliver notifications to the user about file downloads
+@property (nonatomic, assign) BOOL deliverDownloadNotifications;
 
-/// Get the currently (or most recently selected) file name
-+ (NSString *)fileName;
+/// Display a search bar in the DropboxBrowser
+@property (nonatomic, assign) BOOL shouldDisplaySearchBar;
 
-/// Check if app is linked to dropbox
+
+/** Check if the current app is linked to Dropbox.
+ @return YES if the current app is linked to Dropbox with a valid API Key, Secret, and User Account. NO if one or more of the API Key, Secret, or User Account is not valid. */
 - (BOOL)isDropboxLinked;
 
-/// Download a file from DropboxBrowser and specify whether or not it should be overwritten
+/** Force a content update of the current directory. 
+ @discussion This is usually not necessary because the DropboxSDK will asynchronously update content. Additionally, the DropboxBrowser supplies a Refresh Control to allow the user to force an update. However, there may be points when it is useful to force a content update of the current directory. */
+- (void)updateContent;
+
+/** Download a file from Dropbox and specify whether or not it should be overwritten.
+ @param file File metadata from dropbox. A DBMetadata object is supplied from the \p dropboxBrowser:didSelectFile: and file conflict delegate methods.
+ @param replaceLocalVersion When set to YES, DropboxBrowser will overwrite any local version of the file without checking for conflicts. When set to NO, conflict handling will be preserved.
+ @return YES if the download is successful. NO if the download fails. */
 - (BOOL)downloadFile:(DBMetadata *)file replaceLocalVersion:(BOOL)replaceLocalVersion;
 
-/// Create a share link for a specifc file
+/** Create a share link for a specifc file. 
+ @param file File metadata from dropbox. A DBMetadata object is supplied from the \p dropboxBrowser:didSelectFile: and file conflict delegate methods. */
 - (void)loadShareLinkForFile:(DBMetadata *)file;
 
-/// Remove DropboxBrowser from the view hierarchy - dismiss DropboxBrowserViewController
+/** Logout of Dropbox and dismiss the DropboxBrowser.
+ @discussion The current user will be signed out of Dropbox. This implicitly calls \p removeDropboxBrowser if the DropboxBrowser is presented. */
+- (void)logoutOfDropbox;
+
+/** Remove DropboxBrowser from the view hierarchy.
+ @discussion Dismisses DropboxBrowserViewController from the view hierarchy. Do not attempt to call \p dismissViewControllerAnimated:completion: on the DropboxBrowserViewController before or after calling this method. When dismissed the appropriate method is sent to the delegate. */
 - (void)removeDropboxBrowser;
 
+
 @end
+
+
 
 /// The DropboxBrowser Delegate can be used to recieve download notifications, failures, successes, errors, file conflicts, and even handle the download yourself.
 @protocol DropboxBrowserDelegate <NSObject>
@@ -145,15 +175,5 @@ typedef enum kDBFileConflictError : NSInteger {
 
 /** DEPRECATED. Called when a there is an error creating a share link. @deprecated This method is deprecated. Use \p dropboxBrowser:didFailToLoadShareLinkWithError: instead */
 - (void)dropboxBrowser:(DropboxBrowserViewController *)browser failedLoadingShareLinkWithError:(NSError *)error __deprecated;
-
-//--------------------------------------------------------------------------------------//
-// Unavailable Methods - These methods are never called and are not in use. Do not use  //
-//--------------------------------------------------------------------------------------//
-- (void)removeDropboxBrowser __unavailable;
-- (void)refreshLibrarySection __unavailable;
-- (void)dropboxBrowserDismissed __unavailable;
-- (void)dropboxBrowserDownloadedFile:(NSString *)fileName __unavailable;
-- (void)dropboxBrowserFailedToDownloadFile:(NSString *)fileName __unavailable;
-- (void)dropboxBrowserFileConflictError:(NSDictionary *)conflict __unavailable;
 
 @end

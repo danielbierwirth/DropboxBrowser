@@ -3,7 +3,7 @@
 //  DropboxBrowser
 //
 //  Created by iRare Media on 12/26/12.
-//  Copyright (c) 2013 iRare Media. All rights reserved.
+//  Copyright (c) 2014 iRare Media. All rights reserved.
 //
 
 #import "DBBViewController.h"
@@ -115,7 +115,7 @@
     dispatch_async(delete, ^{
         // Background Process;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *documentsDirectory = paths[0];
         NSFileManager *fileMgr = [NSFileManager defaultManager];
         NSArray *fileArray = [fileMgr contentsOfDirectoryAtPath:documentsDirectory error:nil];
         

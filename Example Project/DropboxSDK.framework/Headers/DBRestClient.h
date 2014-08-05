@@ -29,27 +29,27 @@
 - (id)initWithSession:(DBSession*)session;
 - (id)initWithSession:(DBSession *)session userId:(NSString *)userId;
 
-/** Cancels all outstanding requests. No callback for those requests will be sent */
+/* Cancels all outstanding requests. No callback for those requests will be sent */
 - (void)cancelAllRequests;
 
 
-/** Loads metadata for the object at the given root/path and returns the result to the delegate as a
+/* Loads metadata for the object at the given root/path and returns the result to the delegate as a 
    dictionary */
 - (void)loadMetadata:(NSString*)path withHash:(NSString*)hash;
 
 - (void)loadMetadata:(NSString*)path;
 
-/** This will load the metadata of a file at a given rev */
+/* This will load the metadata of a file at a given rev */
 - (void)loadMetadata:(NSString *)path atRev:(NSString *)rev;
 
-/** Loads a list of files (represented as DBDeltaEntry objects) that have changed since the cursor was generated */
+/* Loads a list of files (represented as DBDeltaEntry objects) that have changed since the cursor was generated */
 - (void)loadDelta:(NSString *)cursor;
 
 
-/** Loads the file contents at the given root/path and stores the result into destinationPath */
+/* Loads the file contents at the given root/path and stores the result into destinationPath */
 - (void)loadFile:(NSString *)path intoPath:(NSString *)destinationPath;
 
-/** This will load a file as it existed at a given rev */
+/* This will load a file as it existed at a given rev */
 - (void)loadFile:(NSString *)path atRev:(NSString *)rev intoPath:(NSString *)destPath;
 
 - (void)cancelFileLoad:(NSString*)path;
@@ -58,7 +58,7 @@
 - (void)loadThumbnail:(NSString *)path ofSize:(NSString *)size intoPath:(NSString *)destinationPath;
 - (void)cancelThumbnailLoad:(NSString*)path size:(NSString*)size;
 
-/** Uploads a file that will be named filename to the given path on the server. sourcePath is the
+/* Uploads a file that will be named filename to the given path on the server. sourcePath is the
    full path of the file you want to upload. If you are modifying a file, parentRev represents the
    rev of the file before you modified it as returned from the server. If you are uploading a new
    file set parentRev to nil. */
@@ -67,11 +67,11 @@
 
 - (void)cancelFileUpload:(NSString *)path;
 
-/** Avoid using this because it is very easy to overwrite conflicting changes. Provided for backwards
+/* Avoid using this because it is very easy to overwrite conflicting changes. Provided for backwards
    compatibility reasons only */
 - (void)uploadFile:(NSString*)filename toPath:(NSString*)path fromPath:(NSString *)sourcePath __attribute__((deprecated));
 
-/** These calls allow you to upload files in chunks, which is better for file larger than a few megabytes.
+/* These calls allow you to upload files in chunks, which is better for file larger than a few megabytes.
    You can append bytes to the file using -[DBRestClient uploadFileChunk:offset:uploadId:] and then call
    -[DBRestClient uploadFile:toPath:withParentRev:fromUploadId:] to turn the bytes appended at that uploadId
    into an actual file in the user's Dropbox.
@@ -81,17 +81,17 @@
 	fromUploadId:(NSString *)uploadId;
 
 
-/** Loads a list of up to 10 DBMetadata objects representing past revisions of the file at path */
+/* Loads a list of up to 10 DBMetadata objects representing past revisions of the file at path */
 - (void)loadRevisionsForFile:(NSString *)path;
 
-/** Same as above but with a configurable limit to number of DBMetadata objects returned, up to 1000 */
+/* Same as above but with a configurable limit to number of DBMetadata objects returned, up to 1000 */
 - (void)loadRevisionsForFile:(NSString *)path limit:(NSInteger)limit;
 
-/** Restores a file at path as it existed at the given rev and returns the metadata of the restored
+/* Restores a file at path as it existed at the given rev and returns the metadata of the restored
    file after restoration */
 - (void)restoreFile:(NSString *)path toRev:(NSString *)rev;
 
-/** Creates a folder at the given root/path */
+/* Creates a folder at the given root/path */
 - (void)createFolder:(NSString*)path;
 
 - (void)deletePath:(NSString*)path;
@@ -121,7 +121,7 @@
 
 
 
-/** The delegate provides allows the user to get the result of the calls made on the DBRestClient.
+/* The delegate provides allows the user to get the result of the calls made on the DBRestClient.
    Right now, the error parameter of failed calls may be nil and [error localizedDescription] does
    not contain an error message appropriate to show to the user. */
 @protocol DBRestClientDelegate <NSObject>
