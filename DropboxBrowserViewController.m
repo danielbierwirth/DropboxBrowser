@@ -650,11 +650,11 @@ static NSUInteger const kDBSignOutAlertViewTag = 3;
 #pragma mark - DBRestClientDelegate Methods
 
 - (DBRestClient *)restClient {
-    if (!self.restClient) {
-        self.restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
-        self.restClient.delegate = self;
+    if (!_restClient) {
+        _restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
+        _restClient.delegate = self;
     }
-    return self.restClient;
+    return _restClient;
 }
 
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
