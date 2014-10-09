@@ -116,7 +116,7 @@ static NSUInteger const kDBSignOutAlertViewTag = 3;
     
     if (self.shouldDisplaySearchBar == YES) {
         // Create Search Bar
-        UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, -44, 320, 44)];
+        UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
         searchBar.delegate = self;
         searchBar.placeholder = [NSString stringWithFormat:NSLocalizedString(@"Search %@", @"DropboxBrowser: Search Field Placeholder Text. Search 'CURRENT FOLDER NAME'"), self.title];
         self.tableView.tableHeaderView = searchBar;
@@ -126,7 +126,6 @@ static NSUInteger const kDBSignOutAlertViewTag = 3;
         searchController.searchResultsDataSource = self;
         searchController.searchResultsDelegate = self;
         searchController.delegate = self;
-        self.tableView.contentOffset = CGPointMake(0, self.searchDisplayController.searchBar.frame.size.height);
     }
     
     // Add Download Progress View to Navigation Bar
@@ -181,6 +180,10 @@ static NSUInteger const kDBSignOutAlertViewTag = 3;
         alertView.tag = kDBSignInAlertViewTag;
         [alertView show];
     }
+    else if ([self.fileList count] == 0) {
+        // if there are no files, try updating content as the user may be logged in now
+        [self updateContent];
+	}
 }
 
 - (void)logoutOfDropbox {
