@@ -1,0 +1,6 @@
+framework module Pods_OpenDropboxBrowser {
+  umbrella header "Pods-OpenDropboxBrowser-umbrella.h"
+
+  export *
+  module * { export * }
+}

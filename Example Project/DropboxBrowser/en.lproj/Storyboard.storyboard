@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12106.1" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="2">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12074.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="5">
+            <objects>
+                <viewController id="2" customClass="DBBViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rzE-Ue-HSp"/>
+                        <viewControllerLayoutGuide type="bottom" id="v8H-bz-Vse"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZR9-Y3-g5Q">
+                                <rect key="frame" x="0.0" y="158" width="375" height="45"/>
+                                <color key="backgroundColor" red="0.23137254900000001" green="0.69019607839999997" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="MPU-oU-AWQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Browse Files in Dropbox">
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="7Db-aG-xUp" kind="presentation" identifier="showDropboxBrowser" modalTransitionStyle="coverVertical" id="6b7-wG-dQg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QdR-bx-7r5">
+                                <rect key="frame" x="16" y="28" width="110" height="110"/>
+                                <color key="tintColor" red="0.23137254900000001" green="0.69019607839999997" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="Box"/>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Open Dropbox Browser" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Azf-of-2H3">
+                                <rect key="frame" x="134" y="28" width="225" height="87"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="87" id="fdQ-Lg-tv7"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Developed by iRare Media and Daniel Bierwirth" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="VT2-fJ-j4Y">
+                                <rect key="frame" x="134" y="123" width="225" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="SSH-Zz-iRR"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sKI-3M-i8b">
+                                <rect key="frame" x="249" y="226" width="110" height="33"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="110" id="0v7-qq-uEm"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Reset Files">
+                                    <color key="titleColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetFiles:" destination="2" eventType="touchUpInside" id="Upx-f5-k1i"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Downloaded Files" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8cS-lO-LEy">
+                                <rect key="frame" x="16" y="226" width="225" height="33"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZaL-5f-ZRM">
+                                <rect key="frame" x="249" y="511" width="110" height="33"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Logout">
+                                    <color key="titleColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleAccountAccess:" destination="2" eventType="touchUpInside" id="PdT-rR-nmT"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Status" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hje-1b-7KW">
+                                <rect key="frame" x="16" y="511" width="225" height="33"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lv9-fr-cmi">
+                                <rect key="frame" x="249" y="559" width="110" height="33"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Configured">
+                                    <color key="titleColor" red="0.29803921570000003" green="0.85098039219999999" blue="0.3921568627" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="checkAppStatus:" destination="2" eventType="touchUpInside" id="vQO-Ds-knW"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="App Status" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AQp-tH-pXo">
+                                <rect key="frame" x="16" y="559" width="225" height="33"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="sZ8-Gy-zPq">
+                                <rect key="frame" x="16" y="267" width="343" height="220"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="fileCell" textLabel="0Sd-sQ-onR" detailTextLabel="cJd-ss-i7h" style="IBUITableViewCellStyleSubtitle" id="HdQ-0M-acG">
+                                        <rect key="frame" x="0.0" y="28" width="343" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HdQ-0M-acG" id="CDH-5F-aQ5">
+                                            <rect key="frame" x="0.0" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Sd-sQ-onR">
+                                                    <rect key="frame" x="15" y="5" width="33.5" height="20.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cJd-ss-i7h">
+                                                    <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="2" id="HPT-9l-lCe"/>
+                                    <outlet property="delegate" destination="2" id="Noy-R7-SOA"/>
+                                </connections>
+                            </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qda-J1-nMY">
+                                <rect key="frame" x="249" y="605" width="110" height="33"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <state key="normal" title="View"/>
+                                <connections>
+                                    <segue destination="dNb-dZ-gKa" kind="show" id="TlQ-1H-dPT"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="More Information" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kr2-tn-0MI">
+                                <rect key="frame" x="16" y="605" width="225" height="33"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="21"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="ZR9-Y3-g5Q" firstAttribute="leading" secondItem="3" secondAttribute="leading" id="228-rc-Onw"/>
+                            <constraint firstItem="Kr2-tn-0MI" firstAttribute="bottom" secondItem="qda-J1-nMY" secondAttribute="bottom" id="2Lz-ao-4zo"/>
+                            <constraint firstItem="lv9-fr-cmi" firstAttribute="leading" secondItem="qda-J1-nMY" secondAttribute="leading" id="2ah-Hs-qRL"/>
+                            <constraint firstItem="VT2-fJ-j4Y" firstAttribute="trailing" secondItem="sKI-3M-i8b" secondAttribute="trailing" id="4gZ-s6-vNj"/>
+                            <constraint firstItem="lv9-fr-cmi" firstAttribute="leading" secondItem="AQp-tH-pXo" secondAttribute="trailing" constant="8" symbolic="YES" id="9wH-uK-cEB"/>
+                            <constraint firstItem="hje-1b-7KW" firstAttribute="top" secondItem="ZaL-5f-ZRM" secondAttribute="top" id="Arn-El-Kq7"/>
+                            <constraint firstItem="AQp-tH-pXo" firstAttribute="top" secondItem="hje-1b-7KW" secondAttribute="bottom" constant="15" id="BB1-n9-jNX"/>
+                            <constraint firstItem="Azf-of-2H3" firstAttribute="leading" secondItem="VT2-fJ-j4Y" secondAttribute="leading" id="E8O-rS-ab8"/>
+                            <constraint firstItem="QdR-bx-7r5" firstAttribute="bottom" secondItem="VT2-fJ-j4Y" secondAttribute="bottom" id="FjC-EN-yDp"/>
+                            <constraint firstItem="VT2-fJ-j4Y" firstAttribute="top" secondItem="Azf-of-2H3" secondAttribute="bottom" constant="8" symbolic="YES" id="FmZ-cV-6lh"/>
+                            <constraint firstItem="QdR-bx-7r5" firstAttribute="top" secondItem="Azf-of-2H3" secondAttribute="top" id="Gy7-4g-w0m"/>
+                            <constraint firstItem="sKI-3M-i8b" firstAttribute="trailing" secondItem="sZ8-Gy-zPq" secondAttribute="trailing" id="Lk9-B7-GFA"/>
+                            <constraint firstItem="sZ8-Gy-zPq" firstAttribute="top" secondItem="sKI-3M-i8b" secondAttribute="bottom" constant="8" symbolic="YES" id="OqN-L4-tM0"/>
+                            <constraint firstItem="8cS-lO-LEy" firstAttribute="top" secondItem="sKI-3M-i8b" secondAttribute="top" id="PTq-U2-nbA"/>
+                            <constraint firstItem="sZ8-Gy-zPq" firstAttribute="leading" secondItem="hje-1b-7KW" secondAttribute="leading" id="PbF-qp-5yI"/>
+                            <constraint firstItem="Azf-of-2H3" firstAttribute="trailing" secondItem="VT2-fJ-j4Y" secondAttribute="trailing" id="QJW-6X-q5U"/>
+                            <constraint firstItem="sKI-3M-i8b" firstAttribute="leading" secondItem="8cS-lO-LEy" secondAttribute="trailing" constant="8" symbolic="YES" id="QnT-Qk-9Rs"/>
+                            <constraint firstItem="hje-1b-7KW" firstAttribute="leading" secondItem="AQp-tH-pXo" secondAttribute="leading" id="T1R-zP-OUP"/>
+                            <constraint firstItem="8cS-lO-LEy" firstAttribute="leading" secondItem="sZ8-Gy-zPq" secondAttribute="leading" id="T82-Ch-WnQ"/>
+                            <constraint firstItem="ZaL-5f-ZRM" firstAttribute="leading" secondItem="lv9-fr-cmi" secondAttribute="leading" id="T9a-y3-uVn"/>
+                            <constraint firstItem="ZaL-5f-ZRM" firstAttribute="trailing" secondItem="lv9-fr-cmi" secondAttribute="trailing" id="ULh-KU-lyg"/>
+                            <constraint firstItem="Kr2-tn-0MI" firstAttribute="top" secondItem="AQp-tH-pXo" secondAttribute="bottom" constant="13" id="WJR-gz-QSI"/>
+                            <constraint firstItem="sKI-3M-i8b" firstAttribute="leading" secondItem="ZaL-5f-ZRM" secondAttribute="leading" id="WKU-vu-fYh"/>
+                            <constraint firstItem="sZ8-Gy-zPq" firstAttribute="trailing" secondItem="ZaL-5f-ZRM" secondAttribute="trailing" id="WUV-qf-Xal"/>
+                            <constraint firstItem="qda-J1-nMY" firstAttribute="leading" secondItem="Kr2-tn-0MI" secondAttribute="trailing" constant="8" symbolic="YES" id="YSL-kL-Rzt"/>
+                            <constraint firstItem="Kr2-tn-0MI" firstAttribute="top" secondItem="qda-J1-nMY" secondAttribute="top" id="YxU-dl-jN7"/>
+                            <constraint firstItem="AQp-tH-pXo" firstAttribute="leading" secondItem="Kr2-tn-0MI" secondAttribute="leading" id="egk-Ot-9Yb"/>
+                            <constraint firstItem="sZ8-Gy-zPq" firstAttribute="top" secondItem="8cS-lO-LEy" secondAttribute="bottom" constant="8" symbolic="YES" id="gb7-IB-yfR"/>
+                            <constraint firstItem="QdR-bx-7r5" firstAttribute="leading" secondItem="8cS-lO-LEy" secondAttribute="leading" id="hSj-6c-ZiU"/>
+                            <constraint firstItem="ZaL-5f-ZRM" firstAttribute="leading" secondItem="hje-1b-7KW" secondAttribute="trailing" constant="8" symbolic="YES" id="iil-k4-6iG"/>
+                            <constraint firstItem="AQp-tH-pXo" firstAttribute="top" secondItem="lv9-fr-cmi" secondAttribute="top" id="jGt-RZ-o1P"/>
+                            <constraint firstItem="hje-1b-7KW" firstAttribute="bottom" secondItem="ZaL-5f-ZRM" secondAttribute="bottom" id="oka-cF-RIx"/>
+                            <constraint firstItem="hje-1b-7KW" firstAttribute="top" secondItem="sZ8-Gy-zPq" secondAttribute="bottom" constant="24" id="pEt-LE-skd"/>
+                            <constraint firstItem="ZR9-Y3-g5Q" firstAttribute="centerX" secondItem="sZ8-Gy-zPq" secondAttribute="centerX" id="pj3-es-lQa"/>
+                            <constraint firstItem="QdR-bx-7r5" firstAttribute="top" secondItem="rzE-Ue-HSp" secondAttribute="bottom" constant="8" symbolic="YES" id="rf6-mA-CcN"/>
+                            <constraint firstItem="QdR-bx-7r5" firstAttribute="leading" secondItem="3" secondAttribute="leadingMargin" id="ri8-mc-NHI"/>
+                            <constraint firstItem="8cS-lO-LEy" firstAttribute="top" secondItem="ZR9-Y3-g5Q" secondAttribute="bottom" constant="23" id="ssc-fF-8cc"/>
+                            <constraint firstAttribute="trailing" secondItem="ZR9-Y3-g5Q" secondAttribute="trailing" id="tos-9o-nlH"/>
+                            <constraint firstItem="ZR9-Y3-g5Q" firstAttribute="top" secondItem="QdR-bx-7r5" secondAttribute="bottom" constant="20" id="w7v-F4-mwn"/>
+                            <constraint firstItem="AQp-tH-pXo" firstAttribute="bottom" secondItem="lv9-fr-cmi" secondAttribute="bottom" id="xAk-Qz-eYb"/>
+                            <constraint firstItem="v8H-bz-Vse" firstAttribute="top" secondItem="Kr2-tn-0MI" secondAttribute="bottom" constant="29" id="yQT-97-njB"/>
+                            <constraint firstItem="Azf-of-2H3" firstAttribute="leading" secondItem="QdR-bx-7r5" secondAttribute="trailing" constant="8" symbolic="YES" id="zfB-fm-fpt"/>
+                            <constraint firstItem="lv9-fr-cmi" firstAttribute="trailing" secondItem="qda-J1-nMY" secondAttribute="trailing" id="zjT-LY-oN9"/>
+                        </constraints>
+                    </view>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+                    <connections>
+                        <outlet property="accountStatusButton" destination="ZaL-5f-ZRM" id="tlZ-oO-p2y"/>
+                        <outlet property="appStatusButton" destination="lv9-fr-cmi" id="iS2-VZ-xi3"/>
+                        <outlet property="bylineLabe" destination="VT2-fJ-j4Y" id="ln9-d9-g5O"/>
+                        <outlet property="localFiles" destination="sZ8-Gy-zPq" id="v71-fK-EtS"/>
+                        <outlet property="resetFilesButton" destination="sKI-3M-i8b" id="R0x-sT-3HC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="148" y="-267.61619190404798"/>
+        </scene>
+        <!--Dropbox-->
+        <scene sceneID="tUo-jX-Zkk">
+            <objects>
+                <tableViewController id="O9m-HN-wsO" customClass="ODBTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="pEI-by-Ayb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DropboxBrowserCell" textLabel="cT7-VG-iDT" detailTextLabel="AXz-Ct-jKU" style="IBUITableViewCellStyleSubtitle" id="xfb-J8-RjA">
+                                <rect key="frame" x="0.0" y="22" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xfb-J8-RjA" id="Xys-tw-jb4">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cT7-VG-iDT">
+                                            <rect key="frame" x="15" y="4" width="35.5" height="21.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AXz-Ct-jKU">
+                                            <rect key="frame" x="15" y="25.5" width="44" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Dropbox" id="7lu-bP-Ub9"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="3aG-O1-vYR">
+                        <autoresizingMask key="autoresizingMask"/>
+                        <attributedString key="attributedTitle">
+                            <fragment content="Reload Files">
+                                <attributes>
+                                    <font key="NSFont" metaFont="smallSystem"/>
+                                    <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                    </refreshControl>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="shouldDisplaySearchBar" value="YES"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="accessPromptCanExit" value="NO"/>
+                        <userDefinedRuntimeAttribute type="color" keyPath="colorTheme">
+                            <color key="value" red="0.23137254900000001" green="0.69019607839999997" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vuj-Qt-2j3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1892.8000000000002" y="-456.97151424287858"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="45h-lp-kJo">
+            <objects>
+                <navigationController storyboardIdentifier="DropboxBrowserID" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" toolbarHidden="NO" id="7Db-aG-xUp" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="bv7-dN-jLZ">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="3uF-WK-3sg">
+                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="O9m-HN-wsO" kind="relationship" relationship="rootViewController" id="Yag-Dg-Vsl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kKs-sl-Ife" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1028.8" y="-456.97151424287858"/>
+        </scene>
+        <!--Information-->
+        <scene sceneID="GFx-kt-l9x">
+            <objects>
+                <viewController title="Information" id="Sut-bl-jlf" customClass="DBBViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7E8-bf-GGe"/>
+                        <viewControllerLayoutGuide type="bottom" id="L0u-9h-n4r"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Fga-fJ-mgm">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqj-5r-oVG">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <inset key="scrollIndicatorInsets" minX="0.0" minY="64" maxX="0.0" maxY="0.0"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Dropbox Browser">
+                                        <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">
+Dropbox Browser provides a simple and effective way to browse, view, and download files using the iOS Dropbox SDK. Add the required files to your Xcode iOS project, setup Dropbox, add one simple method and a navigation controller and now you've got a simple TableView that lets users browse their files and folder, and even download them.
+
+</string>
+                                        <attributes>
+                                            <color key="NSColor" white="0.25476163321167883" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Integration">
+                                        <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">
+To properly integrate DropboxBrowser into your project follow the instructions below. Use this Sample Project as a guide for setting up your own custom project. 
+ 
+1. Add the following Frameworks already available in Xcode to your project:  
+    - Security  
+    - QuartzCore   
+2. Add the DropboxSDK Framework to your project. The latest version of the SDK can be downloaded here: https://www.dropbox.com/developers | The sample project currently uses version 1.3.9 of the Dropbox SDK  
+
+3. Register as a developer on Dropbox and setup your App. If you've already done this, skip this step. If you haven't done this, please follow this link to get setup: https://www.dropbox.com/developers/start/setup#ios  
+
+4. Setup and add the required methods used by Dropbox for authenticating. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are available here: https://www.dropbox.com/developers/start/authentication#ios
+
+5. Add all of the DropboxBrowser files to your project. Make sure to include the "Graphics" and "Utilities" folders.
+
+6. In your ViewController's header file, import DropboxBrowserViewController.h. Add the following delegate: DropboxBrowserDelegate.
+
+7. Edit the required interface files. In your storyboard, add the following UI Objects from the Objects Library:
+    - Navigation Controller
+  
+8.  Select the Table View Controller that was just added and change its class to DropboxRootViewController, using the Identity Inspector.
+
+9. In your Implementation File (.m), add a method / action that displays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox. Dropbox Browser handles authentication and login.  
+
+</string>
+                                        <attributes>
+                                            <color key="NSColor" white="0.25476163321167883" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Delegate, Properties, and Methods">
+                                        <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">
+Refer to the ReadMe file for information on delegates, properties, and methods.
+    
+</string>
+                                        <attributes>
+                                            <color key="NSColor" white="0.25476163321167883" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="User Interface">
+                                        <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">
+DropboxBrowser has a nice UI that can easily be customized. All graphics have been Retina-Display, and iPhone 5 optimized.
+
+Here are a few simple ways to customize the interface:  
+
+ - Swap any images (PNGs) included with Dropbox Browser with your own. Use the same size image with the exact same name.
+
+ - Use </string>
+                                        <attributes>
+                                            <color key="NSColor" white="0.25476163321167883" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="UITableView">
+                                        <attributes>
+                                            <color key="NSColor" white="0.25476163321167883" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <font key="NSOriginalFont" size="14" name="Menlo-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content"> Prototype Cells to customize the TableView appearance. It is recommended that you set the cell type to `Subtitle`. This will allow DropboxBrowser to display file / folder names, last modified dates, and file sizes.
+
+ - DropboxBrowser is optimized for iOS 7 so you can take advantage of tintColor to customize it. 
+
+</string>
+                                        <attributes>
+                                            <color key="NSColor" white="0.25476163321167883" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="Change Log">
+                                        <attributes>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment>
+                                        <string key="content">
+This is DropboxBrowser version 5.0. Check GitHub for full details and changes on each version.</string>
+                                        <attributes>
+                                            <color key="NSColor" red="0.25490196078431371" green="0.25490196078431371" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <font key="NSFont" size="14" name="HelveticaNeue-Light"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="fqj-5r-oVG" secondAttribute="trailing" id="2sx-MK-b5y"/>
+                            <constraint firstItem="fqj-5r-oVG" firstAttribute="top" secondItem="Fga-fJ-mgm" secondAttribute="top" id="Vhy-Yh-Tsp"/>
+                            <constraint firstItem="fqj-5r-oVG" firstAttribute="leading" secondItem="Fga-fJ-mgm" secondAttribute="leading" id="XrX-hA-tFf"/>
+                            <constraint firstItem="fqj-5r-oVG" firstAttribute="bottom" secondItem="L0u-9h-n4r" secondAttribute="top" id="p2K-B6-agA"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Information" id="Du1-gn-p1z">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="Mm9-WY-eQ8">
+                            <connections>
+                                <action selector="done" destination="Sut-bl-jlf" id="jPy-lJ-MGm"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H7P-qa-12u" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1892" y="223"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="DyE-IF-K2S">
+            <objects>
+                <navigationController id="dNb-dZ-gKa" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="r7M-wL-24D">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Sut-bl-jlf" kind="relationship" relationship="rootViewController" id="I6D-wy-SCn"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pd5-Uz-eRs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1028" y="223"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Box" width="215" height="215"/>
+    </resources>
+    <color key="tintColor" red="0.23137254900000001" green="0.69019607839999997" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+</document>

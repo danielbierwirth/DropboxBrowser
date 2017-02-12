@@ -1,4 +1,4 @@
-<img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Banner.png"/>
+<img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Banner.png" align="center"/>
 
 Dropbox Browser provides a simple and effective way to browse, view, and download files using the iOS Dropbox SDK. Follow the simple setup steps and in under ten minutes you'll have a working Dropbox File Browser in your app that lets users browse and download their Dropbox files and folders. 
 
@@ -8,9 +8,9 @@ If you like the project, please <a href=https://github.com/iRareMedia/DropboxBro
 Project highlights and key features are listed below. Dropbox Browser has a great interface built for iOS 7, solid file handling features, notification integration, background support, and file search capability.
 
 ## User Interface
-DropboxBrowser has a beautiful and simple interface similar to that of the actual Dropbox App. The interface is built for iOS 7, iPhone 5, and Retina Displays. it can also be easily customized using iOS 7 tint color, UITableViewCells, and a variety of properties.
+DropboxBrowser has a beautiful and simple interface similar to that of the actual Dropbox App. The interface is built for the latest iOS technologies and can also be easily customized.
 
-<img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Interface.png"/>
+<img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Interface.png" align="center"/>
 
 ##Files
 When a user taps on a file, DropboxBrowser checks to see if the file is already download. If the file hasn't been downloaded, it's downloaded to your application's **Documents Directory**. If a conflict arises between a local and remote file, DropboxBrowser will attempt to resolve it. In the event that a conflict can't be resolved, you'll be notified via delegate methods and have the chance to handle the download youself.
@@ -25,19 +25,16 @@ Users can quickly get to the files they need by using the built-in search featur
 Learn more about the project requirements, licensing, contributions, and setup.
 
 ##Requirements
-Requires Xcode 5.1 for use in any iOS Project. Requires a minimum of iOS 6.0 as the deployment target.
+Requires at least Xcode 6.0 for use in any iOS Project. Requires a minimum of iOS 8.0 as the deployment target. The sample project is only compatible with Xcode 6.3 and higher.
 
 | Current Build Target 	| Earliest Supported Build Target 	| Earliest Compatible Build Target 	|
 |:--------------------:	|:-------------------------------:	|:--------------------------------:	|
-|       iOS 7.1        	|            iOS 7.0              	|             iOS 6.0              	|
-|     Xcode 5.1.1      	|          Xcode 5.1.1            	|           Xcode 5.0.1            	|
-|      LLVM 5.0        	|             LLVM 5.0            	|             LLVM 5.0             	|
+|      iOS 10.3beta   	|            iOS 8.0              	|             iOS 6.0              	|
+|     Xcode 8.3beta     |          Xcode 6.3            	|           Xcode 6.0            	|
+|      LLVM 8.0        	|           LLVM 6.0            	|            LLVM 5.0             	|
 
 > REQUIREMENTS NOTE  
 *Supported* means that the library has been tested with this version. *Compatible* means that the library should work on this OS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
-
-##License
-You are free to make changes and use this in either personal or commercial projects. Attribution is not required, but it appreciated. We have spent a lot of time, energy, and resources working on this project - so a little Thanks! (or something to that affect) would be much appreciated. If you use DropboxBrowser in your app, send an email to contact@iraremedia.com or let us know on Twitter @iRareMedia. See the full [DropboxBrowser license here](https://github.com/danielbierwirth/Dropboxbrowser/tree/master/License.md).
 
 ##Contributions
 Any contribution is more than welcome! You can contribute through pull requests and issues on GitHub.
