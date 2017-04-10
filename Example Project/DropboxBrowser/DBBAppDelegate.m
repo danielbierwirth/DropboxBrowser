@@ -7,32 +7,33 @@
 //
 
 #import "DBBAppDelegate.h"
+#import "ODBoxHandler.h"
 
 @implementation DBBAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Setup Dropbox Here with YOUR OWN APP info
-   // #error Dropbox App Key and Secret are required for basic functionality. Add them below AND in the Info.plist file in the URL-Schemes section. Replace the "APP_KEY" text with your app key (make sure to leave the "db-" there)
-    DBSession *dbSession = [[DBSession alloc] initWithAppKey:@"APP_KEY" appSecret:@"APP_SECRET" root:kDBRootAppFolder];
-    [DBSession setSharedSession:dbSession];
-    
+    // Override point for customization after application launch.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    // Override point for customization after application launch.
+    // Setup Dropbox Here with YOUR OWN APP info
+    // #error Dropbox App Key and Secret are required for basic functionality. Add them below AND in the Info.plist file in the URL-Schemes section. See full instructions in the README.
+    [[ODBoxHandler sharedHandler] prepareForPotentialSessionWithKey:@"APP_KEY"];
+    
     return YES;
-
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    if ([[DBSession sharedSession] handleOpenURL:url]) {
-        if ([[DBSession sharedSession] isLinked]) {
-            NSLog(@"App linked successfully!");
-            // At this point you can start making API calls
-        }
-        return YES;
-    }
+    [[ODBoxHandler sharedHandler] handleDropboxAuthenticationResponse:url];
+    
     // Add whatever other url handling code your app requires here
-    return NO;
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    [[ODBoxHandler sharedHandler] handleDropboxAuthenticationResponse:url];
+    
+    // Add whatever other url handling code your app requires here
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

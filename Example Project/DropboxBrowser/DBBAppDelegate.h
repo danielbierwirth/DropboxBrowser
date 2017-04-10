@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 iRare Media. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <DropboxSDK/DropboxSDK.h>
+@import UIKit;
+@import ObjectiveDropboxOfficial;
 
 @interface DBBAppDelegate : UIResponder <UIApplicationDelegate>
 

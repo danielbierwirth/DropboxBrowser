@@ -1,0 +1,498 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 47;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		990EEF9E17F648FA00A657DB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 990EEF9D17F648FA00A657DB /* Images.xcassets */; };
+		9922E6AB199137BA00154CBB /* DropboxMedia.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9922E6AA199137BA00154CBB /* DropboxMedia.xcassets */; };
+		99362DC2184720B700B48B48 /* LICENSE.md in Resources */ = {isa = PBXBuildFile; fileRef = 99362DBF184720B700B48B48 /* LICENSE.md */; };
+		99362DC3184720B700B48B48 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 99362DC0184720B700B48B48 /* README.md */; };
+		999D32A517108B9B00A9FCB6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE352168B7B780071241C /* CoreGraphics.framework */; };
+		999D32A617108BA100A9FCB6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3AF168B7E090071241C /* QuartzCore.framework */; };
+		999D32A717108BA900A9FCB6 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3AD168B7DFE0071241C /* Security.framework */; };
+		99B41B271849AF020096FD9D /* Banner.png in Resources */ = {isa = PBXBuildFile; fileRef = 99B41B251849AF020096FD9D /* Banner.png */; };
+		99B41B281849AF020096FD9D /* Interface.png in Resources */ = {isa = PBXBuildFile; fileRef = 99B41B261849AF020096FD9D /* Interface.png */; };
+		99DDE34F168B7B780071241C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE34E168B7B780071241C /* UIKit.framework */; };
+		99DDE351168B7B780071241C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE350168B7B780071241C /* Foundation.framework */; };
+		99DDE359168B7B780071241C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 99DDE357168B7B780071241C /* InfoPlist.strings */; };
+		99DDE35B168B7B780071241C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE35A168B7B780071241C /* main.m */; };
+		99DDE35F168B7B780071241C /* DBBAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE35E168B7B780071241C /* DBBAppDelegate.m */; };
+		99DDE368168B7B780071241C /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99DDE366168B7B780071241C /* Storyboard.storyboard */; };
+		99DDE36E168B7B780071241C /* DBBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE36D168B7B780071241C /* DBBViewController.m */; };
+		99DDE3B2168B83D70071241C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3B1168B83D70071241C /* AssetsLibrary.framework */; };
+		A68D084B1E4E5A4300B087DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A68D08491E4E5A4300B087DF /* LaunchScreen.storyboard */; };
+		A68D084E1E4E647800B087DF /* ODBoxHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A68D084D1E4E647800B087DF /* ODBoxHandler.m */; };
+		A68D08521E4E768D00B087DF /* ODBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68D08511E4E768D00B087DF /* ODBTableViewController.m */; };
+		CA42DB01806CAAC3CA08FFE8 /* Pods_OpenDropboxBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2937693CF5EFE93DB1DC2C5 /* Pods_OpenDropboxBrowser.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		068C241E32196849B719F502 /* Pods-OpenDropboxBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenDropboxBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenDropboxBrowser/Pods-OpenDropboxBrowser.debug.xcconfig"; sourceTree = "<group>"; };
+		990EEF9D17F648FA00A657DB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9922E6AA199137BA00154CBB /* DropboxMedia.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = DropboxMedia.xcassets; path = ../DropboxMedia.xcassets; sourceTree = "<group>"; };
+		99362DBF184720B700B48B48 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = LICENSE.md; path = ../LICENSE.md; sourceTree = "<group>"; };
+		99362DC0184720B700B48B48 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		99B41B251849AF020096FD9D /* Banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Banner.png; path = ../../Banner.png; sourceTree = "<group>"; };
+		99B41B261849AF020096FD9D /* Interface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Interface.png; path = ../../Interface.png; sourceTree = "<group>"; };
+		99DDE34B168B7B780071241C /* OpenDropboxBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenDropboxBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		99DDE34E168B7B780071241C /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		99DDE350168B7B780071241C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		99DDE352168B7B780071241C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		99DDE356168B7B780071241C /* OpenDropboxBrowser-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "OpenDropboxBrowser-Info.plist"; sourceTree = "<group>"; };
+		99DDE358168B7B780071241C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		99DDE35A168B7B780071241C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		99DDE35C168B7B780071241C /* OpenDropboxBrowser-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenDropboxBrowser-Prefix.pch"; sourceTree = "<group>"; };
+		99DDE35D168B7B780071241C /* DBBAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBBAppDelegate.h; sourceTree = "<group>"; };
+		99DDE35E168B7B780071241C /* DBBAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBBAppDelegate.m; sourceTree = "<group>"; };
+		99DDE367168B7B780071241C /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/Storyboard.storyboard; sourceTree = "<group>"; };
+		99DDE36C168B7B780071241C /* DBBViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DBBViewController.h; sourceTree = "<group>"; };
+		99DDE36D168B7B780071241C /* DBBViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DBBViewController.m; sourceTree = "<group>"; };
+		99DDE3AD168B7DFE0071241C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		99DDE3AF168B7E090071241C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		99DDE3B1168B83D70071241C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		A68D084A1E4E5A4300B087DF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A68D084C1E4E647800B087DF /* ODBoxHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ODBoxHandler.h; path = "ODB Classes/ODBoxHandler.h"; sourceTree = "<group>"; };
+		A68D084D1E4E647800B087DF /* ODBoxHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ODBoxHandler.m; path = "ODB Classes/ODBoxHandler.m"; sourceTree = "<group>"; };
+		A68D08501E4E768D00B087DF /* ODBTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ODBTableViewController.h; path = "ODB Classes/ODBTableViewController.h"; sourceTree = "<group>"; };
+		A68D08511E4E768D00B087DF /* ODBTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ODBTableViewController.m; path = "ODB Classes/ODBTableViewController.m"; sourceTree = "<group>"; };
+		A68D08531E4FBF6800B087DF /* OpenDropboxBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenDropboxBrowser.entitlements; sourceTree = "<group>"; };
+		D0F3B722E9DD41693A833E5B /* Pods-OpenDropboxBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenDropboxBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenDropboxBrowser/Pods-OpenDropboxBrowser.release.xcconfig"; sourceTree = "<group>"; };
+		E2937693CF5EFE93DB1DC2C5 /* Pods_OpenDropboxBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenDropboxBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		99DDE348168B7B780071241C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				999D32A717108BA900A9FCB6 /* Security.framework in Frameworks */,
+				999D32A617108BA100A9FCB6 /* QuartzCore.framework in Frameworks */,
+				999D32A517108B9B00A9FCB6 /* CoreGraphics.framework in Frameworks */,
+				99DDE3B2168B83D70071241C /* AssetsLibrary.framework in Frameworks */,
+				99DDE34F168B7B780071241C /* UIKit.framework in Frameworks */,
+				99DDE351168B7B780071241C /* Foundation.framework in Frameworks */,
+				CA42DB01806CAAC3CA08FFE8 /* Pods_OpenDropboxBrowser.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		99DDE342168B7B780071241C = {
+			isa = PBXGroup;
+			children = (
+				A68D08531E4FBF6800B087DF /* OpenDropboxBrowser.entitlements */,
+				99362DBF184720B700B48B48 /* LICENSE.md */,
+				99362DC0184720B700B48B48 /* README.md */,
+				A68D084F1E4E647E00B087DF /* OpenDropboxBrowser Classes */,
+				99DDE354168B7B780071241C /* DropboxBrowser */,
+				99DDE34D168B7B780071241C /* Frameworks */,
+				99DDE34C168B7B780071241C /* Products */,
+				E82C71428CECA159B4021A11 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		99DDE34C168B7B780071241C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				99DDE34B168B7B780071241C /* OpenDropboxBrowser.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		99DDE34D168B7B780071241C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				99DDE3B1168B83D70071241C /* AssetsLibrary.framework */,
+				99DDE3AF168B7E090071241C /* QuartzCore.framework */,
+				99DDE3AD168B7DFE0071241C /* Security.framework */,
+				99DDE34E168B7B780071241C /* UIKit.framework */,
+				99DDE350168B7B780071241C /* Foundation.framework */,
+				99DDE352168B7B780071241C /* CoreGraphics.framework */,
+				E2937693CF5EFE93DB1DC2C5 /* Pods_OpenDropboxBrowser.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		99DDE354168B7B780071241C /* DropboxBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				99DDE35D168B7B780071241C /* DBBAppDelegate.h */,
+				99DDE35E168B7B780071241C /* DBBAppDelegate.m */,
+				99DDE366168B7B780071241C /* Storyboard.storyboard */,
+				99DDE36C168B7B780071241C /* DBBViewController.h */,
+				99DDE36D168B7B780071241C /* DBBViewController.m */,
+				990EEF9D17F648FA00A657DB /* Images.xcassets */,
+				99DDE355168B7B780071241C /* Supporting Files */,
+			);
+			path = DropboxBrowser;
+			sourceTree = "<group>";
+		};
+		99DDE355168B7B780071241C /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				99B41B251849AF020096FD9D /* Banner.png */,
+				99B41B261849AF020096FD9D /* Interface.png */,
+				99DDE356168B7B780071241C /* OpenDropboxBrowser-Info.plist */,
+				99DDE357168B7B780071241C /* InfoPlist.strings */,
+				99DDE35A168B7B780071241C /* main.m */,
+				99DDE35C168B7B780071241C /* OpenDropboxBrowser-Prefix.pch */,
+				A68D08491E4E5A4300B087DF /* LaunchScreen.storyboard */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A68D084F1E4E647E00B087DF /* OpenDropboxBrowser Classes */ = {
+			isa = PBXGroup;
+			children = (
+				A68D084C1E4E647800B087DF /* ODBoxHandler.h */,
+				A68D084D1E4E647800B087DF /* ODBoxHandler.m */,
+				A68D08501E4E768D00B087DF /* ODBTableViewController.h */,
+				A68D08511E4E768D00B087DF /* ODBTableViewController.m */,
+				9922E6AA199137BA00154CBB /* DropboxMedia.xcassets */,
+			);
+			name = "OpenDropboxBrowser Classes";
+			sourceTree = "<group>";
+		};
+		E82C71428CECA159B4021A11 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				068C241E32196849B719F502 /* Pods-OpenDropboxBrowser.debug.xcconfig */,
+				D0F3B722E9DD41693A833E5B /* Pods-OpenDropboxBrowser.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		99DDE34A168B7B780071241C /* OpenDropboxBrowser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 99DDE386168B7B780071241C /* Build configuration list for PBXNativeTarget "OpenDropboxBrowser" */;
+			buildPhases = (
+				0949FDD4368F800F89E76048 /* [CP] Check Pods Manifest.lock */,
+				99DDE347168B7B780071241C /* Sources */,
+				99DDE348168B7B780071241C /* Frameworks */,
+				99DDE349168B7B780071241C /* Resources */,
+				D100AE4CC6219EA55EEB8C09 /* [CP] Embed Pods Frameworks */,
+				868D43F51C3EB8DEA4E56720 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpenDropboxBrowser;
+			productName = DropboxBrowser;
+			productReference = 99DDE34B168B7B780071241C /* OpenDropboxBrowser.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		99DDE343168B7B780071241C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = ODB;
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = "Spencer Software";
+				TargetAttributes = {
+					99DDE34A168B7B780071241C = {
+						DevelopmentTeam = KEQ3L79VAK;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 99DDE346168B7B780071241C /* Build configuration list for PBXProject "OpenDropboxBrowser" */;
+			compatibilityVersion = "Xcode 6.3";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 99DDE342168B7B780071241C;
+			productRefGroup = 99DDE34C168B7B780071241C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				99DDE34A168B7B780071241C /* OpenDropboxBrowser */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		99DDE349168B7B780071241C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A68D084B1E4E5A4300B087DF /* LaunchScreen.storyboard in Resources */,
+				99DDE359168B7B780071241C /* InfoPlist.strings in Resources */,
+				99B41B281849AF020096FD9D /* Interface.png in Resources */,
+				9922E6AB199137BA00154CBB /* DropboxMedia.xcassets in Resources */,
+				99DDE368168B7B780071241C /* Storyboard.storyboard in Resources */,
+				99B41B271849AF020096FD9D /* Banner.png in Resources */,
+				99362DC3184720B700B48B48 /* README.md in Resources */,
+				990EEF9E17F648FA00A657DB /* Images.xcassets in Resources */,
+				99362DC2184720B700B48B48 /* LICENSE.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0949FDD4368F800F89E76048 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		868D43F51C3EB8DEA4E56720 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OpenDropboxBrowser/Pods-OpenDropboxBrowser-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D100AE4CC6219EA55EEB8C09 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OpenDropboxBrowser/Pods-OpenDropboxBrowser-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		99DDE347168B7B780071241C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A68D084E1E4E647800B087DF /* ODBoxHandler.m in Sources */,
+				99DDE35B168B7B780071241C /* main.m in Sources */,
+				99DDE35F168B7B780071241C /* DBBAppDelegate.m in Sources */,
+				99DDE36E168B7B780071241C /* DBBViewController.m in Sources */,
+				A68D08521E4E768D00B087DF /* ODBTableViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		99DDE357168B7B780071241C /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				99DDE358168B7B780071241C /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		99DDE366168B7B780071241C /* Storyboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				99DDE367168B7B780071241C /* en */,
+			);
+			name = Storyboard.storyboard;
+			sourceTree = "<group>";
+		};
+		A68D08491E4E5A4300B087DF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A68D084A1E4E5A4300B087DF /* en */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		99DDE384168B7B780071241C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		99DDE385168B7B780071241C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		99DDE387168B7B780071241C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 068C241E32196849B719F502 /* Pods-OpenDropboxBrowser.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = OpenDropboxBrowser.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COMPRESS_PNG_FILES = YES;
+				DEVELOPMENT_TEAM = KEQ3L79VAK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DropboxBrowser/OpenDropboxBrowser-Prefix.pch";
+				HEADER_SEARCH_PATHS = "${SRCROOT}/**";
+				INFOPLIST_FILE = "DropboxBrowser/OpenDropboxBrowser-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SpencerSoftware.OpenDropboxBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		99DDE388168B7B780071241C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D0F3B722E9DD41693A833E5B /* Pods-OpenDropboxBrowser.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = OpenDropboxBrowser.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COMPRESS_PNG_FILES = YES;
+				DEVELOPMENT_TEAM = KEQ3L79VAK;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "DropboxBrowser/OpenDropboxBrowser-Prefix.pch";
+				HEADER_SEARCH_PATHS = "${SRCROOT}/**";
+				INFOPLIST_FILE = "DropboxBrowser/OpenDropboxBrowser-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.SpencerSoftware.OpenDropboxBrowser;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		99DDE346168B7B780071241C /* Build configuration list for PBXProject "OpenDropboxBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99DDE384168B7B780071241C /* Debug */,
+				99DDE385168B7B780071241C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		99DDE386168B7B780071241C /* Build configuration list for PBXNativeTarget "OpenDropboxBrowser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				99DDE387168B7B780071241C /* Debug */,
+				99DDE388168B7B780071241C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 99DDE343168B7B780071241C /* Project object */;
+}
