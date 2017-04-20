@@ -24,9 +24,9 @@
 		99DDE368168B7B780071241C /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99DDE366168B7B780071241C /* Storyboard.storyboard */; };
 		99DDE36E168B7B780071241C /* DBBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 99DDE36D168B7B780071241C /* DBBViewController.m */; };
 		99DDE3B2168B83D70071241C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3B1168B83D70071241C /* AssetsLibrary.framework */; };
+		A63BFD091EA922E60051FE76 /* ODBoxHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A63BFD061EA922E60051FE76 /* ODBoxHandler.m */; };
+		A63BFD0A1EA922E60051FE76 /* ODBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A63BFD081EA922E60051FE76 /* ODBTableViewController.m */; };
 		A68D084B1E4E5A4300B087DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A68D08491E4E5A4300B087DF /* LaunchScreen.storyboard */; };
-		A68D084E1E4E647800B087DF /* ODBoxHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = A68D084D1E4E647800B087DF /* ODBoxHandler.m */; };
-		A68D08521E4E768D00B087DF /* ODBTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A68D08511E4E768D00B087DF /* ODBTableViewController.m */; };
 		CA42DB01806CAAC3CA08FFE8 /* Pods_OpenDropboxBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2937693CF5EFE93DB1DC2C5 /* Pods_OpenDropboxBrowser.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,11 +54,11 @@
 		99DDE3AD168B7DFE0071241C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		99DDE3AF168B7E090071241C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		99DDE3B1168B83D70071241C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		A63BFD051EA922E60051FE76 /* ODBoxHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODBoxHandler.h; sourceTree = "<group>"; };
+		A63BFD061EA922E60051FE76 /* ODBoxHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODBoxHandler.m; sourceTree = "<group>"; };
+		A63BFD071EA922E60051FE76 /* ODBTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ODBTableViewController.h; sourceTree = "<group>"; };
+		A63BFD081EA922E60051FE76 /* ODBTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ODBTableViewController.m; sourceTree = "<group>"; };
 		A68D084A1E4E5A4300B087DF /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		A68D084C1E4E647800B087DF /* ODBoxHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ODBoxHandler.h; path = "ODB Classes/ODBoxHandler.h"; sourceTree = "<group>"; };
-		A68D084D1E4E647800B087DF /* ODBoxHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ODBoxHandler.m; path = "ODB Classes/ODBoxHandler.m"; sourceTree = "<group>"; };
-		A68D08501E4E768D00B087DF /* ODBTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ODBTableViewController.h; path = "ODB Classes/ODBTableViewController.h"; sourceTree = "<group>"; };
-		A68D08511E4E768D00B087DF /* ODBTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ODBTableViewController.m; path = "ODB Classes/ODBTableViewController.m"; sourceTree = "<group>"; };
 		A68D08531E4FBF6800B087DF /* OpenDropboxBrowser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenDropboxBrowser.entitlements; sourceTree = "<group>"; };
 		D0F3B722E9DD41693A833E5B /* Pods-OpenDropboxBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenDropboxBrowser.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenDropboxBrowser/Pods-OpenDropboxBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		E2937693CF5EFE93DB1DC2C5 /* Pods_OpenDropboxBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenDropboxBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -88,7 +88,8 @@
 				A68D08531E4FBF6800B087DF /* OpenDropboxBrowser.entitlements */,
 				99362DBF184720B700B48B48 /* LICENSE.md */,
 				99362DC0184720B700B48B48 /* README.md */,
-				A68D084F1E4E647E00B087DF /* OpenDropboxBrowser Classes */,
+				A63BFD041EA922E60051FE76 /* ODB Classes */,
+				9922E6AA199137BA00154CBB /* DropboxMedia.xcassets */,
 				99DDE354168B7B780071241C /* DropboxBrowser */,
 				99DDE34D168B7B780071241C /* Frameworks */,
 				99DDE34C168B7B780071241C /* Products */,
@@ -146,16 +147,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A68D084F1E4E647E00B087DF /* OpenDropboxBrowser Classes */ = {
+		A63BFD041EA922E60051FE76 /* ODB Classes */ = {
 			isa = PBXGroup;
 			children = (
-				A68D084C1E4E647800B087DF /* ODBoxHandler.h */,
-				A68D084D1E4E647800B087DF /* ODBoxHandler.m */,
-				A68D08501E4E768D00B087DF /* ODBTableViewController.h */,
-				A68D08511E4E768D00B087DF /* ODBTableViewController.m */,
-				9922E6AA199137BA00154CBB /* DropboxMedia.xcassets */,
+				A63BFD051EA922E60051FE76 /* ODBoxHandler.h */,
+				A63BFD061EA922E60051FE76 /* ODBoxHandler.m */,
+				A63BFD071EA922E60051FE76 /* ODBTableViewController.h */,
+				A63BFD081EA922E60051FE76 /* ODBTableViewController.m */,
 			);
-			name = "OpenDropboxBrowser Classes";
+			name = "ODB Classes";
+			path = "../ODB Classes";
 			sourceTree = "<group>";
 		};
 		E82C71428CECA159B4021A11 /* Pods */ = {
@@ -299,11 +300,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A68D084E1E4E647800B087DF /* ODBoxHandler.m in Sources */,
+				A63BFD091EA922E60051FE76 /* ODBoxHandler.m in Sources */,
 				99DDE35B168B7B780071241C /* main.m in Sources */,
+				A63BFD0A1EA922E60051FE76 /* ODBTableViewController.m in Sources */,
 				99DDE35F168B7B780071241C /* DBBAppDelegate.m in Sources */,
 				99DDE36E168B7B780071241C /* DBBViewController.m in Sources */,
-				A68D08521E4E768D00B087DF /* ODBTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
