@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "DropboxBrowser"
-  s.version      = "6.0.0"
+  s.version      = "6.0.1"
   s.summary      = "A simple and effective way to browse, view, and download files using the iOS Dropbox SDK."
 
   s.description  = <<-DESC
@@ -17,7 +17,7 @@ Dropbox Browser provides a simple and effective way to browse, search, and downl
   
   s.platform     = :ios, "8.0"
 
-  s.source       = { :git => "https://github.com/danielbierwirth/DropboxBrowser.git", :tag => "v6.0.0" }
+  s.source       = { :git => "https://github.com/danielbierwirth/DropboxBrowser.git", :tag => "v6.0.1" }
   s.source_files  = "ODB Classes/*.{h,m}"
   s.resource  = "DropboxMedia.xcassets"
 
