@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1242,7 +1242,7 @@
 		400B5B5EC4B67DC7E652AEF2AD72AE18 /* DBTEAMGroupUpdateError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBTEAMGroupUpdateError.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMGroupUpdateError.h; sourceTree = "<group>"; };
 		403BA02A0A3CE1C88273C8181D4CB8CE /* DBSHARINGFolderPermission.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBSHARINGFolderPermission.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Sharing/DBSHARINGFolderPermission.m; sourceTree = "<group>"; };
 		40474DE4B9902F56ED892793196E8606 /* DBFILESWriteError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBFILESWriteError.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Files/DBFILESWriteError.h; sourceTree = "<group>"; };
-		408D877EBA48C3DB5F259C3A8A06CA32 /* ObjectiveDropboxOfficial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ObjectiveDropboxOfficial.framework; path = ObjectiveDropboxOfficial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		408D877EBA48C3DB5F259C3A8A06CA32 /* ObjectiveDropboxOfficial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ObjectiveDropboxOfficial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		40A71925512B228791498B96EC22682C /* DBTEAMMembersListContinueArg.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBTEAMMembersListContinueArg.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMMembersListContinueArg.m; sourceTree = "<group>"; };
 		40B5C83A1B01EB2820027FF51F0A9DAA /* DBASYNCLaunchEmptyResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBASYNCLaunchEmptyResult.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Async/DBASYNCLaunchEmptyResult.h; sourceTree = "<group>"; };
 		40E7A7297906A175221AD69F11B4BA7C /* DBTEAMTeamFolderMetadata.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBTEAMTeamFolderMetadata.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMTeamFolderMetadata.m; sourceTree = "<group>"; };
@@ -1287,7 +1287,7 @@
 		4B989E6FE8CC9F41E81364D4A925D46C /* DBBaseTeam.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBBaseTeam.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/Client/DBBaseTeam.h; sourceTree = "<group>"; };
 		4BF1FB7CFB8B5423866974185BB770EA /* DBFILESSearchError.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBFILESSearchError.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Files/DBFILESSearchError.m; sourceTree = "<group>"; };
 		4BF47B4E7CD14FB0366369E2D2FE6B8A /* DBTEAMTeamFolderIdArg.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBTEAMTeamFolderIdArg.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMTeamFolderIdArg.m; sourceTree = "<group>"; };
-		4BFF27D4646CE52DB3036011ED1C2BEA /* ObjectiveDropboxOfficial.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = ObjectiveDropboxOfficial.modulemap; sourceTree = "<group>"; };
+		4BFF27D4646CE52DB3036011ED1C2BEA /* ObjectiveDropboxOfficial.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = ObjectiveDropboxOfficial.modulemap; sourceTree = "<group>"; };
 		4C095DD30C7D63700993B4F8FEFE147E /* DBOAuthMobile-iOS.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "DBOAuthMobile-iOS.h"; path = "Source/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial_iOS/DBOAuthMobile-iOS.h"; sourceTree = "<group>"; };
 		4D0B33D61D3B0C89586387D27F82129E /* Pods-OpenDropboxBrowser.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-OpenDropboxBrowser.release.xcconfig"; sourceTree = "<group>"; };
 		4D94BCCCD37E4DF34833366A00CAE1BD /* DBSHARINGPermissionDeniedReason.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBSHARINGPermissionDeniedReason.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Sharing/DBSHARINGPermissionDeniedReason.m; sourceTree = "<group>"; };
@@ -1550,7 +1550,7 @@
 		933BA313D5E0D615ADBF56E02100B95C /* DBSHARINGAddMemberSelectorError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBSHARINGAddMemberSelectorError.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Sharing/DBSHARINGAddMemberSelectorError.h; sourceTree = "<group>"; };
 		9390EC383977415FD2E8AC6689CA69D8 /* DBTEAMListMemberAppsArg.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBTEAMListMemberAppsArg.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMListMemberAppsArg.m; sourceTree = "<group>"; };
 		939C578AE949ED2939E231250D37B74B /* DBFILESUploadSessionAppendArg.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBFILESUploadSessionAppendArg.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Files/DBFILESUploadSessionAppendArg.m; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93F4CDFD63D87E044647D86996414CF7 /* DBTEAMMembersUnsuspendError.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBTEAMMembersUnsuspendError.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMMembersUnsuspendError.h; sourceTree = "<group>"; };
 		940DFF13C7817CB45849FB553FABF806 /* DBTEAMDevicesActive.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBTEAMDevicesActive.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMDevicesActive.m; sourceTree = "<group>"; };
 		943607C4D64D37E91C14ABA489051761 /* DBConstants.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBConstants.h; path = Source/ObjectiveDropboxOfficial/Shared/Handwritten/Resources/DBConstants.h; sourceTree = "<group>"; };
@@ -1607,7 +1607,7 @@
 		9E36F9422CFBBB21CC8222EABA20FB83 /* DBTEAMDevicesActive.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBTEAMDevicesActive.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMDevicesActive.h; sourceTree = "<group>"; };
 		9E428506CF27580294107FA75D91CF28 /* DBTEAMGroupsSelector.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBTEAMGroupsSelector.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMGroupsSelector.m; sourceTree = "<group>"; };
 		9EEAF3EBFEEC28B0AEF31236B499F3B0 /* DBTEAMGroupsMembersListArg.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBTEAMGroupsMembersListArg.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Team/DBTEAMGroupsMembersListArg.m; sourceTree = "<group>"; };
-		9EED94C8BF0E7B33ED89E17932E01C22 /* Pods_OpenDropboxBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_OpenDropboxBrowser.framework; path = "Pods-OpenDropboxBrowser.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9EED94C8BF0E7B33ED89E17932E01C22 /* Pods_OpenDropboxBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenDropboxBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F2DA0CAD4B7DE7135B87652773FFA0B /* DBFILESRelocationBatchJobStatus.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBFILESRelocationBatchJobStatus.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Files/DBFILESRelocationBatchJobStatus.h; sourceTree = "<group>"; };
 		9F6A995BCA8D575AAE78C8B1C2F63ED2 /* DBTEAMPOLICIESEmmState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBTEAMPOLICIESEmmState.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/TeamPolicies/DBTEAMPOLICIESEmmState.h; sourceTree = "<group>"; };
 		9F860C7248694AF957640138A2BEFD82 /* DBSHARINGShareFolderJobStatus.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBSHARINGShareFolderJobStatus.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Sharing/DBSHARINGShareFolderJobStatus.m; sourceTree = "<group>"; };
@@ -1855,7 +1855,7 @@
 		DF8123FA3486888BB79D6D96058A33E2 /* DBUSERSAccountType.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBUSERSAccountType.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Users/DBUSERSAccountType.h; sourceTree = "<group>"; };
 		DFEE0B21DC1AA07F0FB4B01A14CB93C9 /* DBSHARINGSharedFolderMetadata.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBSHARINGSharedFolderMetadata.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Sharing/DBSHARINGSharedFolderMetadata.m; sourceTree = "<group>"; };
 		E01A712F2751E12037963FBCA88FE1B4 /* DBSHARINGLinkPermissions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBSHARINGLinkPermissions.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Sharing/DBSHARINGLinkPermissions.h; sourceTree = "<group>"; };
-		E05EC063BF7E402D655234CBA9B48E4C /* Pods-OpenDropboxBrowser.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; path = "Pods-OpenDropboxBrowser.modulemap"; sourceTree = "<group>"; };
+		E05EC063BF7E402D655234CBA9B48E4C /* Pods-OpenDropboxBrowser.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-OpenDropboxBrowser.modulemap"; sourceTree = "<group>"; };
 		E11A7D2AFEAF7758840F0A2DCDDEAD8D /* DBFILESListFolderLongpollResult.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBFILESListFolderLongpollResult.h; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Files/DBFILESListFolderLongpollResult.h; sourceTree = "<group>"; };
 		E1C3A66C757161D5B3FCBCABE498E6A9 /* DBDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DBDelegate.h; path = Source/ObjectiveDropboxOfficial/Shared/Handwritten/Networking/DBDelegate.h; sourceTree = "<group>"; };
 		E1C3D824AC3B816BFE7F4F8D72F67A11 /* DBSHARINGListFolderMembersContinueArg.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DBSHARINGListFolderMembersContinueArg.m; path = Source/ObjectiveDropboxOfficial/Shared/Generated/ApiObjects/Sharing/DBSHARINGListFolderMembersContinueArg.m; sourceTree = "<group>"; };
@@ -2984,7 +2984,6 @@
 				64051D3DB1FA23CF88863F9C53527CD7 /* ObjectiveDropboxOfficial.h */,
 				3DBF05183AD41CBCDAEB00B82F2623C0 /* Support Files */,
 			);
-			name = ObjectiveDropboxOfficial;
 			path = ObjectiveDropboxOfficial;
 			sourceTree = "<group>";
 		};
@@ -4167,7 +4166,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
@@ -4207,6 +4206,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = NO;
 				PROVISIONING_PROFILE_SPECIFIER = NO_SIGNING/;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
@@ -4236,6 +4236,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = ObjectiveDropboxOfficial;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -4267,6 +4268,7 @@
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-OpenDropboxBrowser/Pods-OpenDropboxBrowser.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -4302,6 +4304,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = ObjectiveDropboxOfficial;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -4333,6 +4336,7 @@
 				MACH_O_TYPE = staticlib;
 				MODULEMAP_FILE = "Target Support Files/Pods-OpenDropboxBrowser/Pods-OpenDropboxBrowser.modulemap";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";

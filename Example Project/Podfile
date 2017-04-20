@@ -1,6 +1,7 @@
 platform :ios, '8.0'
 use_frameworks!
+project 'OpenDropboxBrowser.xcodeproj'
 
-target ‘OpenDropboxBrowser' do
+target 'OpenDropboxBrowser' do
     pod 'ObjectiveDropboxOfficial'
 end
