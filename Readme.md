@@ -1,8 +1,8 @@
-<img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Banner.png" align="center"/>
+<p align="center"><img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Banner.png" align="center"/></p>
 
-Dropbox Browser provides a simple and effective way to browse, view, and download files using the iOS Dropbox SDK. Follow the simple setup steps and in under ten minutes you'll have a working Dropbox File Browser in your app that lets users browse and download their Dropbox files and folders. 
+Dropbox Browser provides a simple and effective way to browse, search, and download files using the Dropbox's API and SDK. In a few minutes you'll have a working Dropbox file browser in your app that lets users browse and download their files.  
 
-If you like the project, please <a href=https://github.com/iRareMedia/DropboxBrowser>star it</a> on GitHub! Watch the project on GitHub for updates. If you use DropboxBrowser in your app, send an email to contact@iraremedia.com or let us know on Twitter @iRareMedia.
+If you like the project, please <a href=https://github.com/iRareMedia/DropboxBrowser>star it</a> on GitHub! Watch the project on GitHub for updates.
 
 # Features
 Project highlights and key features are listed below. Dropbox Browser has a great interface built for iOS 7, solid file handling features, notification integration, background support, and file search capability.
@@ -10,7 +10,7 @@ Project highlights and key features are listed below. Dropbox Browser has a grea
 ## User Interface
 DropboxBrowser has a beautiful and simple interface similar to that of the actual Dropbox App. The interface is built for the latest iOS technologies and can also be easily customized.
 
-<img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Interface.png" align="center"/>
+<p align="center"><img width=750 src="https://raw.github.com/danielbierwirth/DropboxBrowser/master/Interface.png" align="center"/></p>
 
 ## Files
 When a user taps on a file, DropboxBrowser checks to see if the file is already download. If the file hasn't been downloaded, it's downloaded to your application's **Documents Directory**. If a conflict arises between a local and remote file, DropboxBrowser will attempt to resolve it. In the event that a conflict can't be resolved, you'll be notified via delegate methods and have the chance to handle the download youself.
@@ -29,8 +29,8 @@ Requires at least Xcode 6.0 for use in any iOS Project. Requires a minimum of iO
 
 | Current Build Target 	| Earliest Supported Build Target 	| Earliest Compatible Build Target 	|
 |:--------------------:	|:-------------------------------:	|:--------------------------------:	|
-|      iOS 10.3beta   	|            iOS 8.0              	|             iOS 6.0              	|
-|     Xcode 8.3beta     |          Xcode 6.3            	|           Xcode 6.0            	|
+|      iOS 10.3   	|            iOS 8.0              	|             iOS 6.0              	|
+|     Xcode 8.3     |          Xcode 6.3            	|           Xcode 6.0            	|
 |      LLVM 8.0        	|           LLVM 6.0            	|            LLVM 5.0             	|
 
 > REQUIREMENTS NOTE  
@@ -42,10 +42,9 @@ Any contribution is more than welcome! You can contribute through pull requests 
 ## Setup
 To properly integrate DropboxBrowser into your project follow the instructions below. Use the included Example Project as a guide for setting up your own project. 
  
-1. Add the following Frameworks, already available in Xcode, to your project:  
+1. Import these modules to your Xcode project:  
     * Security
     * QuartzCore
-    * DropboxSDK Framework The latest version of the SDK can be <a href=https://www.dropbox.com/developers>downloaded here</a> | DropboxBrowser uses version 1.3.11 of the Dropbox SDK
 2. Register as a [developer on Dropbox](https://www.dropbox.com/developers/start/setup#ios) and setup your App.
 3. Setup your Dropbox App Key and Secret. This includes customizing your Info.plist file and your App Delegate. Instructions from Dropbox are [available here](https://www.dropbox.com/developers/start/authentication#ios)
 4. Add all of the DropboxBrowser files to your project
@@ -57,7 +56,7 @@ To properly integrate DropboxBrowser into your project follow the instructions b
 8. In your Implementation File (.m), add a method / action that displays the Dropbox Browser Navigation Controller. You do not need to check if the user is logged into Dropbox - authentication and login is handled for you.
 
 # Documentation
-All methods, properties, types, and delegate methods available with DropboxBrowser are documented below. If you're using Xcode 5 with DropboxBrowser, documentation is available directly within Xcode (just Option-Click any method for Quick Help). Although DropboxBrowser does have extensive properties, methods, and delegates - no coding is required. DropboxBrowser can be setup completely without using any code.
+All methods, properties, types, and delegate methods available with DropboxBrowser are documented below. If you're using Xcode 5+ with DropboxBrowser, documentation is available directly within Xcode (just Option-Click any method for Quick Help). Although DropboxBrowser does have extensive properties, methods, and delegates - no coding is required. DropboxBrowser can be setup completely without using any code.
 
 ## Properties
 You can customize DropboxBrowser using properties. Properties must be set in the `prepareForSegue:` method before display the DropboxBrowserViewController. Use the code example below as a guide for setup.  
