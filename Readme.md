@@ -47,9 +47,7 @@ Download or clone this repo, then copy the "ODB Classes" folder and its enclosed
 
 ### Setup
 1. Register as a [developer on Dropbox](https://www.dropbox.com/developers) and setup your app.
-2. Update the following methods in your App Delegate with the correct callbacks (shown below). Replace "APP_KEY" with your app key from step 1:  
-
-       [[ODBoxHandler sharedHandler] prepareForPotentialSessionWithKey:@"APP_KEY"];  
+2. Update the following methods in your App Delegate with the correct callbacks (shown below). Replace "APP_KEY" with your app key from step 1:   
        
        - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
               // Override point for customization after application launch.
