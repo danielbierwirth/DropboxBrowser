@@ -21,6 +21,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    
     // Set the OpenDropboxHandler delegate so we can get information about file activity
     [[ODBoxHandler sharedHandler] setDelegate:self];
     
@@ -31,6 +32,10 @@
     
     // Check the app status real quick
     [self checkAppStatus:nil];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

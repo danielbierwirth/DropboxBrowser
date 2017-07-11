@@ -5,12 +5,12 @@
 ///
 
 #import "DBAUTHRouteObjects.h"
-#import "DBAUTHRoutes.h"
+#import "DBAUTHAppAuthRoutes.h"
 #import "DBAUTHTokenFromOAuth1Error.h"
 #import "DBAUTHTokenFromOAuth1Result.h"
+#import "DBAUTHUserAuthRoutes.h"
 #import "DBRequestErrors.h"
 #import "DBStoneBase.h"
-#import "DBTransportClient.h"
 
 @implementation DBAUTHRouteObjects
 

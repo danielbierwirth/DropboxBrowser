@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		990EEF9E17F648FA00A657DB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 990EEF9D17F648FA00A657DB /* Images.xcassets */; };
 		9922E6AB199137BA00154CBB /* DropboxMedia.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9922E6AA199137BA00154CBB /* DropboxMedia.xcassets */; };
-		99362DC2184720B700B48B48 /* LICENSE.md in Resources */ = {isa = PBXBuildFile; fileRef = 99362DBF184720B700B48B48 /* LICENSE.md */; };
 		99362DC3184720B700B48B48 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 99362DC0184720B700B48B48 /* README.md */; };
 		999D32A517108B9B00A9FCB6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE352168B7B780071241C /* CoreGraphics.framework */; };
 		999D32A617108BA100A9FCB6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 99DDE3AF168B7E090071241C /* QuartzCore.framework */; };
@@ -34,7 +33,6 @@
 		068C241E32196849B719F502 /* Pods-OpenDropboxBrowser.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenDropboxBrowser.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenDropboxBrowser/Pods-OpenDropboxBrowser.debug.xcconfig"; sourceTree = "<group>"; };
 		990EEF9D17F648FA00A657DB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		9922E6AA199137BA00154CBB /* DropboxMedia.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = DropboxMedia.xcassets; path = ../DropboxMedia.xcassets; sourceTree = "<group>"; };
-		99362DBF184720B700B48B48 /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = LICENSE.md; path = ../LICENSE.md; sourceTree = "<group>"; };
 		99362DC0184720B700B48B48 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		99B41B251849AF020096FD9D /* Banner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Banner.png; path = ../../Banner.png; sourceTree = "<group>"; };
 		99B41B261849AF020096FD9D /* Interface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Interface.png; path = ../../Interface.png; sourceTree = "<group>"; };
@@ -86,7 +84,6 @@
 			isa = PBXGroup;
 			children = (
 				A68D08531E4FBF6800B087DF /* OpenDropboxBrowser.entitlements */,
-				99362DBF184720B700B48B48 /* LICENSE.md */,
 				99362DC0184720B700B48B48 /* README.md */,
 				A63BFD041EA922E60051FE76 /* ODB Classes */,
 				9922E6AA199137BA00154CBB /* DropboxMedia.xcassets */,
@@ -198,7 +195,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = ODB;
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Spencer Software";
 				TargetAttributes = {
 					99DDE34A168B7B780071241C = {
@@ -241,7 +238,6 @@
 				99B41B271849AF020096FD9D /* Banner.png in Resources */,
 				99362DC3184720B700B48B48 /* README.md in Resources */,
 				990EEF9E17F648FA00A657DB /* Images.xcassets in Resources */,
-				99362DC2184720B700B48B48 /* LICENSE.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,7 +256,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		868D43F51C3EB8DEA4E56720 /* [CP] Copy Pods Resources */ = {
@@ -374,8 +370,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				ONLY_ACTIVE_ARCH = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -409,7 +405,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
@@ -434,8 +430,8 @@
 				GCC_PREFIX_HEADER = "DropboxBrowser/OpenDropboxBrowser-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 				INFOPLIST_FILE = "DropboxBrowser/OpenDropboxBrowser-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				ONLY_ACTIVE_ARCH = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.SpencerSoftware.OpenDropboxBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -459,7 +455,7 @@
 				GCC_PREFIX_HEADER = "DropboxBrowser/OpenDropboxBrowser-Prefix.pch";
 				HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 				INFOPLIST_FILE = "DropboxBrowser/OpenDropboxBrowser-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.SpencerSoftware.OpenDropboxBrowser;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;

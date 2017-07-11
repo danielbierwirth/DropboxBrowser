@@ -2,22 +2,27 @@
 /// Copyright (c) 2016 Dropbox, Inc. All rights reserved.
 ///
 
+#import "DBRequestErrors.h"
 #import "DBAUTHAccessError.h"
 #import "DBAUTHAuthError.h"
 #import "DBAUTHRateLimitError.h"
-#import "DBOAuth.h"
-#import "DBRequestErrors.h"
+#import "DBCOMMONPathRootError.h"
+#import "DBOAuthManager.h"
 
 #pragma mark - HTTP error
 
 @implementation DBRequestHttpError
 
-- (instancetype)init:(NSString *)requestId statusCode:(NSNumber *)statusCode errorContent:(NSString *)errorContent {
+- (instancetype)init:(NSString *)requestId
+          statusCode:(NSNumber *)statusCode
+        errorContent:(NSString *)errorContent
+         userMessage:(NSString *)userMessage {
   self = [super init];
   if (self) {
     _requestId = requestId;
     _statusCode = statusCode;
     _errorContent = errorContent;
+    _userMessage = userMessage;
   }
   return self;
 }
@@ -26,7 +31,8 @@
   NSDictionary *values = @{
     @"RequestId" : _requestId ?: @"nil",
     @"StatusCode" : _statusCode ?: @"nil",
-    @"ErrorContent" : _errorContent ?: @"nil"
+    @"ErrorContent" : _errorContent ?: @"nil",
+    @"UserMessage" : _userMessage ?: @"nil"
   };
   return [NSString stringWithFormat:@"DropboxHttpError[%@];", values];
 }
@@ -37,15 +43,19 @@
 
 @implementation DBRequestBadInputError
 
-- (instancetype)init:(NSString *)requestId statusCode:(NSNumber *)statusCode errorContent:(NSString *)errorContent {
-  return [super init:requestId statusCode:statusCode errorContent:errorContent];
+- (instancetype)init:(NSString *)requestId
+          statusCode:(NSNumber *)statusCode
+        errorContent:(NSString *)errorContent
+         userMessage:(NSString *)userMessage {
+  return [super init:requestId statusCode:statusCode errorContent:errorContent userMessage:userMessage];
 }
 
 - (NSString *)description {
   NSDictionary *values = @{
     @"RequestId" : self.requestId ?: @"nil",
     @"StatusCode" : self.statusCode ?: @"nil",
-    @"ErrorContent" : self.errorContent ?: @"nil"
+    @"ErrorContent" : self.errorContent ?: @"nil",
+    @"UserMessage" : self.userMessage ?: @"nil"
   };
   return [NSString stringWithFormat:@"DropboxBadInputError[%@];", values];
 }
@@ -59,8 +69,9 @@
 - (instancetype)init:(NSString *)requestId
              statusCode:(NSNumber *)statusCode
            errorContent:(NSString *)errorContent
+            userMessage:(NSString *)userMessage
     structuredAuthError:(DBAUTHAuthError *)structuredAuthError {
-  self = [super init:requestId statusCode:statusCode errorContent:errorContent];
+  self = [super init:requestId statusCode:statusCode errorContent:errorContent userMessage:userMessage];
   if (self) {
     _structuredAuthError = structuredAuthError;
   }
@@ -72,6 +83,7 @@
     @"RequestId" : self.requestId ?: @"nil",
     @"StatusCode" : self.statusCode ?: @"nil",
     @"ErrorContent" : self.errorContent ?: @"nil",
+    @"UserMessage" : self.userMessage ?: @"nil",
     @"StructuredAuthError" : [NSString stringWithFormat:@"%@", _structuredAuthError] ?: @"nil"
   };
   return [NSString stringWithFormat:@"DropboxAuthError[%@];", values];
@@ -86,8 +98,9 @@
 - (instancetype)init:(NSString *)requestId
                statusCode:(NSNumber *)statusCode
              errorContent:(NSString *)errorContent
+              userMessage:(NSString *)userMessage
     structuredAccessError:(DBAUTHAccessError *)structuredAccessError {
-  self = [super init:requestId statusCode:statusCode errorContent:errorContent];
+  self = [super init:requestId statusCode:statusCode errorContent:errorContent userMessage:userMessage];
   if (self) {
     _structuredAccessError = structuredAccessError;
   }
@@ -99,9 +112,39 @@
     @"RequestId" : self.requestId ?: @"nil",
     @"StatusCode" : self.statusCode ?: @"nil",
     @"ErrorContent" : self.errorContent ?: @"nil",
+    @"UserMessage" : self.userMessage ?: @"nil",
     @"StructuredAccessError" : [NSString stringWithFormat:@"%@", _structuredAccessError] ?: @"nil"
   };
   return [NSString stringWithFormat:@"DropboxAccessError[%@];", values];
+}
+
+@end
+
+#pragma mark - Path Root error
+
+@implementation DBRequestPathRootError
+
+- (instancetype)init:(NSString *)requestId
+                 statusCode:(NSNumber *)statusCode
+               errorContent:(NSString *)errorContent
+                userMessage:(NSString *)userMessage
+    structuredPathRootError:(DBCOMMONPathRootError *)structuredPathRootError {
+  self = [super init:requestId statusCode:statusCode errorContent:errorContent userMessage:userMessage];
+  if (self) {
+    _structuredPathRootError = structuredPathRootError;
+  }
+  return self;
+}
+
+- (NSString *)description {
+  NSDictionary *values = @{
+    @"RequestId" : self.requestId ?: @"nil",
+    @"StatusCode" : self.statusCode ?: @"nil",
+    @"ErrorContent" : self.errorContent ?: @"nil",
+    @"UserMessage" : self.userMessage ?: @"nil",
+    @"StructuredPathRootError" : [NSString stringWithFormat:@"%@", _structuredPathRootError] ?: @"nil"
+  };
+  return [NSString stringWithFormat:@"DropboxPathRootError[%@];", values];
 }
 
 @end
@@ -113,9 +156,10 @@
 - (instancetype)init:(NSString *)requestId
                   statusCode:(NSNumber *)statusCode
                 errorContent:(NSString *)errorContent
+                 userMessage:(NSString *)userMessage
     structuredRateLimitError:(DBAUTHRateLimitError *)structuredRateLimitError
                      backoff:(NSNumber *)backoff {
-  self = [super init:requestId statusCode:statusCode errorContent:errorContent];
+  self = [super init:requestId statusCode:statusCode errorContent:errorContent userMessage:userMessage];
   if (self) {
     _structuredRateLimitError = structuredRateLimitError;
     _backoff = backoff;
@@ -128,6 +172,7 @@
     @"RequestId" : self.requestId ?: @"nil",
     @"StatusCode" : self.statusCode ?: @"nil",
     @"ErrorContent" : self.errorContent ?: @"nil",
+    @"UserMessage" : self.userMessage ?: @"nil",
     @"StructuredRateLimitError" : _structuredRateLimitError ?: @"nil",
     @"BackOff" : _backoff ?: @"nil"
   };
@@ -140,15 +185,19 @@
 
 @implementation DBRequestInternalServerError
 
-- (instancetype)init:(NSString *)requestId statusCode:(NSNumber *)statusCode errorContent:(NSString *)errorContent {
-  return [super init:requestId statusCode:statusCode errorContent:errorContent];
+- (instancetype)init:(NSString *)requestId
+          statusCode:(NSNumber *)statusCode
+        errorContent:(NSString *)errorContent
+         userMessage:(NSString *)userMessage {
+  return [super init:requestId statusCode:statusCode errorContent:errorContent userMessage:userMessage];
 }
 
 - (NSString *)description {
   NSDictionary *values = @{
     @"RequestId" : self.requestId ?: @"nil",
     @"StatusCode" : self.statusCode ?: @"nil",
-    @"ErrorContent" : self.errorContent ?: @"nil"
+    @"ErrorContent" : self.errorContent ?: @"nil",
+    @"UserMessage" : self.userMessage ?: @"nil"
   };
   return [NSString stringWithFormat:@"DropboxInternalServerError[%@];", values];
 }
@@ -182,13 +231,16 @@
 
 - (instancetype)initAsHttpError:(NSString *)requestId
                      statusCode:(NSNumber *)statusCode
-                   errorContent:(NSString *)errorContent {
+                   errorContent:(NSString *)errorContent
+                    userMessage:(NSString *)userMessage {
   return [self init:DBRequestErrorHttp
                      requestId:requestId
                     statusCode:statusCode
                   errorContent:errorContent
+                   userMessage:userMessage
            structuredAuthError:nil
          structuredAccessError:nil
+       structuredPathRootError:nil
       structuredRateLimitError:nil
                        backoff:nil
                        nsError:nil];
@@ -196,13 +248,16 @@
 
 - (instancetype)initAsBadInputError:(NSString *)requestId
                          statusCode:(NSNumber *)statusCode
-                       errorContent:(NSString *)errorContent {
+                       errorContent:(NSString *)errorContent
+                        userMessage:(NSString *)userMessage {
   return [self init:DBRequestErrorBadInput
                      requestId:requestId
                     statusCode:statusCode
                   errorContent:errorContent
+                   userMessage:userMessage
            structuredAuthError:nil
          structuredAccessError:nil
+       structuredPathRootError:nil
       structuredRateLimitError:nil
                        backoff:nil
                        nsError:nil];
@@ -211,13 +266,16 @@
 - (instancetype)initAsAuthError:(NSString *)requestId
                      statusCode:(NSNumber *)statusCode
                    errorContent:(NSString *)errorContent
+                    userMessage:(NSString *)userMessage
             structuredAuthError:(DBAUTHAuthError *)structuredAuthError {
   return [self init:DBRequestErrorAuth
                      requestId:requestId
                     statusCode:statusCode
                   errorContent:errorContent
+                   userMessage:userMessage
            structuredAuthError:structuredAuthError
          structuredAccessError:nil
+       structuredPathRootError:nil
       structuredRateLimitError:nil
                        backoff:nil
                        nsError:nil];
@@ -226,13 +284,34 @@
 - (instancetype)initAsAccessError:(NSString *)requestId
                        statusCode:(NSNumber *)statusCode
                      errorContent:(NSString *)errorContent
+                      userMessage:(NSString *)userMessage
             structuredAccessError:(DBAUTHAccessError *)structuredAccessError {
   return [self init:DBRequestErrorAuth
                      requestId:requestId
                     statusCode:statusCode
                   errorContent:errorContent
+                   userMessage:userMessage
            structuredAuthError:nil
          structuredAccessError:structuredAccessError
+       structuredPathRootError:nil
+      structuredRateLimitError:nil
+                       backoff:nil
+                       nsError:nil];
+}
+
+- (instancetype)initAsPathRootError:(NSString *)requestId
+                         statusCode:(NSNumber *)statusCode
+                       errorContent:(NSString *)errorContent
+                        userMessage:(NSString *)userMessage
+            structuredPathRootError:(DBCOMMONPathRootError *)structuredPathRootError {
+  return [self init:DBRequestErrorPathRoot
+                     requestId:requestId
+                    statusCode:statusCode
+                  errorContent:errorContent
+                   userMessage:userMessage
+           structuredAuthError:nil
+         structuredAccessError:nil
+       structuredPathRootError:structuredPathRootError
       structuredRateLimitError:nil
                        backoff:nil
                        nsError:nil];
@@ -241,14 +320,17 @@
 - (instancetype)initAsRateLimitError:(NSString *)requestId
                           statusCode:(NSNumber *)statusCode
                         errorContent:(NSString *)errorContent
+                         userMessage:(NSString *)userMessage
             structuredRateLimitError:(DBAUTHRateLimitError *)structuredRateLimitError
                              backoff:(NSNumber *)backoff {
   return [self init:DBRequestErrorRateLimit
                      requestId:requestId
                     statusCode:statusCode
                   errorContent:errorContent
+                   userMessage:userMessage
            structuredAuthError:nil
          structuredAccessError:nil
+       structuredPathRootError:nil
       structuredRateLimitError:structuredRateLimitError
                        backoff:backoff
                        nsError:nil];
@@ -256,13 +338,16 @@
 
 - (instancetype)initAsInternalServerError:(NSString *)requestId
                                statusCode:(NSNumber *)statusCode
-                             errorContent:(NSString *)errorContent {
+                             errorContent:(NSString *)errorContent
+                              userMessage:(NSString *)userMessage {
   return [self init:DBRequestErrorInternalServer
                      requestId:requestId
                     statusCode:statusCode
                   errorContent:errorContent
+                   userMessage:userMessage
            structuredAuthError:nil
          structuredAccessError:nil
+       structuredPathRootError:nil
       structuredRateLimitError:nil
                        backoff:nil
                        nsError:nil];
@@ -273,8 +358,10 @@
                      requestId:nil
                     statusCode:nil
                   errorContent:nil
+                   userMessage:nil
            structuredAuthError:nil
          structuredAccessError:nil
+       structuredPathRootError:nil
       structuredRateLimitError:nil
                        backoff:nil
                        nsError:nsError];
@@ -284,8 +371,10 @@
                    requestId:(NSString *)requestId
                   statusCode:(NSNumber *)statusCode
                 errorContent:(NSString *)errorContent
+                 userMessage:(NSString *)userMessage
          structuredAuthError:(DBAUTHAuthError *)structuredAuthError
        structuredAccessError:(DBAUTHAccessError *)structuredAccessError
+     structuredPathRootError:(DBCOMMONPathRootError *)structuredPathRootError
     structuredRateLimitError:(DBAUTHRateLimitError *)structuredRateLimitError
                      backoff:(NSNumber *)backoff
                      nsError:(NSError *)nsError {
@@ -295,8 +384,10 @@
     _requestId = requestId;
     _statusCode = statusCode;
     _errorContent = errorContent;
+    _userMessage = userMessage;
     _structuredAuthError = structuredAuthError;
     _structuredAccessError = structuredAccessError;
+    _structuredPathRootError = structuredPathRootError;
     _structuredRateLimitError = structuredRateLimitError;
     _backoff = backoff;
     _nsError = nsError;
@@ -322,6 +413,10 @@
   return _tag == DBRequestErrorAccess;
 }
 
+- (BOOL)isPathRootError {
+  return _tag == DBRequestErrorPathRoot;
+}
+
 - (BOOL)isRateLimitError {
   return _tag == DBRequestErrorRateLimit;
 }
@@ -336,23 +431,29 @@
 
 #pragma mark - Error subtype retrieval methods
 
-- (DBRequestHttpError * _Nonnull)asHttpError {
+- (DBRequestHttpError *)asHttpError {
   if (![self isHttpError]) {
     [NSException raise:@"IllegalStateException"
                 format:@"Invalid tag: required `DBRequestErrorHttp`, but was %@.", [self tagName]];
   }
-  return [[DBRequestHttpError alloc] init:_requestId statusCode:_statusCode errorContent:_errorContent];
+  return [[DBRequestHttpError alloc] init:_requestId
+                               statusCode:_statusCode
+                             errorContent:_errorContent
+                              userMessage:_userMessage];
 }
 
-- (DBRequestBadInputError * _Nonnull)asBadInputError {
+- (DBRequestBadInputError *)asBadInputError {
   if (![self isBadInputError]) {
     [NSException raise:@"IllegalStateException"
                 format:@"Invalid tag: required `DBRequestErrorBadInput`, but was %@.", [self tagName]];
   }
-  return [[DBRequestBadInputError alloc] init:_requestId statusCode:_statusCode errorContent:_errorContent];
+  return [[DBRequestBadInputError alloc] init:_requestId
+                                   statusCode:_statusCode
+                                 errorContent:_errorContent
+                                  userMessage:_userMessage];
 }
 
-- (DBRequestAuthError * _Nonnull)asAuthError {
+- (DBRequestAuthError *)asAuthError {
   if (![self isAuthError]) {
     [NSException raise:@"IllegalStateException"
                 format:@"Invalid tag: required `DBRequestErrorAuth`, but was %@.", [self tagName]];
@@ -360,10 +461,11 @@
   return [[DBRequestAuthError alloc] init:_requestId
                                statusCode:_statusCode
                              errorContent:_errorContent
+                              userMessage:_userMessage
                       structuredAuthError:_structuredAuthError];
 }
 
-- (DBRequestAccessError * _Nonnull)asAccessError {
+- (DBRequestAccessError *)asAccessError {
   if (![self isAccessError]) {
     [NSException raise:@"IllegalStateException"
                 format:@"Invalid tag: required `DBRequestErrorAccess`, but was %@.", [self tagName]];
@@ -371,10 +473,23 @@
   return [[DBRequestAccessError alloc] init:_requestId
                                  statusCode:_statusCode
                                errorContent:_errorContent
+                                userMessage:_userMessage
                       structuredAccessError:_structuredAccessError];
 }
 
-- (DBRequestRateLimitError * _Nonnull)asRateLimitError {
+- (DBRequestPathRootError *)asPathRootError {
+  if (![self isPathRootError]) {
+    [NSException raise:@"IllegalStateException"
+                format:@"Invalid tag: required `DBRequestErrorPathRoot`, but was %@.", [self tagName]];
+  }
+  return [[DBRequestPathRootError alloc] init:_requestId
+                                   statusCode:_statusCode
+                                 errorContent:_errorContent
+                                  userMessage:_userMessage
+                      structuredPathRootError:_structuredPathRootError];
+}
+
+- (DBRequestRateLimitError *)asRateLimitError {
   if (![self isRateLimitError]) {
     [NSException raise:@"IllegalStateException"
                 format:@"Invalid tag: required `DBRequestErrorRateLimit`, but was %@.", [self tagName]];
@@ -382,19 +497,23 @@
   return [[DBRequestRateLimitError alloc] init:_requestId
                                     statusCode:_statusCode
                                   errorContent:_errorContent
+                                   userMessage:_userMessage
                       structuredRateLimitError:_structuredRateLimitError
                                        backoff:_backoff];
 }
 
-- (DBRequestInternalServerError * _Nonnull)asInternalServerError {
+- (DBRequestInternalServerError *)asInternalServerError {
   if (![self isInternalServerError]) {
     [NSException raise:@"IllegalStateException"
                 format:@"Invalid tag: required `DBRequestErrorInternalServer`, but was %@.", [self tagName]];
   }
-  return [[DBRequestInternalServerError alloc] init:_requestId statusCode:_statusCode errorContent:_errorContent];
+  return [[DBRequestInternalServerError alloc] init:_requestId
+                                         statusCode:_statusCode
+                                       errorContent:_errorContent
+                                        userMessage:_userMessage];
 }
 
-- (DBRequestClientError * _Nonnull)asClientError {
+- (DBRequestClientError *)asClientError {
   if (![self isClientError]) {
     [NSException raise:@"IllegalStateException"
                 format:@"Invalid tag: required `DBRequestErrorClient`, but was %@.", [self tagName]];
@@ -412,6 +531,8 @@
     return @"DBRequestErrorBadInput";
   case DBRequestErrorAuth:
     return @"DBRequestErrorAuth";
+  case DBRequestErrorPathRoot:
+    return @"DBRequestPathRoot";
   case DBRequestErrorAccess:
     return @"DBRequestErrorAccess";
   case DBRequestErrorRateLimit:
@@ -437,6 +558,8 @@
     return [NSString stringWithFormat:@"%@", [self asAuthError]];
   case DBRequestErrorAccess:
     return [NSString stringWithFormat:@"%@", [self asAccessError]];
+  case DBRequestErrorPathRoot:
+    return [NSString stringWithFormat:@"%@", [self asPathRootError]];
   case DBRequestErrorRateLimit:
     return [NSString stringWithFormat:@"%@", [self asRateLimitError]];
   case DBRequestErrorInternalServer:

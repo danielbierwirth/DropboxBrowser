@@ -13,19 +13,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     // Setup Dropbox Here with YOUR OWN APP info
     // #error Dropbox App Key and Secret are required for basic functionality. Add them below AND in the Info.plist file in the URL-Schemes section. See full instructions in the README.
     [[ODBoxHandler sharedHandler] prepareForPotentialSessionWithKey:@"APP_KEY"];
     
-    return YES;
-}
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    [[ODBoxHandler sharedHandler] handleDropboxAuthenticationResponse:url];
-    
-    // Add whatever other url handling code your app requires here
     return YES;
 }
 

@@ -4,25 +4,36 @@
 
 #import <Foundation/Foundation.h>
 
+#import "DBHandlerTypes.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
 ///
 /// Keychain class for storing OAuth tokens.
 ///
 @interface DBSDKKeychain : NSObject
 
 /// Stores a key / value pair in the keychain.
-+ (BOOL)set:(NSString *)key value:(NSString *)value;
++ (BOOL)storeValueWithKey:(NSString *)key value:(NSString *)value;
 
-/// Retrieves a value from the corresponding key
-/// from the keychain.
-+ (NSString *)get:(NSString *)key;
+/// Retrieves a value from the corresponding key from the keychain.
++ (nullable NSString *)retrieveTokenWithKey:(NSString *)key;
 
-/// Retrieves all key / value pairs from the keychain.
-+ (NSArray<NSString *> *)getAll;
+/// Retrieves all token uids from the keychain.
++ (NSArray<NSString *> *)retrieveAllTokenIds;
 
 /// Deletes a key / value pair in the keychain.
-+ (BOOL) delete:(NSString *)key;
++ (BOOL)deleteTokenWithKey:(NSString *)key;
 
 /// Deletes all key / value pairs in the keychain.
-+ (BOOL)clear;
++ (BOOL)clearAllTokens;
+
+/// Checks if performing a v1 token migration is necessary, and if so, performs it.
++ (BOOL)checkAndPerformV1TokenMigration:(DBTokenMigrationResponseBlock)responseBlock
+                                  queue:(nullable NSOperationQueue *)queue
+                                 appKey:(NSString *)appKey
+                              appSecret:(NSString *)appSecret;
 
 @end
+
+NS_ASSUME_NONNULL_END
