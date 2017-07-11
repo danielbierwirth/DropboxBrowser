@@ -2,73 +2,93 @@
 /// Copyright (c) 2016 Dropbox, Inc. All rights reserved.
 ///
 
+#import "DBTasksImpl.h"
 #import "DBDelegate.h"
 #import "DBHandlerTypes.h"
 #import "DBRequestErrors.h"
 #import "DBStoneBase.h"
-#import "DBTasksImpl.h"
-#import "DBTransportClientBase.h"
+#import "DBTasks+Protected.h"
+#import "DBTransportBaseClient.h"
 
 #pragma mark - RPC-style network task
 
-@implementation DBRpcTaskImpl
+@implementation DBRpcTaskImpl {
+  DBRpcTaskImpl *_selfRetained;
+  DBRpcResponseBlockImpl _responseBlock;
+}
 
 - (instancetype)initWithTask:(NSURLSessionDataTask *)task
+                    tokenUid:(NSString *)tokenUid
                      session:(NSURLSession *)session
                     delegate:(DBDelegate *)delegate
                        route:(DBRoute *)route {
-  self = [super initWithRoute:route];
+  self = [super initWithRoute:route tokenUid:tokenUid];
   if (self) {
-    _task = task;
+    _dataTask = task;
     _session = session;
     _delegate = delegate;
+    _selfRetained = self;
   }
   return self;
 }
 
-- (DBRpcTask *)response:(void (^)(id, id, DBRequestError *))responseBlock {
-  return [self response:nil response:responseBlock];
+- (void)cancel {
+  [_dataTask cancel];
 }
 
-- (DBRpcTask *)response:(NSOperationQueue *)queue response:(void (^)(id, id, DBRequestError *))responseBlock {
-  DBRpcResponseBlock wrapperBlock = ^(NSData *data, NSURLResponse *response, NSError *clientError) {
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    int statusCode = (int)httpResponse.statusCode;
-    NSDictionary *httpHeaders = httpResponse.allHeaderFields;
-    
-    DBRequestError *dbxError = [DBTransportClientBase dBRequestErrorWithErrorData:data
-                                                                      clientError:clientError
-                                                                       statusCode:statusCode
-                                                                      httpHeaders:httpHeaders];
-    if (dbxError) {
-      id routeError = [DBTransportClientBase statusCodeIsRouteError:statusCode]
-      ? [DBTransportClientBase routeErrorWithRouteData:_route data:data statusCode:statusCode]
-      : nil;
-      return responseBlock(nil, routeError, dbxError);
-    }
-    
-    NSError *serializationError;
-    id result =
-    [DBTransportClientBase routeResultWithRouteData:_route data:data serializationError:&serializationError];
-    if (serializationError) {
-      responseBlock(nil, nil, [[DBRequestError alloc] initAsClientError:serializationError]);
-      return;
-    }
-    result = !_route.resultType ? [DBNilObject new] : result;
-    responseBlock(result, nil, nil);
-  };
-  
-  [_delegate addRpcResponseHandler:_task session:_session responseHandler:wrapperBlock responseHandlerQueue:queue];
-  
+- (void)suspend {
+  [_dataTask suspend];
+}
+
+- (void)resume {
+  [_dataTask resume];
+}
+
+- (void)start {
+  [_dataTask resume];
+}
+
+- (void)cleanup {
+  _selfRetained = nil;
+
+  NSOperationQueue *queueToUse = _queue ?: [NSOperationQueue mainQueue];
+  [queueToUse addOperationWithBlock:^{
+    self->_responseBlock = nil;
+  }];
+}
+
+- (DBTask *)restart {
+  NSURLRequest *request = [_dataTask.originalRequest copy];
+  NSURLSessionDataTask *task = [_session dataTaskWithRequest:request];
+  DBRpcTaskImpl *sdkTask =
+      [[DBRpcTaskImpl alloc] initWithTask:task tokenUid:self.tokenUid session:_session delegate:_delegate route:_route];
+  sdkTask.retryCount += 1;
+  [sdkTask setResponseBlock:_responseBlock queue:_queue];
+  [task resume];
+
+  return sdkTask;
+}
+
+- (DBRpcTask *)setResponseBlock:(DBRpcResponseBlockImpl)responseBlock {
+  return [self setResponseBlock:responseBlock queue:nil];
+}
+
+- (DBRpcTask *)setResponseBlock:(DBRpcResponseBlockImpl)responseBlock queue:(NSOperationQueue *)queue {
+  _responseBlock = responseBlock;
+  DBRpcResponseBlockStorage storageBlock = [self storageBlockWithResponseBlock:responseBlock
+                                                                  cleanupBlock:^{
+                                                                    [self cleanup];
+                                                                  }];
+  [_delegate addRpcResponseHandler:_dataTask session:_session responseHandler:storageBlock responseHandlerQueue:queue];
   return self;
 }
 
-- (DBRpcTask *)progress:(DBProgressBlock)progressBlock {
-  return [self progress:nil progress:progressBlock];
+- (DBRpcTask *)setProgressBlock:(DBProgressBlock)progressBlock {
+  return [self setProgressBlock:progressBlock queue:nil];
 }
 
-- (DBRpcTask *)progress:(NSOperationQueue *)queue progress:(DBProgressBlock)progressBlock {
-  [_delegate addProgressHandler:_task session:_session progressHandler:progressBlock progressHandlerQueue:queue];
+- (DBRpcTask *)setProgressBlock:(DBProgressBlock)progressBlock queue:(NSOperationQueue *)queue {
+  [_delegate addProgressHandler:_dataTask session:_session progressHandler:progressBlock progressHandlerQueue:queue];
   return self;
 }
 
@@ -76,64 +96,104 @@
 
 #pragma mark - Upload-style network task
 
-@implementation DBUploadTaskImpl
+@implementation DBUploadTaskImpl {
+  DBUploadTaskImpl *_selfRetained;
+  DBUploadResponseBlockImpl _responseBlock;
+}
 
 - (instancetype)initWithTask:(NSURLSessionUploadTask *)task
+                    tokenUid:(NSString *)tokenUid
                      session:(NSURLSession *)session
                     delegate:(DBDelegate *)delegate
-                       route:(DBRoute *)route {
-  self = [super initWithRoute:route];
+                       route:(DBRoute *)route
+                    inputUrl:(NSURL *)inputUrl
+                   inputData:(NSData *)inputData {
+  self = [super initWithRoute:route tokenUid:tokenUid];
   if (self) {
-    _task = task;
+    _uploadTask = task;
     _session = session;
     _delegate = delegate;
+    _inputUrl = inputUrl;
+    _inputData = inputData;
   }
   return self;
 }
 
-- (DBUploadTask *)response:(void (^)(id, id, DBRequestError *))responseBlock {
-  return [self response:nil response:responseBlock];
+- (void)cancel {
+  [_uploadTask cancel];
 }
 
-- (DBUploadTask *)response:(NSOperationQueue *)queue response:(void (^)(id, id, DBRequestError *))responseBlock {
-  DBUploadResponseBlock wrapperBlock = ^(NSData *data, NSURLResponse *response, NSError *clientError) {
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    int statusCode = (int)httpResponse.statusCode;
-    NSDictionary *httpHeaders = httpResponse.allHeaderFields;
-    
-    DBRequestError *dbxError = [DBTransportClientBase dBRequestErrorWithErrorData:data
-                                                                      clientError:clientError
-                                                                       statusCode:statusCode
-                                                                      httpHeaders:httpHeaders];
-    if (dbxError) {
-      id routeError = [DBTransportClientBase statusCodeIsRouteError:statusCode]
-      ? [DBTransportClientBase routeErrorWithRouteData:_route data:data statusCode:statusCode]
-      : nil;
-      return responseBlock(nil, routeError, dbxError);
-    }
-    
-    NSError *serializationError;
-    id result =
-    [DBTransportClientBase routeResultWithRouteData:_route data:data serializationError:&serializationError];
-    if (serializationError) {
-      responseBlock(nil, nil, [[DBRequestError alloc] initAsClientError:serializationError]);
-      return;
-    }
-    result = !_route.resultType ? [DBNilObject new] : result;
-    responseBlock(result, nil, nil);
-  };
-  
-  [_delegate addUploadResponseHandler:_task session:_session responseHandler:wrapperBlock responseHandlerQueue:queue];
-  
+- (void)suspend {
+  [_uploadTask suspend];
+}
+
+- (void)resume {
+  [_uploadTask resume];
+}
+
+- (void)start {
+  [_uploadTask resume];
+}
+
+- (void)cleanup {
+  _selfRetained = nil;
+
+  NSOperationQueue *queueToUse = _queue ?: [NSOperationQueue mainQueue];
+  [queueToUse addOperationWithBlock:^{
+    self->_responseBlock = nil;
+  }];
+}
+
+- (DBTask *)restart {
+  NSURLRequest *request = [_uploadTask.originalRequest copy];
+  NSURLSessionUploadTask *task = nil;
+  self.retryCount += 1;
+  if (_inputUrl) {
+    task = [_session uploadTaskWithRequest:request fromFile:self->_inputUrl];
+  } else if (_inputData) {
+    task = [_session uploadTaskWithRequest:request fromData:self->_inputData];
+  } else {
+    task = [_session uploadTaskWithStreamedRequest:request];
+  }
+
+  DBUploadTaskImpl *sdkTask = [[DBUploadTaskImpl alloc] initWithTask:task
+                                                            tokenUid:self.tokenUid
+                                                             session:_session
+                                                            delegate:_delegate
+                                                               route:_route
+                                                            inputUrl:_inputUrl
+                                                           inputData:_inputData];
+  sdkTask.retryCount += 1;
+  [sdkTask setResponseBlock:_responseBlock queue:_queue];
+  [sdkTask resume];
+
+  return sdkTask;
+}
+
+- (DBUploadTask *)setResponseBlock:(DBUploadResponseBlockImpl)responseBlock {
+  return [self setResponseBlock:responseBlock queue:nil];
+}
+
+- (DBUploadTask *)setResponseBlock:(DBUploadResponseBlockImpl)responseBlock queue:(NSOperationQueue *)queue {
+  _responseBlock = responseBlock;
+  DBUploadResponseBlockStorage storageBlock = [self storageBlockWithResponseBlock:responseBlock
+                                                                     cleanupBlock:^{
+                                                                       [self cleanup];
+                                                                     }];
+  [_delegate addUploadResponseHandler:_uploadTask
+                              session:_session
+                      responseHandler:storageBlock
+                 responseHandlerQueue:queue];
+
   return self;
 }
 
-- (DBUploadTask *)progress:(DBProgressBlock)progressBlock {
-  return [self progress:nil progress:progressBlock];
+- (DBUploadTask *)setProgressBlock:(DBProgressBlock)progressBlock {
+  return [self setProgressBlock:progressBlock queue:nil];
 }
 
-- (DBUploadTask *)progress:(NSOperationQueue *)queue progress:(DBProgressBlock)progressBlock {
-  [_delegate addProgressHandler:_task session:_session progressHandler:progressBlock progressHandlerQueue:queue];
+- (DBUploadTask *)setProgressBlock:(DBProgressBlock)progressBlock queue:(NSOperationQueue *)queue {
+  [_delegate addProgressHandler:_uploadTask session:_session progressHandler:progressBlock progressHandlerQueue:queue];
   return self;
 }
 
@@ -141,17 +201,21 @@
 
 #pragma mark - Download-style network task (NSURL)
 
-@implementation DBDownloadUrlTaskImpl
+@implementation DBDownloadUrlTaskImpl {
+  DBDownloadUrlTaskImpl *_selfRetained;
+  DBDownloadUrlResponseBlockImpl _responseBlock;
+}
 
 - (instancetype)initWithTask:(NSURLSessionDownloadTask *)task
+                    tokenUid:(NSString *)tokenUid
                      session:(NSURLSession *)session
                     delegate:(DBDelegate *)delegate
                        route:(DBRoute *)route
                    overwrite:(BOOL)overwrite
                  destination:(NSURL *)destination {
-  self = [super initWithRoute:route];
+  self = [super initWithRoute:route tokenUid:tokenUid];
   if (self) {
-    _task = task;
+    _downloadUrlTask = task;
     _session = session;
     _delegate = delegate;
     _overwrite = overwrite;
@@ -160,80 +224,75 @@
   return self;
 }
 
-- (DBDownloadUrlTask *)response:(void (^)(id, id, DBRequestError *dbxError, NSURL *))responseBlock {
-  return [self response:nil response:responseBlock];
+- (void)cancel {
+  [_downloadUrlTask cancel];
 }
 
-- (DBDownloadUrlTask *)response:(NSOperationQueue *)queue
-                       response:(void (^)(id, id, DBRequestError *dbxError, NSURL *))responseBlock {
-  DBDownloadResponseBlock wrapperBlock = ^(NSURL *location, NSURLResponse *response, NSError *clientError) {
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    int statusCode = (int)httpResponse.statusCode;
-    NSDictionary *httpHeaders = httpResponse.allHeaderFields;
-    NSString *headerString = [DBTransportClientBase caseInsensitiveLookup:@"Dropbox-API-Result" dictionary:httpHeaders];
-    NSData *resultData = headerString ? [headerString dataUsingEncoding:NSUTF8StringEncoding] : nil;
-    
-    if (clientError || !resultData) {
-      // error data is in response body (downloaded to output tmp file)
-      NSData *errorData = location ? [NSData dataWithContentsOfFile:[location path]] : nil;
-      DBRequestError *dbxError = [DBTransportClientBase dBRequestErrorWithErrorData:errorData
-                                                                        clientError:clientError
-                                                                         statusCode:statusCode
-                                                                        httpHeaders:httpHeaders];
-      id routeError = [DBTransportClientBase statusCodeIsRouteError:statusCode]
-      ? [DBTransportClientBase routeErrorWithRouteData:_route data:errorData statusCode:statusCode]
-      : nil;
-      return responseBlock(nil, routeError, dbxError, _destination);
-    }
-    
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *destinationPath = [_destination path];
-    
-    if ([fileManager fileExistsAtPath:destinationPath]) {
-      NSError *fileMoveError;
-      if (_overwrite) {
-        [fileManager removeItemAtPath:destinationPath error:&fileMoveError];
-        if (fileMoveError) {
-          responseBlock(nil, nil, [[DBRequestError alloc] initAsClientError:fileMoveError], _destination);
-          return;
-        }
-      }
-      [fileManager moveItemAtPath:[location path] toPath:destinationPath error:&fileMoveError];
-      if (fileMoveError) {
-        responseBlock(nil, nil, [[DBRequestError alloc] initAsClientError:fileMoveError], _destination);
-        return;
-      }
-    } else {
-      NSError *fileMoveError;
-      [fileManager moveItemAtPath:[location path] toPath:destinationPath error:&fileMoveError];
-      if (fileMoveError) {
-        responseBlock(nil, nil, [[DBRequestError alloc] initAsClientError:fileMoveError], _destination);
-        return;
-      }
-    }
-    
-    NSError *serializationError;
-    id result =
-    [DBTransportClientBase routeResultWithRouteData:_route data:resultData serializationError:&serializationError];
-    if (serializationError) {
-      responseBlock(nil, nil, [[DBRequestError alloc] initAsClientError:serializationError], _destination);
-      return;
-    }
-    result = !_route.resultType ? [DBNilObject new] : result;
-    responseBlock(result, nil, nil, _destination);
-  };
-  
-  [_delegate addDownloadResponseHandler:_task session:_session responseHandler:wrapperBlock responseHandlerQueue:queue];
-  
+- (void)suspend {
+  [_downloadUrlTask suspend];
+}
+
+- (void)resume {
+  [_downloadUrlTask resume];
+}
+
+- (void)start {
+  [_downloadUrlTask resume];
+}
+
+- (void)cleanup {
+  _selfRetained = nil;
+
+  NSOperationQueue *queueToUse = _queue ?: [NSOperationQueue mainQueue];
+  [queueToUse addOperationWithBlock:^{
+    self->_responseBlock = nil;
+  }];
+}
+
+- (DBTask *)restart {
+  NSURLRequest *request = [_downloadUrlTask.originalRequest copy];
+  NSURLSessionDownloadTask *task = [_session downloadTaskWithRequest:request];
+  DBDownloadUrlTaskImpl *sdkTask = [[DBDownloadUrlTaskImpl alloc] initWithTask:task
+                                                                      tokenUid:self.tokenUid
+                                                                       session:_session
+                                                                      delegate:_delegate
+                                                                         route:_route
+                                                                     overwrite:_overwrite
+                                                                   destination:_destination];
+  sdkTask.retryCount += 1;
+  [sdkTask setResponseBlock:_responseBlock queue:_queue];
+  [task resume];
+
+  return sdkTask;
+}
+
+- (DBDownloadUrlTask *)setResponseBlock:(DBDownloadUrlResponseBlockImpl)responseBlock {
+  return [self setResponseBlock:responseBlock queue:nil];
+}
+
+- (DBDownloadUrlTask *)setResponseBlock:(DBDownloadUrlResponseBlockImpl)responseBlock queue:(NSOperationQueue *)queue {
+  _responseBlock = responseBlock;
+  DBDownloadResponseBlockStorage storageBlock = [self storageBlockWithResponseBlock:responseBlock
+                                                                       cleanupBlock:^{
+                                                                         [self cleanup];
+                                                                       }];
+  [_delegate addDownloadResponseHandler:_downloadUrlTask
+                                session:_session
+                        responseHandler:storageBlock
+                   responseHandlerQueue:queue];
+
   return self;
 }
 
-- (DBDownloadUrlTask *)progress:(DBProgressBlock)progressBlock {
-  return [self progress:nil progress:progressBlock];
+- (DBDownloadUrlTask *)setProgressBlock:(DBProgressBlock)progressBlock {
+  return [self setProgressBlock:progressBlock queue:nil];
 }
 
-- (DBDownloadUrlTask *)progress:(NSOperationQueue *)queue progress:(DBProgressBlock)progressBlock {
-  [_delegate addProgressHandler:_task session:_session progressHandler:progressBlock progressHandlerQueue:queue];
+- (DBDownloadUrlTask *)setProgressBlock:(DBProgressBlock)progressBlock queue:(NSOperationQueue *)queue {
+  [_delegate addProgressHandler:_downloadUrlTask
+                        session:_session
+                progressHandler:progressBlock
+           progressHandlerQueue:queue];
   return self;
 }
 
@@ -241,69 +300,93 @@
 
 #pragma mark - Download-style network task (NSData)
 
-@implementation DBDownloadDataTaskImpl
+@implementation DBDownloadDataTaskImpl {
+  DBDownloadDataTaskImpl *_selfRetained;
+  DBDownloadDataResponseBlockImpl _responseBlock;
+}
 
 - (instancetype)initWithTask:(NSURLSessionDownloadTask *)task
+                    tokenUid:(NSString *)tokenUid
                      session:(NSURLSession *)session
                     delegate:(DBDelegate *)delegate
                        route:(DBRoute *)route {
-  self = [super initWithRoute:route];
+  self = [super initWithRoute:route tokenUid:tokenUid];
   if (self) {
-    _task = task;
+    _downloadDataTask = task;
     _session = session;
     _delegate = delegate;
   }
   return self;
 }
 
-- (DBDownloadDataTask *)response:(void (^)(id, id, DBRequestError *dbxError, NSData *))responseBlock {
-  return [self response:nil response:responseBlock];
+- (void)cancel {
+  [_downloadDataTask cancel];
 }
 
-- (DBDownloadDataTask *)response:(NSOperationQueue *)queue
-                        response:(void (^)(id, id, DBRequestError *dbxError, NSData *))responseBlock {
-  DBDownloadResponseBlock wrapperBlock = ^(NSURL *location, NSURLResponse *response, NSError *clientError) {
-    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
-    int statusCode = (int)httpResponse.statusCode;
-    NSDictionary *httpHeaders = httpResponse.allHeaderFields;
-    NSString *headerString = [DBTransportClientBase caseInsensitiveLookup:@"Dropbox-API-Result" dictionary:httpHeaders];
-    NSData *resultData = headerString ? [headerString dataUsingEncoding:NSUTF8StringEncoding] : nil;
-    
-    if (clientError || !resultData) {
-      // error data is in response body (downloaded to output tmp file)
-      NSData *errorData = location ? [NSData dataWithContentsOfFile:[location path]] : nil;
-      DBRequestError *dbxError = [DBTransportClientBase dBRequestErrorWithErrorData:errorData
-                                                                        clientError:clientError
-                                                                         statusCode:statusCode
-                                                                        httpHeaders:httpHeaders];
-      id routeError = [DBTransportClientBase statusCodeIsRouteError:statusCode]
-      ? [DBTransportClientBase routeErrorWithRouteData:_route data:errorData statusCode:statusCode]
-      : nil;
-      return responseBlock(nil, routeError, dbxError, nil);
-    }
-    
-    NSError *serializationError;
-    id result =
-    [DBTransportClientBase routeResultWithRouteData:_route data:resultData serializationError:&serializationError];
-    if (serializationError) {
-      responseBlock(nil, nil, [[DBRequestError alloc] initAsClientError:serializationError], nil);
-      return;
-    }
-    result = !_route.resultType ? [DBNilObject new] : result;
-    responseBlock(result, nil, nil, [NSData dataWithContentsOfFile:[location path]]);
-  };
-  
-  [_delegate addDownloadResponseHandler:_task session:_session responseHandler:wrapperBlock responseHandlerQueue:queue];
-  
+- (void)suspend {
+  [_downloadDataTask suspend];
+}
+
+- (void)resume {
+  [_downloadDataTask resume];
+}
+
+- (void)start {
+  [_downloadDataTask resume];
+}
+
+- (void)cleanup {
+  _selfRetained = nil;
+
+  NSOperationQueue *queueToUse = _queue ?: [NSOperationQueue mainQueue];
+  [queueToUse addOperationWithBlock:^{
+    self->_responseBlock = nil;
+  }];
+}
+
+- (DBTask *)restart {
+  NSURLRequest *request = [_downloadDataTask.originalRequest copy];
+  NSURLSessionDownloadTask *task = [_session downloadTaskWithRequest:request];
+  DBDownloadDataTaskImpl *sdkTask = [[DBDownloadDataTaskImpl alloc] initWithTask:task
+                                                                        tokenUid:self.tokenUid
+                                                                         session:_session
+                                                                        delegate:_delegate
+                                                                           route:_route];
+  sdkTask.retryCount += 1;
+  [sdkTask setResponseBlock:_responseBlock queue:_queue];
+  [task resume];
+
+  return sdkTask;
+}
+
+- (DBDownloadDataTask *)setResponseBlock:(DBDownloadDataResponseBlockImpl)responseBlock {
+  return [self setResponseBlock:responseBlock queue:nil];
+}
+
+- (DBDownloadDataTask *)setResponseBlock:(DBDownloadDataResponseBlockImpl)responseBlock
+                                   queue:(NSOperationQueue *)queue {
+  _responseBlock = responseBlock;
+  DBDownloadResponseBlockStorage storageBlock = [self storageBlockWithResponseBlock:responseBlock
+                                                                       cleanupBlock:^{
+                                                                         [self cleanup];
+                                                                       }];
+  [_delegate addDownloadResponseHandler:_downloadDataTask
+                                session:_session
+                        responseHandler:storageBlock
+                   responseHandlerQueue:queue];
+
   return self;
 }
 
-- (DBDownloadDataTask *)progress:(DBProgressBlock)progressBlock {
-  return [self progress:nil progress:progressBlock];
+- (DBDownloadDataTask *)setProgressBlock:(DBProgressBlock)progressBlock {
+  return [self setProgressBlock:progressBlock queue:nil];
 }
 
-- (DBDownloadDataTask *)progress:(NSOperationQueue *)queue progress:(DBProgressBlock)progressBlock {
-  [_delegate addProgressHandler:_task session:_session progressHandler:progressBlock progressHandlerQueue:queue];
+- (DBDownloadDataTask *)setProgressBlock:(DBProgressBlock)progressBlock queue:(NSOperationQueue *)queue {
+  [_delegate addProgressHandler:_downloadDataTask
+                        session:_session
+                progressHandler:progressBlock
+           progressHandlerQueue:queue];
   return self;
 }
 
