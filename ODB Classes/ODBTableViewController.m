@@ -140,9 +140,9 @@
             
             // Setup the "Login" action
             [loginAlert addAction:[UIAlertAction actionWithTitle:NSLocalizedString(@"Login", @"DropboxBrowser: Alert Button.") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [DropboxClientsManager authorizeFromController:[UIApplication sharedApplication] controller:self openURL:^(NSURL *url) {
-                    [[UIApplication sharedApplication] openURL:url];
-                } browserAuth:self.accessPromptCanExit];
+              [DBClientsManager authorizeFromController:[UIApplication sharedApplication] controller:self openURL:^(NSURL *url) {
+                [[UIApplication sharedApplication] openURL:url];
+              }];
             }]];
             
             // Cancel login and dismiss the Browser.

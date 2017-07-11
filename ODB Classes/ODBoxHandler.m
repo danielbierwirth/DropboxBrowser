@@ -23,7 +23,7 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
 @interface ODBoxHandler ()
 
 /// The client object returned from the SDK's authentication process if it was successful. This value may be nil if the client is not authenticated or there was an error.
-@property (nonatomic, strong, nullable) DropboxClient *mainClient;
+@property (nonatomic, strong, nullable) DBUserClient *mainClient;
 
 /// The app's Dropbox Authorization key.
 @property (nonatomic, strong, nullable) NSString *appAuthorizationKey;
@@ -32,7 +32,7 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
 
 @implementation ODBoxHandler
 
-// MARK: - 
+// MARK: -
 // MARK: Object lifecycle
 
 + (ODBoxHandler *)sharedHandler {
@@ -51,27 +51,27 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
     
     if (self) {
         // Perform setup operations
-        _mainClient = [DropboxClientsManager authorizedClient];
+        _mainClient = [DBClientsManager authorizedClient];
     }
     
     return self;
 }
 
-// MARK: - 
+// MARK: -
 // MARK: Authentication
 
 - (void)prepareForPotentialSessionWithKey:(NSString *)appKey {
-    [DropboxClientsManager setupWithAppKey:appKey];
+    [DBClientsManager setupWithAppKey:appKey];
     self.appAuthorizationKey = appKey;
-    self.mainClient = [DropboxClientsManager authorizedClient];
+    self.mainClient = [DBClientsManager authorizedClient];
 }
 
 - (void)handleDropboxAuthenticationResponse:(NSURL *)applicationReceivedURL {
-    DBOAuthResult *authResult = [DropboxClientsManager handleRedirectURL:applicationReceivedURL];
+    DBOAuthResult *authResult = [DBClientsManager handleRedirectURL:applicationReceivedURL];
     if (authResult != nil) {
         if ([authResult isSuccess]) {
             NSLog(@"[ODBoxHandler] Authorization success. User is logged into Dropbox.");
-            self.mainClient = [DropboxClientsManager authorizedClient];
+            self.mainClient = [DBClientsManager authorizedClient];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"ODBoxHandler.authentication.success" object:nil];
         } else if ([authResult isCancel]) {
             NSLog(@"[ODBoxHandler] Authorization cancelled. Flow was manually canceled by user.");
@@ -84,7 +84,7 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
 }
 
 - (BOOL)clientIsAuthenticated {
-    self.mainClient = [DropboxClientsManager authorizedClient];
+    self.mainClient = [DBClientsManager authorizedClient];
     
     if (self.mainClient) return YES;
     else return NO;
@@ -92,7 +92,7 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
 
 - (void)clientRequestedLogout {
     NSLog(@"[ODBoxHandler] Unlinking accounts and logging out of Dropbox...");
-    [DropboxClientsManager unlinkClients];
+    [DBClientsManager unlinkAndResetClients];
 }
 
 - (BOOL)applicationIsConfiguredForAuthorization {
@@ -137,7 +137,7 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
             NSArray *URLSchemes = URLSchema[@"CFBundleURLSchemes"];
             for (NSString *URLScheme in URLSchemes) {
                 if ([URLScheme isEqualToString:appropriateURLScheme]) {
-                    appropriateAppURLEntry = YES; 
+                    appropriateAppURLEntry = YES;
                     break;
                 }
             }
@@ -157,7 +157,7 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
     return YES;
 }
 
-// MARK: - 
+// MARK: -
 // MARK: Downloads
 
 - (void)downloadDropboxFile:(NSString *)file completion:(void (^)(NSURL *filePath, NSError *error))finishBlock updateProgress:(void (^)(NSNumber *progress))progressChanged {
@@ -170,32 +170,32 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
     
     NSString *fileName = [[file lastPathComponent] stringByDeletingPathExtension];
     NSURL *outputURL = [outputDirectory URLByAppendingPathComponent:fileName];
-    
-    [[[self.mainClient.filesRoutes downloadUrl:file overwrite:self.downloadsOverwriteLocalConflicts destination:outputURL] response:^(DBFILESFileMetadata * _Nullable result, DBFILESDownloadError * _Nullable routeError, DBRequestError * _Nullable error, NSURL * _Nonnull destination) {
+
+    [[[self.mainClient.filesRoutes downloadUrl:file overwrite:self.downloadsOverwriteLocalConflicts destination:outputURL] setResponseBlock:^(DBFILESFileMetadata * _Nullable result, DBFILESDownloadError * _Nullable routeError, DBRequestError * _Nullable networkError, NSURL * _Nonnull destination) {
         if (result) {
             NSLog(@"%@\n", result);
             NSData *data = [[NSFileManager defaultManager] contentsAtPath:[destination path]];
             NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"%@\n", dataStr);
-            
+
             finishBlock(outputURL, nil);
-            
+
             if ([self.delegate respondsToSelector:@selector(dropboxHandler:didFinishDownloadingFile:atURL:data:)])
                 [self.delegate dropboxHandler:self didFinishDownloadingFile:fileName atURL:outputURL data:nil];
         } else {
-            NSLog(@"%@\n%@\n", routeError, error);
-            
-            finishBlock(nil, error.nsError);
-            
+            NSLog(@"%@\n%@\n", routeError, networkError);
+
+            finishBlock(nil, networkError.nsError);
+
             if ([self.delegate respondsToSelector:@selector(dropboxHandler:didFailToDownloadFile:error:)])
-                [self.delegate dropboxHandler:self didFailToDownloadFile:fileName error:error.nsError];
-            
+                [self.delegate dropboxHandler:self didFailToDownloadFile:fileName error:networkError.nsError];
+
             // if ([self.delegate respondsToSelector:@selector(finishedDownloadingFileToLocalURL:)])
             // [self.delegate downloadEncounteredError:error];
         }
-    }] progress:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
-        NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
-        int64_t progress = totalBytesDownloaded / totalBytesExpectedToDownload;
+    }] setProgressBlock:^(int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
+        NSLog(@"%lld\n%lld\n%lld\n", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+        int64_t progress = totalBytesWritten / totalBytesExpectedToWrite;
         NSNumber *downloadProgress = [NSNumber numberWithUnsignedLongLong:progress];
         progressChanged(downloadProgress);
     }];
@@ -205,45 +205,44 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
     NSString *fileName = [[file lastPathComponent] stringByDeletingPathExtension];
     
     // Download to NSData
-    [[[self.mainClient.filesRoutes downloadData:file] response:^(DBFILESFileMetadata *result, DBFILESDownloadError *routeError, DBRequestError *error, NSData *fileContents) {
+    [[[self.mainClient.filesRoutes downloadData:file] setResponseBlock:^(DBFILESFileMetadata * _Nullable result, DBFILESDownloadError * _Nullable routeError, DBRequestError * _Nullable networkError, NSData * _Nullable fileData) {
         if (result) {
             NSLog(@"%@\n", result);
-            NSString *dataStr = [[NSString alloc] initWithData:fileContents encoding:NSUTF8StringEncoding];
+            NSString *dataStr = [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding];
             NSLog(@"%@\n", dataStr);
-            
-            finishBlock(fileContents, nil);
-            
+
+            finishBlock(fileData, nil);
+
             if ([self.delegate respondsToSelector:@selector(dropboxHandler:didFinishDownloadingFile:atURL:data:)])
-                [self.delegate dropboxHandler:self didFinishDownloadingFile:fileName atURL:nil data:fileContents];
+                [self.delegate dropboxHandler:self didFinishDownloadingFile:fileName atURL:nil data:fileData];
         } else {
-            finishBlock(nil, error.nsError);
-            NSLog(@"%@\n%@\n", routeError, error);
-            
+            finishBlock(nil, networkError.nsError);
+            NSLog(@"%@\n%@\n", routeError, networkError);
+
             if ([self.delegate respondsToSelector:@selector(dropboxHandler:didFailToDownloadFile:error:)])
-                [self.delegate dropboxHandler:self didFailToDownloadFile:fileName error:error.nsError];
+                [self.delegate dropboxHandler:self didFailToDownloadFile:fileName error:networkError.nsError];
         }
-    }] progress:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
-        NSLog(@"%lld\n%lld\n%lld\n", bytesDownloaded, totalBytesDownloaded, totalBytesExpectedToDownload);
-        int64_t progress = totalBytesDownloaded / totalBytesExpectedToDownload;
+    }] setProgressBlock:^(int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
+        NSLog(@"%lld\n%lld\n%lld\n", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+        int64_t progress = totalBytesWritten / totalBytesExpectedToWrite;
         NSNumber *downloadProgress = [NSNumber numberWithUnsignedLongLong:progress];
         progressChanged(downloadProgress);
     }];
 }
 
-// MARK: - 
+// MARK: -
 // MARK: Files
 
 - (void)fetchFileListsInDirectory:(NSString *)parentDirectory completion:(void (^)(NSArray *files, NSError *error))finishBlock {
     NSLog(@"[ODBoxHandler] Beginning file fetch...");
     
     if ([parentDirectory isEqualToString:@"/"]) parentDirectory = @"";
-    
-    [[self.mainClient.filesRoutes listFolder:parentDirectory recursive:@NO includeMediaInfo:@NO includeDeleted:@NO includeHasExplicitSharedMembers:@NO] response:^(DBFILESListFolderResult * _Nullable folderList, DBFILESListFolderError * _Nullable folderError, DBRequestError * _Nullable error) {
+    [[self.mainClient.filesRoutes listFolder:parentDirectory recursive:@NO includeMediaInfo:@NO includeDeleted:@NO includeHasExplicitSharedMembers:@NO] setResponseBlock:^(DBFILESListFolderResult * _Nullable result, DBFILESListFolderError * _Nullable routeError, DBRequestError * _Nullable networkError) {
         NSLog(@"[ODBoxHandler] Returned from file fetch.");
-        if (folderList) {
-            NSLog(@"[ODBoxHandler] New file list with %i entries", (int)folderList.entries.count);
-            NSMutableArray *newFileList = [NSMutableArray arrayWithCapacity:folderList.entries.count];
-            for (DBFILESMetadata *file in folderList.entries) {
+        if (result) {
+            NSLog(@"[ODBoxHandler] New file list with %i entries", (int)result.entries.count);
+            NSMutableArray *newFileList = [NSMutableArray arrayWithCapacity:result.entries.count];
+            for (DBFILESMetadata *file in result.entries) {
                 NSDictionary *fileEntry;
                 if ([file isKindOfClass:[DBFILESFileMetadata class]]) {
                     // We have a file
@@ -259,17 +258,17 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
             }
             finishBlock(newFileList.copy, nil);
         } else {
-            NSLog(@"[ODBoxHandler] Error fetching files: %@", error);
-            finishBlock(nil, error.nsError);
+            NSLog(@"[ODBoxHandler] Error fetching files: %@", networkError);
+            finishBlock(nil, networkError.nsError);
         }
     }];
 }
 
 - (void)searchFileListsInDirectory:(NSString *)parentDirectory query:(NSString *)query completion:(void (^)(NSArray *files, NSError *error))finishBlock {
-    [[self.mainClient.filesRoutes search:parentDirectory query:query] response:^(DBFILESSearchResult * _Nullable results, DBFILESSearchError * _Nullable searchError, DBRequestError * _Nullable error) {
-        if (results) {
-            NSMutableArray *matchList = [NSMutableArray arrayWithCapacity:results.matches.count];
-            for (DBFILESSearchMatch *match in results.matches) {
+    [[self.mainClient.filesRoutes search:parentDirectory query:query] setResponseBlock:^(DBFILESSearchResult * _Nullable result, DBFILESSearchError * _Nullable routeError, DBRequestError * _Nullable networkError) {
+        if (result) {
+            NSMutableArray *matchList = [NSMutableArray arrayWithCapacity:result.matches.count];
+            for (DBFILESSearchMatch *match in result.matches) {
                 NSDictionary *fileEntry;
                 if ([match.metadata isKindOfClass:[DBFILESFileMetadata class]]) {
                     // We have a file
@@ -283,10 +282,10 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
                 }
                 [matchList addObject:fileEntry];
             }
-            
+
             finishBlock(matchList.copy, nil);
         } else {
-            finishBlock(nil, error.nsError);
+            finishBlock(nil, networkError.nsError);
         }
     }];
 }

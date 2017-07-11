@@ -15,13 +15,13 @@ Dropbox Browser provides a simple and effective way to browse, search, and downl
   s.authors            = { "Daniel Bierwirth" => "", "Sam Spencer" => ""}
   s.social_media_url   = "http://danielbierwirth.com"
   
-  s.platform     = :ios, "8.0"
+  s.platform     = :ios, "9.0"
 
   s.source       = { :git => "https://github.com/danielbierwirth/DropboxBrowser.git", :tag => "v6.0.1" }
   s.source_files  = "ODB Classes/*.{h,m}"
   s.resource  = "DropboxMedia.xcassets"
 
   s.requires_arc = true
-  s.dependency "ObjectiveDropboxOfficial", "~> 2.0.6"
+  s.dependency "ObjectiveDropboxOfficial", "~> 3.1.2"
 
 end
