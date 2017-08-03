@@ -49,6 +49,8 @@
     BOOL loggedIn = [[ODBoxHandler sharedHandler] clientIsAuthenticated];
     if (loggedIn) [self.accountStatusButton setTitle:@"Logout" forState:UIControlStateNormal];
     else [self.accountStatusButton setTitle:@"No Account" forState:UIControlStateNormal];
+    
+    [self.localFiles reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,7 +85,7 @@
 
 - (void)dropboxHandler:(ODBoxHandler *)handler didFinishDownloadingFile:(NSString *)fileName atURL:(NSURL *)localFileDownload data:(NSData *)fileData {
     if (localFileDownload) {
-        NSLog(@"Downloaded %@ to location: %@.", fileName, localFileDownload);
+        NSLog(@"Downloaded %@ to location: %@", fileName, localFileDownload);
     } else if (fileData) {
         NSLog(@"Downloaded %@'s file data.", fileName);
     }

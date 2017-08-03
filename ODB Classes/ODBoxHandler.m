@@ -168,14 +168,14 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
     else
         outputDirectory = self.customDownloadDirectory;
     
-    NSString *fileName = [[file lastPathComponent] stringByDeletingPathExtension];
+    NSString *fileName = [file lastPathComponent];
     NSURL *outputURL = [outputDirectory URLByAppendingPathComponent:fileName];
 
     [[[self.mainClient.filesRoutes downloadUrl:file overwrite:self.downloadsOverwriteLocalConflicts destination:outputURL] setResponseBlock:^(DBFILESFileMetadata * _Nullable result, DBFILESDownloadError * _Nullable routeError, DBRequestError * _Nullable networkError, NSURL * _Nonnull destination) {
         if (result) {
             NSLog(@"%@\n", result);
             NSData *data = [[NSFileManager defaultManager] contentsAtPath:[destination path]];
-            NSString *dataStr = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+            NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"%@\n", dataStr);
 
             finishBlock(outputURL, nil);
