@@ -173,17 +173,17 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
 
     [[[self.mainClient.filesRoutes downloadUrl:file overwrite:self.downloadsOverwriteLocalConflicts destination:outputURL] setResponseBlock:^(DBFILESFileMetadata * _Nullable result, DBFILESDownloadError * _Nullable routeError, DBRequestError * _Nullable networkError, NSURL * _Nonnull destination) {
         if (result) {
-            NSLog(@"%@\n", result);
+            NSLog(@"[ODBoxHandler] %@\n", result);
             NSData *data = [[NSFileManager defaultManager] contentsAtPath:[destination path]];
             NSString *dataStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"%@\n", dataStr);
+            NSLog(@"[ODBoxHandler] %@\n", dataStr);
 
             finishBlock(outputURL, nil);
 
             if ([self.delegate respondsToSelector:@selector(dropboxHandler:didFinishDownloadingFile:atURL:data:)])
                 [self.delegate dropboxHandler:self didFinishDownloadingFile:fileName atURL:outputURL data:nil];
         } else {
-            NSLog(@"%@\n%@\n", routeError, networkError);
+            NSLog(@"[ODBoxHandler] %@\n%@\n", routeError, networkError);
 
             finishBlock(nil, networkError.nsError);
 
@@ -193,11 +193,13 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
             // if ([self.delegate respondsToSelector:@selector(finishedDownloadingFileToLocalURL:)])
             // [self.delegate downloadEncounteredError:error];
         }
-    }] setProgressBlock:^(int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
-        NSLog(@"%lld\n%lld\n%lld\n", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
-        int64_t progress = totalBytesWritten / totalBytesExpectedToWrite;
-        NSNumber *downloadProgress = [NSNumber numberWithUnsignedLongLong:progress];
-        progressChanged(downloadProgress);
+    }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
+        CGFloat progressFloat = (CGFloat)totalBytesDownloaded / (CGFloat)totalBytesExpectedToDownload;
+        NSNumber *downloadProgressFloat = [NSNumber numberWithFloat:progressFloat];
+        
+        NSLog(@"[ODBoxHandler] Downloading... %.02f%%", progressFloat * 100);
+        
+        progressChanged(downloadProgressFloat);
     }];
 }
 
@@ -207,9 +209,10 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
     // Download to NSData
     [[[self.mainClient.filesRoutes downloadData:file] setResponseBlock:^(DBFILESFileMetadata * _Nullable result, DBFILESDownloadError * _Nullable routeError, DBRequestError * _Nullable networkError, NSData * _Nullable fileData) {
         if (result) {
-            NSLog(@"%@\n", result);
+            NSLog(@"[ODBoxHandler] %@\n", result);
+            
             NSString *dataStr = [[NSString alloc] initWithData:fileData encoding:NSUTF8StringEncoding];
-            NSLog(@"%@\n", dataStr);
+            NSLog(@"[ODBoxHandler] %@\n", dataStr);
 
             finishBlock(fileData, nil);
 
@@ -217,16 +220,18 @@ const struct ODBFileDictionaryKeys ODBFileKeys = {
                 [self.delegate dropboxHandler:self didFinishDownloadingFile:fileName atURL:nil data:fileData];
         } else {
             finishBlock(nil, networkError.nsError);
-            NSLog(@"%@\n%@\n", routeError, networkError);
+            NSLog(@"[ODBoxHandler] %@\n%@\n", routeError, networkError);
 
             if ([self.delegate respondsToSelector:@selector(dropboxHandler:didFailToDownloadFile:error:)])
                 [self.delegate dropboxHandler:self didFailToDownloadFile:fileName error:networkError.nsError];
         }
-    }] setProgressBlock:^(int64_t bytesWritten, int64_t totalBytesWritten, int64_t totalBytesExpectedToWrite) {
-        NSLog(@"%lld\n%lld\n%lld\n", bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
-        int64_t progress = totalBytesWritten / totalBytesExpectedToWrite;
-        NSNumber *downloadProgress = [NSNumber numberWithUnsignedLongLong:progress];
-        progressChanged(downloadProgress);
+    }] setProgressBlock:^(int64_t bytesDownloaded, int64_t totalBytesDownloaded, int64_t totalBytesExpectedToDownload) {
+        CGFloat progressFloat = (CGFloat)totalBytesDownloaded / (CGFloat)totalBytesExpectedToDownload;
+        NSNumber *downloadProgressFloat = [NSNumber numberWithFloat:progressFloat];
+        
+        NSLog(@"[ODBoxHandler] Downloading... %.02f%%", progressFloat * 100);
+        
+        progressChanged(downloadProgressFloat);
     }];
 }
 

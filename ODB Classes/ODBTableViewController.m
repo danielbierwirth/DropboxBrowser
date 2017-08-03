@@ -217,6 +217,12 @@
 // MARK: Content handling
 
 - (void)updateDownloadProgress:(CGFloat)progress {
+    if (self.downloadProgressView.alpha == 0) {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.downloadProgressView.alpha = 1.0;
+        }];
+    }
+    
     [self.downloadProgressView setProgress:progress];
 }
 
@@ -322,10 +328,15 @@
             self.subdirectoryController.title = self.currentFile[ODBFileKeys.kDropboxFileName]; // [subpath lastPathComponent];
             self.subdirectoryController.shouldDisplaySearchBar = self.shouldDisplaySearchBar;
             self.subdirectoryController.allowedFileTypes = self.allowedFileTypes;
+            
+            // Check if the table cell ID has been set, otherwise create one
+            if (!self.tableCellID || [self.tableCellID isEqualToString:@""]) self.tableCellID = @"DropboxBrowserCell";
             self.subdirectoryController.tableCellID = self.tableCellID;
+            
             self.subdirectoryController.colorTheme = self.colorTheme;
             
             [self.subdirectoryController listDirectoryAtPath:escapedSubpath];
+            
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
             [self.navigationController pushViewController:self.subdirectoryController animated:YES];
@@ -350,6 +361,13 @@
                     
                     // Reload the cell
                     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+                    
+                    // Hide the progress bar and reset to zero
+                    [UIView animateWithDuration:0.3 animations:^{
+                        self.downloadProgressView.alpha = 0.0;
+                        self.downloadProgressView.progress = 0.0;
+                    }];
+                    
                 } updateProgress:^(NSNumber * _Nonnull progress) {
                     [self updateDownloadProgress:progress.floatValue];
                 }];
