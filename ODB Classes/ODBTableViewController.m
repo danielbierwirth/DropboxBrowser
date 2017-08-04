@@ -183,8 +183,10 @@
             if (files) {
                 self.currentFiles = nil;
                 self.currentFiles = [NSMutableArray arrayWithCapacity:files.count];
-                for (NSString *file in files) {
-                    if (self.allowedFileTypes.count == 0 || [self.allowedFileTypes containsObject:[file pathExtension]]) {
+                for (NSDictionary *file in files) {
+                    BOOL isFolder = [file[ODBFileKeys.kDropboxFileType] isEqualToString: ODBFileKeys.kDropboxFileTypeFolder];
+                    NSString* fileExtension = [file[ODBFileKeys.kDropboxFileName] pathExtension];
+                    if (self.allowedFileTypes.count == 0 || isFolder || [self.allowedFileTypes containsObject:fileExtension]) {
                         [self.currentFiles addObject:file];
                     }
                 }
