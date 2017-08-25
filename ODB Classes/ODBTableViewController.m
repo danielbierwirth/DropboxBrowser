@@ -190,6 +190,16 @@
                         [self.currentFiles addObject:file];
                     }
                 }
+
+                // Sort by file name
+                [self.currentFiles sortUsingComparator: ^NSComparisonResult(id obj1, id obj2) {
+                    NSDictionary* file1 = (NSDictionary*)obj1;
+                    NSDictionary* file2 = (NSDictionary*)obj2;
+                    
+                    NSString* name1 = file1[ODBFileKeys.kDropboxFileName];
+                    NSString* name2 = file2[ODBFileKeys.kDropboxFileName];
+                    return [name1 compare: name2 options:NSCaseInsensitiveSearch];
+                }];
                 
                 [self refreshTable];
             } else {
