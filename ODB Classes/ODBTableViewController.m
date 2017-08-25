@@ -183,11 +183,23 @@
             if (files) {
                 self.currentFiles = nil;
                 self.currentFiles = [NSMutableArray arrayWithCapacity:files.count];
-                for (NSString *file in files) {
-                    if (self.allowedFileTypes.count == 0 || [self.allowedFileTypes containsObject:[file pathExtension]]) {
+                for (NSDictionary *file in files) {
+                    BOOL isFolder = [file[ODBFileKeys.kDropboxFileType] isEqualToString: ODBFileKeys.kDropboxFileTypeFolder];
+                    NSString* fileExtension = [file[ODBFileKeys.kDropboxFileName] pathExtension];
+                    if (self.allowedFileTypes.count == 0 || isFolder || [self.allowedFileTypes containsObject:fileExtension]) {
                         [self.currentFiles addObject:file];
                     }
                 }
+
+                // Sort by file name
+                [self.currentFiles sortUsingComparator: ^NSComparisonResult(id obj1, id obj2) {
+                    NSDictionary* file1 = (NSDictionary*)obj1;
+                    NSDictionary* file2 = (NSDictionary*)obj2;
+                    
+                    NSString* name1 = file1[ODBFileKeys.kDropboxFileName];
+                    NSString* name2 = file2[ODBFileKeys.kDropboxFileName];
+                    return [name1 compare: name2 options:NSCaseInsensitiveSearch];
+                }];
                 
                 [self refreshTable];
             } else {
